@@ -51,6 +51,7 @@ html { font-size: 16px; scroll-behavior: smooth; }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+* { touch-action: pan-y; }
 
 /* ── Tokens ── */
 :root {
@@ -85,7 +86,7 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(8px);
   padding: 0 clamp(1.25rem, 4vw, 2.5rem);
-  height: 64px;
+  min-height: 64px;
   display: flex; align-items: center; justify-content: space-between;
 }
 .nav-logo {
@@ -128,9 +129,9 @@ a { color: inherit; text-decoration: none; }
 }
 .hero h1 span { color: var(--gold); }
 .hero-sub {
-  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
   color: var(--muted); font-weight: 400;
-  max-width: 580px; margin: 0 auto 2rem;
+  max-width: min(580px, 100%); margin: 0 auto 2rem;
   line-height: 1.75;
 }
 .hero-actions {
@@ -191,7 +192,7 @@ a { color: inherit; text-decoration: none; }
 .stat-lbl { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
 
 /* ── Sections ── */
-.section { max-width: 1100px; margin: 0 auto; padding: clamp(3rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem); }
+.section { max-width: 1100px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 5vw, 2rem); width: 100%; }
 .section-label {
   font-size: 12px; font-weight: 600;
   letter-spacing: 0.16em; text-transform: uppercase;
@@ -201,7 +202,7 @@ a { color: inherit; text-decoration: none; }
 .section-bg2 { background: var(--section2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
 /* ── Problem ── */
-.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px,100%),1fr)); gap: clamp(2rem,5vw,4rem); align-items: start; }
 .problem-grid h2 {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   font-weight: 700; color: var(--navy); line-height: 1.15;
@@ -219,7 +220,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ── How it works ── */
-.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 2.5rem; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px,100%),1fr)); gap: 16px; margin-top: 2.5rem; }
 .step {
   background: var(--white);
   border: 1px solid var(--border);
@@ -260,7 +261,8 @@ a { color: inherit; text-decoration: none; }
 .feature-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
 /* ── Comparison table ── */
-.compare-table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+.compare-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 2rem; border-radius: var(--radius); border: 1px solid var(--border); }
+.compare-table { width: 100%; border-collapse: collapse; min-width: 540px; }
 .compare-table th {
   padding: 1rem 1.25rem; font-size: 13px; font-weight: 600;
   text-align: left; border-bottom: 2px solid var(--border);
@@ -302,7 +304,7 @@ a { color: inherit; text-decoration: none; }
 .mockup-debt-n { font-size: 11px; color: var(--body); }
 .mockup-debt-a { font-size: 11px; font-weight: 600; color: var(--navy); }
 .mockup-content { padding: 14px; }
-.mockup-metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 12px; }
+.mockup-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px,1fr)); gap: 8px; margin-bottom: 12px; }
 .mockup-metric { background: var(--section); border-radius: var(--radius); padding: 10px; }
 .mockup-metric-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
 .mockup-metric-val { font-size: 15px; font-weight: 700; color: var(--navy); }
@@ -353,11 +355,11 @@ a { color: inherit; text-decoration: none; }
 .calc-header p { font-size: 14px; color: var(--muted); }
 
 /* ── Form panel ── */
-.main { display: grid; grid-template-columns: 400px 1fr; max-width: 1100px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2rem) clamp(2rem, 5vw, 4rem); gap: clamp(1rem, 2vw, 2rem); }
+.main { display: grid; grid-template-columns: clamp(300px, 38%, 420px) 1fr; max-width: 1100px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2rem) clamp(2rem, 5vw, 4rem); gap: clamp(1rem, 2vw, 2rem); }
 .form-panel {
   background: var(--white); border: 1px solid var(--border);
   border-radius: var(--radius-lg); padding: 2rem;
-  position: sticky; top: 80px; max-height: calc(100vh - 100px);
+  position: sticky; top: 72px; max-height: calc(100vh - 88px);
   overflow-y: auto; align-self: start;
 }
 .results-panel { min-height: 400px; }
@@ -495,8 +497,8 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
   margin-bottom: 10px; padding-bottom: 6px;
   border-bottom: 1px solid var(--border);
 }
-.tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 2rem; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
+.tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 2rem; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 520px; }
 thead th {
   background: var(--section); font-size: 11px; font-weight: 600;
   color: var(--muted); text-align: left;
@@ -596,10 +598,226 @@ footer {
 .footer-note { font-size: 12px; color: rgba(255,255,255,0.25); }
 
 /* ── Responsive ── */
-@media (max-width:1000px) { .main { grid-template-columns: 1fr; } .form-panel { position: static; max-height: none; } }
-@media (max-width:860px) { .problem-grid, .steps { grid-template-columns: 1fr; } .mockup-body { grid-template-columns: 1fr; } .mockup-sidebar { border-right: none; border-bottom: 1px solid var(--border); } .mockup-metrics { grid-template-columns: repeat(2,1fr); } .nav-links { display: none; } }
-@media (max-width:520px) { .row2, .row3 { grid-template-columns: 1fr; } .hero-actions { flex-direction: column; width: 100%; } .btn-primary, .btn-secondary { width: 100%; text-align: center; } .stats-inner { grid-template-columns: repeat(2,1fr); gap: 1rem; } }
+
+/* ── Responsive system ── */
+
+/* Tablet landscape: 1024px and below */
+@media (max-width: 1024px) {
+  .main { grid-template-columns: 1fr; gap: 1.5rem; }
+  .form-panel { position: static; max-height: none; top: auto; }
+  .compare-table th, .compare-table td { font-size: 13px; padding: 0.75rem 1rem; }
+}
+
+/* Tablet portrait: 860px and below */
+@media (max-width: 860px) {
+  .nav { height: auto; padding: 0.875rem clamp(1rem, 4vw, 2rem); flex-wrap: nowrap; gap: 10px; }
+  .nav-links { display: none; }
+  .form-panel { padding: 1.5rem; }
+  .problem-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .steps { grid-template-columns: 1fr; gap: 12px; }
+  .step:first-child { border-radius: var(--radius-lg); }
+  .step:last-child  { border-radius: var(--radius-lg); }
+  .mockup-shell { display: none; }
+  .features-grid { grid-template-columns: repeat(auto-fit, minmax(min(240px,100%), 1fr)); }
+  .compare-table { font-size: 12px; }
+  .compare-table th, .compare-table td { padding: 0.65rem 0.75rem; }
+  .faq-q { font-size: 14px; }
+  .main { padding: 0 clamp(1rem, 4vw, 2rem) 2.5rem; }
+  .calc-header { padding: 2rem clamp(1rem, 4vw, 2rem) 1.25rem; }
+}
+
+/* Mobile: 640px and below */
+@media (max-width: 640px) {
+  .nav-logo svg { width: 100px; height: 25px; }
+  .hero h1 { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+  .hero-sub { font-size: 14px; }
+  .hero-actions { flex-direction: column; width: 100%; }
+  .btn-primary, .btn-secondary, .btn-cta-dark { width: 100%; text-align: center; display: block; }
+  .stats-inner { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-num { font-size: 1.5rem; }
+  .stat-lbl { font-size: 11px; }
+  .summary-grid { grid-template-columns: 1fr 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .steps { gap: 10px; }
+  .step { padding: 1.5rem 1.25rem; }
+  .step-num { font-size: 2.5rem; }
+  .form-panel { padding: 1.25rem; }
+  .row2, .row3 { grid-template-columns: 1fr; }
+  .strat-group { flex-direction: column; }
+  .tbl-wrap { border-radius: var(--radius); }
+  table { font-size: 12px; }
+  thead th { padding: 8px 10px; }
+  tbody td { padding: 8px 10px; }
+  .compare-table { display: block; overflow-x: auto; white-space: nowrap; }
+  .order-chip { font-size: 11px; padding: 3px 8px; }
+  .summary-card .sc-value { font-size: 1.2rem; }
+  .footer-inner { flex-direction: column; gap: 1rem; }
+  .footer-links { flex-wrap: wrap; gap: 1rem; }
+  .cta-section h2 { font-size: clamp(1.6rem, 6vw, 2.4rem); }
+  .quote-text { font-size: clamp(1rem, 4vw, 1.4rem); }
+  .auth-box { padding: 1.75rem 1.25rem; }
+  .p2-box { padding: 1.5rem 1.25rem; }
+}
+
+/* Small mobile: 380px and below */
+@media (max-width: 380px) {
+  .hero h1 { font-size: 1.65rem; }
+  .stats-inner { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr; }
+  .hero-eyebrow { font-size: 10px; letter-spacing: 0.12em; }
+  .section { padding: 2.5rem 1rem; }
+  .auth-box { padding: 1.5rem 1rem; }
+  .run-btn { font-size: 14px; }
+}
+
+/* ── Auth modals ── */
+.auth-backdrop {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(26,58,92,0.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.auth-backdrop.open { opacity: 1; pointer-events: all; }
+.auth-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem,4vw,2.5rem) clamp(1.25rem,4vw,2rem);
+  width: 100%; max-width: min(400px, calc(100vw - 2rem));
+  box-shadow: 0 24px 64px rgba(26,58,92,0.18);
+  position: relative;
+  transform: translateY(12px);
+  transition: transform 0.2s;
+}
+.auth-backdrop.open .auth-box { transform: translateY(0); }
+.auth-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 1.3rem; line-height: 1;
+  padding: 4px; transition: color 0.15s;
+}
+.auth-close:hover { color: var(--navy); }
+.auth-logo {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 1.5rem;
+}
+.auth-logo span {
+  font-size: 1rem; font-weight: 700;
+  color: var(--navy); letter-spacing: 0.06em;
+}
+.auth-title {
+  font-size: 1.3rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 0.4rem;
+}
+.auth-sub {
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 1.5rem; line-height: 1.6;
+}
+.auth-field { margin-bottom: 1rem; }
+.auth-field label {
+  display: block; font-size: 12px;
+  font-weight: 500; color: var(--muted);
+  margin-bottom: 5px;
+}
+.auth-field input {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px; font-family: var(--font);
+  color: var(--body); outline: none;
+  transition: border-color 0.15s;
+}
+.auth-field input:focus { border-color: var(--gold); }
+.auth-btn {
+  width: 100%; padding: 12px;
+  background: var(--gold); color: var(--white);
+  border: none; border-radius: var(--radius);
+  font-size: 15px; font-weight: 600;
+  font-family: var(--font); cursor: pointer;
+  transition: background 0.15s; margin-top: 0.5rem;
+}
+.auth-btn:hover { background: var(--gold2); }
+.auth-btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+.auth-switch {
+  text-align: center; margin-top: 1.25rem;
+  font-size: 13px; color: var(--muted);
+}
+.auth-switch a {
+  color: var(--gold); font-weight: 500; cursor: pointer;
+}
+.auth-switch a:hover { text-decoration: underline; }
+.auth-error {
+  background: #FDECEA; border: 1px solid rgba(192,57,43,0.25);
+  color: #C0392B; font-size: 13px;
+  padding: 10px 14px; border-radius: var(--radius);
+  margin-bottom: 1rem; display: none; line-height: 1.5;
+}
+.auth-error.show { display: block; }
+.auth-success {
+  background: var(--green-bg); border: 1px solid rgba(29,131,72,0.25);
+  color: var(--green); font-size: 13px;
+  padding: 10px 14px; border-radius: var(--radius);
+  margin-bottom: 1rem; display: none; line-height: 1.5;
+}
+.auth-success.show { display: block; }
+.auth-divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 1.25rem 0; color: var(--muted); font-size: 12px;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--border);
+}
+.auth-privacy {
+  font-size: 11px; color: var(--muted);
+  line-height: 1.6; margin-top: 1.25rem;
+  padding-top: 1rem; border-top: 1px solid var(--border);
+}
+.auth-privacy a { color: var(--gold); }
+
+/* ── Nav auth state ── */
+.nav-user {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-user-email {
+  font-size: 12px; color: var(--muted);
+  max-width: 160px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+.nav-signout {
+  font-size: 12px; color: var(--muted);
+  background: none; border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 6px 12px;
+  cursor: pointer; font-family: var(--font);
+  transition: all 0.15s;
+}
+.nav-signout:hover { border-color: var(--navy); color: var(--navy); }
+
+/* ── Tool gate overlay ── */
+.tool-gate {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem; text-align: center;
+  min-height: 400px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1rem;
+}
+.tool-gate-icon { font-size: 3rem; line-height: 1; color: var(--border); }
+.tool-gate-title { font-size: 1.2rem; font-weight: 700; color: var(--navy); }
+.tool-gate-sub { font-size: 14px; color: var(--muted); max-width: 300px; line-height: 1.6; }
+.tool-gate-btn {
+  background: var(--gold); color: var(--white);
+  border: none; border-radius: var(--radius);
+  padding: 12px 32px; font-size: 15px; font-weight: 600;
+  font-family: var(--font); cursor: pointer;
+  transition: background 0.15s; margin-top: 0.5rem;
+}
+.tool-gate-btn:hover { background: var(--gold2); }
+
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -618,8 +836,12 @@ footer {
     <a href="#compare" class="nav-link">Why Kronus</a>
     <a href="#faq" class="nav-link">FAQ</a>
   </div>
-  <div class="nav-actions">
-    <a href="#calculator" class="nav-cta" onclick="event.preventDefault();document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Try free</a>
+  <div class="nav-actions" id="navActions">
+    <button class="nav-signout" id="navSignIn" onclick="openAuth('signin')">Sign in</button>
+    <div class="nav-user" id="navUser" style="display:none">
+      <span class="nav-user-email" id="navUserEmail"></span>
+      <button class="nav-signout" onclick="signOut()">Sign out</button>
+    </div>
   </div>
 </nav>
 
@@ -731,7 +953,7 @@ footer {
     <div class="section-label">Why Kronus</div>
     <h2 id="compare-h2" style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--navy);margin-bottom:0.5rem">Built differently from the ground up.</h2>
     <p style="font-size:15px;color:var(--muted);margin-bottom:0">Most tools are designed to show you your debt. Kronus is designed to end it.</p>
-    <table class="compare-table">
+    <div class="compare-table-wrap"><table class="compare-table">
       <thead>
         <tr>
           <th style="width:40%">Feature</th>
@@ -1659,5 +1881,508 @@ document.addEventListener('wheel', function(e) {
 addBill();
 addDebt();
 </script>
+
+<!-- ── Sign Up Modal ── -->
+<div class="auth-backdrop" id="signupBackdrop" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()" aria-label="Close">×</button>
+    <div class="auth-logo">
+      <svg viewBox="0 0 90 22" width="90" height="22" aria-hidden="true">
+        <path d="M6 18 L10 6 L14 12 L18 3 L22 18" fill="none" stroke="#D4891A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="6" y1="18" x2="22" y2="18" stroke="#D4891A" stroke-width="2" stroke-linecap="round"/>
+        <text x="29" y="16" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A3A5C" letter-spacing="1">KRONUS</text>
+      </svg>
+    </div>
+    <div class="auth-title" id="signupTitle">Create your account</div>
+    <p class="auth-sub">Free to start. See exactly when you will be debt free.</p>
+    <div class="auth-error" id="signupError"></div>
+    <div class="auth-success" id="signupSuccess"></div>
+    <div class="auth-field">
+      <label for="signupEmail">Email address</label>
+      <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="auth-field">
+      <label for="signupPassword">Password <span style="font-weight:400">(min. 8 characters)</span></label>
+      <input type="password" id="signupPassword" placeholder="Choose a strong password" autocomplete="new-password">
+    </div>
+    <button class="auth-btn" id="signupBtn" onclick="handleSignUp()">Create account</button>
+    <div class="auth-switch">Already have an account? <a onclick="switchToSignIn()">Sign in</a></div>
+    <div class="auth-privacy">
+      <strong>What we store:</strong> your email address and encrypted password only.<br>
+      <strong>What we never store:</strong> your income, debts, bills, savings, or any data you enter into the sequencer. All tool data stays in your browser and is never sent to our servers.
+    </div>
+  </div>
+</div>
+
+<!-- ── Sign In Modal ── -->
+<div class="auth-backdrop" id="signinBackdrop" role="dialog" aria-modal="true" aria-labelledby="signinTitle">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeAuth()" aria-label="Close">×</button>
+    <div class="auth-logo">
+      <svg viewBox="0 0 90 22" width="90" height="22" aria-hidden="true">
+        <path d="M6 18 L10 6 L14 12 L18 3 L22 18" fill="none" stroke="#D4891A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="6" y1="18" x2="22" y2="18" stroke="#D4891A" stroke-width="2" stroke-linecap="round"/>
+        <text x="29" y="16" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A3A5C" letter-spacing="1">KRONUS</text>
+      </svg>
+    </div>
+    <div class="auth-title" id="signinTitle">Welcome back</div>
+    <p class="auth-sub">Sign in to access your debt sequencer.</p>
+    <div class="auth-error" id="signinError"></div>
+    <div class="auth-field">
+      <label for="signinEmail">Email address</label>
+      <input type="email" id="signinEmail" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="auth-field">
+      <label for="signinPassword">Password</label>
+      <input type="password" id="signinPassword" placeholder="Your password" autocomplete="current-password">
+    </div>
+    <button class="auth-btn" id="signinBtn" onclick="handleSignIn()">Sign in</button>
+    <div class="auth-switch">No account yet? <a onclick="switchToSignUp()">Create one free</a></div>
+    <div class="auth-divider">or</div>
+    <div style="font-size:12px;color:var(--muted);text-align:center">
+      Forgot your password? <a onclick="showForgotPassword()" style="color:var(--gold);cursor:pointer;font-weight:500">Reset it</a>
+    </div>
+    <div class="auth-privacy">
+      <strong>Your data is yours.</strong> We store only your email and encrypted password. Nothing you enter into the sequencer is ever saved or shared.
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ── Supabase Auth ──
+const SUPABASE_URL  = 'https://lxmzjdkafokteictdjfx.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4bXpqZGthZm9rdGVpY3RkamZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjAyNDEsImV4cCI6MjA5NjkzNjI0MX0.7jDFiWoWf59lNrDGJh9i4wfXOxhHhItwdV0gcz3_1bE';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── Session state ──
+let currentUser = null;
+
+// ── On load: check session ──
+async function initAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    setUserState(session.user);
+  } else {
+    setGuestState();
+  }
+  // Listen for auth changes
+  sb.auth.onAuthStateChange((_event, session) => {
+    if (session) {
+      setUserState(session.user);
+    } else {
+      setGuestState();
+    }
+  });
+}
+
+// ── Update UI for signed-in user ──
+function setUserState(user) {
+  currentUser = user;
+  // Nav: show email + sign out, hide CTA
+  const navUser   = document.getElementById('navUser');
+  const navSignIn = document.getElementById('navSignIn');
+  const emailEl   = document.getElementById('navUserEmail');
+  if (navSignIn) navSignIn.style.display = 'none';
+  if (navUser)   navUser.style.display   = 'flex';
+  if (emailEl)   emailEl.textContent     = user.email;
+  // Show tool, remove gate
+  showTool();
+}
+
+// ── Update UI for guest ──
+function setGuestState() {
+  currentUser = null;
+  const navUser   = document.getElementById('navUser');
+  const navSignIn = document.getElementById('navSignIn');
+  if (navSignIn) navSignIn.style.display = 'block';
+  if (navUser)   navUser.style.display   = 'none';
+  // Gate the tool
+  showGate();
+}
+
+
+
+// ── Open/close modals ──
+function openAuth(type) {
+  closeAuth();
+  const id = type === 'signup' ? 'signupBackdrop' : 'signinBackdrop';
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('open');
+    // Focus first input
+    setTimeout(() => {
+      const inp = el.querySelector('input[type="email"]');
+      if (inp) inp.focus();
+    }, 100);
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAuth() {
+  ['signupBackdrop','signinBackdrop'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('open');
+  });
+  document.body.style.overflow = '';
+}
+
+function switchToSignIn() { openAuth('signin'); }
+function switchToSignUp()  { openAuth('signup'); }
+
+// Close on backdrop click
+['signupBackdrop','signinBackdrop'].forEach(id => {
+  document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', e => { if (e.target === el) closeAuth(); });
+  });
+});
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAuth(); });
+
+// ── Sign up ──
+async function handleSignUp() {
+  const email    = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const btn      = document.getElementById('signupBtn');
+  const errEl    = document.getElementById('signupError');
+  const succEl   = document.getElementById('signupSuccess');
+
+  errEl.classList.remove('show');
+  succEl.classList.remove('show');
+
+  if (!email || !password) {
+    errEl.textContent = 'Please enter your email and a password.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (password.length < 8) {
+    errEl.textContent = 'Password must be at least 8 characters.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Creating account...';
+
+  const { error } = await sb.auth.signUp({ email, password });
+
+  if (error) {
+    errEl.textContent = friendlyError(error.message);
+    errEl.classList.add('show');
+    btn.disabled    = false;
+    btn.textContent = 'Create account';
+  } else {
+    succEl.textContent = 'Check your email to confirm your account, then come back and sign in.';
+    succEl.classList.add('show');
+    btn.disabled    = false;
+    btn.textContent = 'Create account';
+    // Clear fields
+    document.getElementById('signupEmail').value    = '';
+    document.getElementById('signupPassword').value = '';
+  }
+}
+
+// ── Sign in ──
+async function handleSignIn() {
+  const email    = document.getElementById('signinEmail').value.trim();
+  const password = document.getElementById('signinPassword').value;
+  const btn      = document.getElementById('signinBtn');
+  const errEl    = document.getElementById('signinError');
+
+  errEl.classList.remove('show');
+
+  if (!email || !password) {
+    errEl.textContent = 'Please enter your email and password.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Signing in...';
+
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    errEl.textContent = friendlyError(error.message);
+    errEl.classList.add('show');
+    btn.disabled    = false;
+    btn.textContent = 'Sign in';
+  } else {
+    closeAuth();
+    document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// ── Sign out ──
+async function signOut() {
+  await sb.auth.signOut();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Tool gate: show when guest ──
+function showGate() {
+  const panel = document.getElementById('resultsPanel');
+  const empty = document.getElementById('emptyState');
+  const results = document.getElementById('resultsContent');
+  if (!panel) return;
+
+  // Hide form panel access
+  const form = document.querySelector('.form-panel');
+  if (form) form.style.pointerEvents = 'none';
+  if (form) form.style.opacity = '0.4';
+
+  // Show gate in results area
+  if (empty) empty.style.display = 'none';
+  if (results) {
+    results.style.display = 'block';
+    results.innerHTML = `
+      <div class="tool-gate">
+        <div class="tool-gate-icon">◎</div>
+        <div class="tool-gate-title">Create a free account to use the sequencer</div>
+        <p class="tool-gate-sub">Sign up takes 30 seconds. We only ask for your email and a password. Nothing you enter into the tool is ever stored.</p>
+        <button class="tool-gate-btn" onclick="openAuth('signup')">Start being debt free</button>
+        <div style="font-size:12px;color:var(--muted);margin-top:0.5rem">
+          Already have an account? <a onclick="openAuth('signin')" style="color:var(--gold);cursor:pointer;font-weight:500">Sign in</a>
+        </div>
+      </div>`;
+  }
+}
+
+// ── Unlock tool for signed-in users ──
+function showTool() {
+  const form = document.querySelector('.form-panel');
+  if (form) {
+    form.style.pointerEvents = '';
+    form.style.opacity       = '';
+  }
+  const results = document.getElementById('resultsContent');
+  const empty   = document.getElementById('emptyState');
+  if (results) {
+    results.style.display = 'none';
+    results.innerHTML     = '';
+  }
+  if (empty) empty.style.display = 'flex';
+}
+
+// ── Forgot password ──
+function showForgotPassword() {
+  closeAuth();
+  const el = document.getElementById('forgotBackdrop');
+  if (el) {
+    el.classList.add('open');
+    setTimeout(() => {
+      const inp = document.getElementById('forgotEmail');
+      if (inp) inp.focus();
+    }, 100);
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function closeForgot() {
+  const el = document.getElementById('forgotBackdrop');
+  if (el) el.classList.remove('open');
+  document.body.style.overflow = '';
+  // Clear fields and messages
+  const emailEl = document.getElementById('forgotEmail');
+  const errEl   = document.getElementById('forgotError');
+  const succEl  = document.getElementById('forgotSuccess');
+  const btn     = document.getElementById('forgotBtn');
+  if (emailEl) emailEl.value = '';
+  if (errEl)   errEl.classList.remove('show');
+  if (succEl)  succEl.classList.remove('show');
+  if (btn)     { btn.disabled = false; btn.textContent = 'Send reset link'; }
+}
+
+async function handleForgotPassword() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const btn   = document.getElementById('forgotBtn');
+  const errEl = document.getElementById('forgotError');
+  const succEl= document.getElementById('forgotSuccess');
+
+  errEl.classList.remove('show');
+  succEl.classList.remove('show');
+
+  if (!email) {
+    errEl.textContent = 'Please enter your email address.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Sending...';
+
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/?reset=true',
+  });
+
+  if (error) {
+    errEl.textContent = friendlyError(error.message);
+    errEl.classList.add('show');
+    btn.disabled    = false;
+    btn.textContent = 'Send reset link';
+  } else {
+    succEl.textContent = 'Reset link sent. Check your inbox — the link expires in 1 hour.';
+    succEl.classList.add('show');
+    btn.disabled    = true;
+    btn.textContent = 'Link sent';
+  }
+}
+
+// ── Handle password reset redirect ──
+// When user clicks the reset link in their email, Supabase redirects back
+// to the site with a token in the URL hash. We detect this and show a
+// new password form.
+async function checkPasswordReset() {
+  const hash   = window.location.hash;
+  const params = new URLSearchParams(hash.replace('#', '?'));
+  const type   = params.get('type');
+
+  if (type === 'recovery') {
+    // Supabase has already exchanged the token — show new password form
+    showNewPasswordModal();
+  }
+}
+
+function showNewPasswordModal() {
+  // Re-use auth box structure for new password entry
+  const backdrop = document.createElement('div');
+  backdrop.className = 'auth-backdrop open';
+  backdrop.id = 'newPasswordBackdrop';
+  backdrop.innerHTML = `
+    <div class="auth-box">
+      <div class="auth-logo">
+        <svg viewBox="0 0 90 22" width="90" height="22" aria-hidden="true">
+          <path d="M6 18 L10 6 L14 12 L18 3 L22 18" fill="none" stroke="#D4891A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="6" y1="18" x2="22" y2="18" stroke="#D4891A" stroke-width="2" stroke-linecap="round"/>
+          <text x="29" y="16" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A3A5C" letter-spacing="1">KRONUS</text>
+        </svg>
+      </div>
+      <div class="auth-title">Set a new password</div>
+      <p class="auth-sub">Choose a new password for your account.</p>
+      <div class="auth-error" id="newPwError"></div>
+      <div class="auth-success" id="newPwSuccess"></div>
+      <div class="auth-field">
+        <label for="newPassword">New password <span style="font-weight:400">(min. 8 characters)</span></label>
+        <input type="password" id="newPassword" placeholder="Choose a strong password" autocomplete="new-password">
+      </div>
+      <div class="auth-field">
+        <label for="newPasswordConfirm">Confirm new password</label>
+        <input type="password" id="newPasswordConfirm" placeholder="Repeat your password" autocomplete="new-password">
+      </div>
+      <button class="auth-btn" id="newPwBtn" onclick="handleNewPassword()">Update password</button>
+    </div>`;
+  document.body.appendChild(backdrop);
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    const inp = document.getElementById('newPassword');
+    if (inp) inp.focus();
+  }, 100);
+}
+
+async function handleNewPassword() {
+  const pw      = document.getElementById('newPassword').value;
+  const pwConf  = document.getElementById('newPasswordConfirm').value;
+  const btn     = document.getElementById('newPwBtn');
+  const errEl   = document.getElementById('newPwError');
+  const succEl  = document.getElementById('newPwSuccess');
+
+  errEl.classList.remove('show');
+  succEl.classList.remove('show');
+
+  if (!pw || !pwConf) {
+    errEl.textContent = 'Please fill in both fields.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (pw.length < 8) {
+    errEl.textContent = 'Password must be at least 8 characters.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (pw !== pwConf) {
+    errEl.textContent = 'Passwords do not match.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Updating...';
+
+  const { error } = await sb.auth.updateUser({ password: pw });
+
+  if (error) {
+    errEl.textContent = friendlyError(error.message);
+    errEl.classList.add('show');
+    btn.disabled    = false;
+    btn.textContent = 'Update password';
+  } else {
+    succEl.textContent = 'Password updated. You are now signed in.';
+    succEl.classList.add('show');
+    btn.disabled    = true;
+    btn.textContent = 'Done';
+    // Clean URL and close after 2 seconds
+    setTimeout(() => {
+      window.history.replaceState({}, '', window.location.pathname);
+      document.getElementById('newPasswordBackdrop')?.remove();
+      document.body.style.overflow = '';
+    }, 2000);
+  }
+}
+
+// ── Friendly error messages ──
+function friendlyError(msg) {
+  if (!msg) return 'Something went wrong. Please try again.';
+  const m = msg.toLowerCase();
+  if (m.includes('email') && m.includes('taken'))       return 'An account with this email already exists. Try signing in instead.';
+  if (m.includes('invalid login') || m.includes('invalid credentials')) return 'Email or password is incorrect. Please try again.';
+  if (m.includes('email not confirmed'))                 return 'Please confirm your email first. Check your inbox for a verification link.';
+  if (m.includes('rate limit'))                          return 'Too many attempts. Please wait a minute and try again.';
+  if (m.includes('network'))                             return 'Connection error. Check your internet and try again.';
+  return msg;
+}
+
+// ── Init on load ──
+window.addEventListener('DOMContentLoaded', () => {
+  initAuth();
+  checkPasswordReset();
+});
+
+// Also close forgot modal on backdrop click
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('forgotBackdrop');
+  if (el) el.addEventListener('click', e => { if (e.target === el) closeForgot(); });
+});
+</script>
+
+
+<!-- ── Forgot Password Modal ── -->
+<div class="auth-backdrop" id="forgotBackdrop" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
+  <div class="auth-box">
+    <button class="auth-close" onclick="closeForgot()" aria-label="Close">×</button>
+    <div class="auth-logo">
+      <svg viewBox="0 0 90 22" width="90" height="22" aria-hidden="true">
+        <path d="M6 18 L10 6 L14 12 L18 3 L22 18" fill="none" stroke="#D4891A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="6" y1="18" x2="22" y2="18" stroke="#D4891A" stroke-width="2" stroke-linecap="round"/>
+        <text x="29" y="16" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700" fill="#1A3A5C" letter-spacing="1">KRONUS</text>
+      </svg>
+    </div>
+    <div class="auth-title" id="forgotTitle">Reset your password</div>
+    <p class="auth-sub">Enter your email address and we will send you a link to reset your password.</p>
+    <div class="auth-error" id="forgotError"></div>
+    <div class="auth-success" id="forgotSuccess"></div>
+    <div class="auth-field">
+      <label for="forgotEmail">Email address</label>
+      <input type="email" id="forgotEmail" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <button class="auth-btn" id="forgotBtn" onclick="handleForgotPassword()">Send reset link</button>
+    <div class="auth-switch">
+      Remembered it? <a onclick="closeForgot();openAuth('signin')">Back to sign in</a>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
