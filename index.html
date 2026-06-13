@@ -1021,7 +1021,7 @@ body.tool-mode {
 .delete-error.show { display: block; }
 
 </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script></script>
 </head>
 <body>
 
@@ -2218,8 +2218,18 @@ addDebt();
 // ── Supabase Auth ──
 const SUPABASE_URL  = 'https://lxmzjdkafokteictdjfx.supabase.co';
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4bXpqZGthZm9rdGVpY3RkamZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjAyNDEsImV4cCI6MjA5NjkzNjI0MX0.7jDFiWoWf59lNrDGJh9i4wfXOxhHhItwdV0gcz3_1bE';
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Safety check — wait for SDK if not yet available
+let sb;
+function initSupabase() {
+  if (typeof window.supabase === 'undefined') {
+    console.error('Supabase SDK not loaded');
+    return false;
+  }
+  const { createClient } = window.supabase;
+  sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  return true;
+}
 
 // ── Session state ──
 let currentUser = null;
@@ -2822,6 +2832,17 @@ function exitToolMode() {
 
 // ── Init on load ──
 window.addEventListener('DOMContentLoaded', () => {
+  if (!initSupabase()) {
+    // SDK failed to load — show a friendly error
+    const gate = document.getElementById('resultsContent');
+    const empty = document.getElementById('emptyState');
+    if (empty) empty.style.display = 'none';
+    if (gate) {
+      gate.style.display = 'block';
+      gate.innerHTML = '<div class="alert alert-warn">Connection error. Please refresh the page and try again.</div>';
+    }
+    return;
+  }
   initAuth();
   checkPasswordReset();
 });
