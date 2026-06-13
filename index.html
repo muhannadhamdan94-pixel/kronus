@@ -1043,10 +1043,11 @@ body.tool-mode {
   </div>
   <div class="nav-actions" id="navActions">
     <button class="nav-signout" id="navSignIn" onclick="openAuth('signin')">Sign in</button>
+    <button class="nav-cta" id="navTryFree" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Try it free</button>
     <div class="nav-user" id="navUser" style="display:none">
       <span class="nav-user-email" id="navUserEmail"></span>
-      <button class="nav-signout" onclick="signOut()">Sign out</button>
-      <button class="nav-delete-btn" onclick="openDeleteModal()" title="Delete account">Delete account</button>
+      <button class="nav-signout" id="navSignOut" onclick="signOut()">Sign out</button>
+      <button class="nav-delete-btn" id="navDeleteBtn" onclick="openDeleteModal()">Delete account</button>
     </div>
   </div>
 </nav>
@@ -2242,7 +2243,9 @@ function exposeGlobals() {
   window.handleNewPassword    = handleNewPassword;
   // Note: runSim, calcShortcut, toggleFaq, toggleP2Item, confirmP2Order,
   // dismissP2Popup are defined in the main tool script (already global)
-  window.handleRunWithLimit   = handleRunWithLimit;
+  window.handleRunWithLimit = handleRunWithLimit;
+  window.getVisitorIP       = getVisitorIP;
+  window.updateUsageBanner  = updateUsageBanner;
 }
 
 function initSupabase() { return true; }
@@ -2271,18 +2274,14 @@ async function initAuth() {
 // ── Update UI for signed-in user ──
 function setUserState(user) {
   currentUser = user;
-  // Nav: show email + sign out, hide CTA
-  const navUser   = document.getElementById('navUser');
-  const navSignIn = document.getElementById('navSignIn');
-  const emailEl   = document.getElementById('navUserEmail');
-  if (navSignIn) navSignIn.style.display = 'none';
-  if (navUser)   navUser.style.display   = 'flex';
-  if (emailEl)   emailEl.textContent     = user.email;
-  // Show tool, remove gate, enter full screen mode
-  // Reset and permanently hide the usage counter — signed-in users get unlimited access
+  // Set email in nav
+  const emailEl = document.getElementById('navUserEmail');
+  if (emailEl) emailEl.textContent = user.email;
+  // Reset usage counter — signed-in users get unlimited access
   resetUsage();
   const banner = document.getElementById('usageBanner');
   if (banner) banner.style.display = 'none';
+  // Show tool and enter full screen — enterToolMode handles all nav visibility
   showTool();
   enterToolMode();
 }
@@ -2290,14 +2289,14 @@ function setUserState(user) {
 // ── Update UI for guest ──
 function setGuestState() {
   currentUser = null;
-  const navUser   = document.getElementById('navUser');
-  const navSignIn = document.getElementById('navSignIn');
-  if (navSignIn) navSignIn.style.display = 'block';
-  if (navUser)   navUser.style.display   = 'none';
-  // Gate the tool and exit full screen mode
-  showGate();
+  // exitToolMode restores landing page and nav buttons
   exitToolMode();
-  // Counter is NOT reset on sign-out — guests must sign in to use the tool
+  // Hide nav user section
+  const navUser = document.getElementById('navUser');
+  if (navUser) navUser.style.display = 'none';
+  // Gate the tool
+  showGate();
+  // Update usage banner but don't reset counter
   updateUsageBanner();
 }
 
@@ -2751,18 +2750,18 @@ function validatePassword(pw) {
 }
 
 // ── Handle run with usage limit ──
-function handleRunWithLimit() {
+async function handleRunWithLimit() {
   if (currentUser) {
-    // Signed-in users have unlimited access — always run, never count
+    // Signed-in users — unlimited access always
     const banner = document.getElementById('usageBanner');
     if (banner) banner.style.display = 'none';
     runSim();
     return;
   }
-  const used = incrementUsage();
-  updateUsageBanner();
+  const used = await incrementUsage();
+  await updateUsageBanner();
   if (used > USAGE_LIMIT) {
-    // Hard block — show signup
+    // Hard block after 3 uses — require sign in
     const empty   = document.getElementById('emptyState');
     const results = document.getElementById('resultsContent');
     if (empty) empty.style.display = 'none';
@@ -2772,7 +2771,7 @@ function handleRunWithLimit() {
         <div class="tool-gate">
           <div class="tool-gate-icon">◎</div>
           <div class="tool-gate-title">Sign in to keep going</div>
-          <p class="tool-gate-sub">You have used your 5 free previews. A free account gives you unlimited access — no payment, ever.</p>
+          <p class="tool-gate-sub">You have used your 3 free previews. Create a free account for unlimited access — no payment, ever.</p>
           <button class="tool-gate-btn" onclick="openAuth('signin')">Sign in</button>
           <div style="font-size:12px;color:var(--muted);margin-top:0.5rem">
             No account yet? <a onclick="openAuth('signup')" style="color:var(--gold);cursor:pointer;font-weight:500">Create one free</a>
@@ -2784,28 +2783,52 @@ function handleRunWithLimit() {
   runSim();
 }
 
-// ── Usage limit (5 runs before signup prompt) ──
-const USAGE_KEY   = 'kronus_runs';
-const USAGE_LIMIT = 5;
+// ── Usage limit — IP-based, survives refresh ──
+const USAGE_LIMIT = 3;
+let visitorIP = null;
 
-function getUsageCount() {
-  return parseInt(localStorage.getItem(USAGE_KEY) || '0', 10);
+// Get visitor IP from free API — used as the storage key
+// This means the counter is tied to IP, not just the browser session
+async function getVisitorIP() {
+  if (visitorIP) return visitorIP;
+  try {
+    const r = await fetch('https://api.ipify.org?format=json');
+    const d = await r.json();
+    visitorIP = d.ip || 'unknown';
+  } catch {
+    visitorIP = 'unknown';
+  }
+  return visitorIP;
 }
 
-function incrementUsage() {
-  const n = getUsageCount() + 1;
-  localStorage.setItem(USAGE_KEY, n);
+function getUsageKey(ip) {
+  return 'kronus_runs_' + ip;
+}
+
+async function getUsageCount() {
+  const ip  = await getVisitorIP();
+  const key = getUsageKey(ip);
+  return parseInt(localStorage.getItem(key) || '0', 10);
+}
+
+async function incrementUsage() {
+  const ip  = await getVisitorIP();
+  const key = getUsageKey(ip);
+  const n   = parseInt(localStorage.getItem(key) || '0', 10) + 1;
+  localStorage.setItem(key, n);
   return n;
 }
 
-function resetUsage() {
-  localStorage.removeItem(USAGE_KEY);
+async function resetUsage() {
+  const ip  = await getVisitorIP();
+  const key = getUsageKey(ip);
+  localStorage.removeItem(key);
 }
 
-function updateUsageBanner() {
+async function updateUsageBanner() {
   const banner = document.getElementById('usageBanner');
   if (!banner || currentUser) return;
-  const used = getUsageCount();
+  const used      = await getUsageCount();
   const remaining = Math.max(0, USAGE_LIMIT - used);
   if (used === 0) {
     banner.style.display = 'none';
@@ -2814,34 +2837,58 @@ function updateUsageBanner() {
   banner.style.display = 'flex';
   if (remaining <= 0) {
     banner.innerHTML = `
-      <span><strong>You have used all 5 free simulations.</strong> Sign up free to keep going.</span>
+      <span><strong>You have used all 3 free previews.</strong> Sign up free to keep going.</span>
       <button class="usage-banner-btn" onclick="openAuth('signup')">Sign up free</button>`;
   } else {
     banner.innerHTML = `
-      <span><strong>${remaining} free simulation${remaining === 1 ? '' : 's'} remaining.</strong> Sign up to get unlimited access.</span>
+      <span><strong>${remaining} free preview${remaining === 1 ? '' : 's'} remaining.</strong> Sign up for unlimited access.</span>
       <button class="usage-banner-btn" onclick="openAuth('signup')">Sign up free</button>`;
   }
 }
 
 // ── Full screen tool mode for logged-in users ──
 function enterToolMode() {
+  // Hide landing content
+  document.querySelectorAll('.landing-only').forEach(el => {
+    el.style.display = 'none';
+  });
+  // Hide try-it-free and sign-in nav buttons
+  const navSignIn  = document.getElementById('navSignIn');
+  const navTryFree = document.getElementById('navTryFree');
+  if (navSignIn)  navSignIn.style.display  = 'none';
+  if (navTryFree) navTryFree.style.display = 'none';
+  // Show sign out and delete account buttons
+  const navUser = document.getElementById('navUser');
+  if (navUser) navUser.style.display = 'flex';
+  // Expand calculator to fill viewport
   document.body.classList.add('tool-mode');
-  // Scroll to top so tool fills screen from nav down
+  // Scroll to top
   window.scrollTo({ top: 0, behavior: 'instant' });
-  // Add a nav button to go back to landing
+  // Add back to home button if not already there
   const navActions = document.getElementById('navActions');
   if (navActions && !document.getElementById('navBackBtn')) {
     const backBtn = document.createElement('button');
-    backBtn.id = 'navBackBtn';
+    backBtn.id        = 'navBackBtn';
     backBtn.className = 'nav-signout';
     backBtn.textContent = 'Back to home';
-    backBtn.onclick = exitToolMode;
+    backBtn.onclick   = exitToolMode;
     navActions.insertBefore(backBtn, navActions.firstChild);
   }
 }
 
 function exitToolMode() {
+  // Restore landing content
+  document.querySelectorAll('.landing-only').forEach(el => {
+    el.style.display = '';
+  });
+  // Restore nav buttons
+  const navSignIn  = document.getElementById('navSignIn');
+  const navTryFree = document.getElementById('navTryFree');
+  if (navSignIn)  navSignIn.style.display  = 'block';
+  if (navTryFree) navTryFree.style.display = 'inline-block';
+  // Remove tool-mode class
   document.body.classList.remove('tool-mode');
+  // Remove back button
   const backBtn = document.getElementById('navBackBtn');
   if (backBtn) backBtn.remove();
 }
@@ -2851,7 +2898,8 @@ window.addEventListener('DOMContentLoaded', () => {
   exposeGlobals();
   initAuth();
   checkPasswordReset();
-  updateUsageBanner();
+  // Fetch IP on load so counter is ready
+  getVisitorIP().then(() => updateUsageBanner());
 });
 
 // Close modals on backdrop click
