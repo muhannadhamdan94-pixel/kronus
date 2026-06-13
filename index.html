@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kronus: See Your Exact Debt-Free Date</title>
+<meta name="description" content="Kronus is a free debt payoff calculator that shows you the fastest path to debt freedom using a disciplined sequencing strategy. Not minimum payments. A real plan.">
+<meta name="keywords" content="debt payoff calculator, debt free date calculator, snowball debt calculator, pay off debt faster, debt payoff planner">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://kronus.app/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kronus.app/">
+<meta property="og:title" content="Kronus: See Your Exact Debt-Free Date">
+<meta property="og:description" content="Most tools show you how long minimum payments take. Kronus shows you the fastest path out with a disciplined sequencing strategy built from your real income and bills.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kronus: See Your Exact Debt-Free Date">
+<meta name="twitter:description" content="Most tools show you how long minimum payments take. Kronus shows you the fastest path out.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Kronus Debt Payoff Calculator",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "description": "A free debt payoff sequencer that builds your fastest path out of debt using your real income, fixed bills, and protected savings.",
+  "url": "https://kronus.app/"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How is Kronus different from other debt payoff calculators?","acceptedAnswer":{"@type":"Answer","text":"Most calculators show you how long your debt will take based on minimum payments. Kronus does the opposite. It takes your full available surplus and directs it at one debt at a time until it closes. When it closes, that payment stacks into the next one. The result is the fastest mathematically possible payoff path based on your real income and bills."}},
+    {"@type":"Question","name":"How does Kronus calculate my debt payoff date?","acceptedAnswer":{"@type":"Answer","text":"Kronus subtracts your fixed bills and protected savings from your monthly income to find your available pool. Each month, that full pool attacks your current target debt. When it closes, the freed payment rolls into the next debt automatically. This gives you an exact closing date for every debt on your list."}},
+    {"@type":"Question","name":"What is the debt snowball method?","acceptedAnswer":{"@type":"Answer","text":"The snowball method pays off your smallest debt balance first while making minimum payments on all others. Once the smallest closes, its payment rolls into the next smallest, building momentum. Research shows it helps people stay motivated and stick to their plan."}},
+    {"@type":"Question","name":"What is the debt avalanche method?","acceptedAnswer":{"@type":"Answer","text":"The avalanche method attacks your highest interest rate debt first. It saves the most money in total interest paid. Kronus lets you toggle between snowball and avalanche and shows you exactly how much time and money each approach costs."}},
+    {"@type":"Question","name":"Can I protect my savings while paying off debt?","acceptedAnswer":{"@type":"Answer","text":"Yes. You set a monthly savings amount and it is ring-fenced completely before any debt calculation runs. Your savings grows every month alongside your shrinking debt and is never touched."}},
+    {"@type":"Question","name":"Is Kronus free?","acceptedAnswer":{"@type":"Answer","text":"The full sequencer is free to start. No account required. No credit card. You can run your simulation, see your debt-free date, and get your full month-by-month timeline without paying anything."}}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+/* ── Tokens ── */
+:root {
+  --navy:     #1A3A5C;
+  --navy2:    #2E5C8A;
+  --navy3:    #0D2440;
+  --gold:     #D4891A;
+  --gold2:    #F0A830;
+  --gold-bg:  #FEF6E8;
+  --white:    #FFFFFF;
+  --section:  #F4F7FB;
+  --section2: #E8F0FA;
+  --body:     #393A3D;
+  --muted:    #6B6C72;
+  --border:   #DDE3EC;
+  --green:    #1D8348;
+  --green-bg: #E8F5EE;
+  --red-bg:   #FDECEA;
+  --red:      #C0392B;
+  --radius:   8px;
+  --radius-lg:14px;
+  --font:     'Inter', sans-serif;
+}
+
+body { background: var(--white); color: var(--body); font-family: var(--font); line-height: 1.7; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Nav ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.97);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.2rem; font-weight: 700; color: var(--navy);
+  letter-spacing: 0.04em;
+}
+.nav-links { display: flex; gap: 2rem; }
+.nav-link { font-size: 14px; color: var(--muted); font-weight: 400; transition: color 0.15s; }
+.nav-link:hover { color: var(--navy); }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-cta {
+  background: var(--gold); color: var(--white);
+  font-size: 14px; font-weight: 600;
+  padding: 9px 22px; border-radius: var(--radius);
+  border: none; cursor: pointer; font-family: var(--font);
+  transition: background 0.15s;
+}
+.nav-cta:hover { background: var(--gold2); }
+
+/* ── Hero ── */
+.hero {
+  padding: clamp(80px, 14vw, 120px) clamp(1.25rem, 4vw, 2rem) clamp(3rem, 5vw, 5rem);
+  background: var(--section);
+  text-align: center;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold);
+  background: var(--gold-bg);
+  padding: 4px 14px; border-radius: 20px;
+  margin-bottom: 1.5rem;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 700; line-height: 1.1;
+  color: var(--navy);
+  max-width: 780px; margin: 0 auto 1.25rem;
+}
+.hero h1 span { color: var(--gold); }
+.hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: var(--muted); font-weight: 400;
+  max-width: 580px; margin: 0 auto 2rem;
+  line-height: 1.75;
+}
+.hero-actions {
+  display: flex; gap: 12px;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.btn-primary {
+  background: var(--gold); color: var(--white);
+  font-size: 15px; font-weight: 600;
+  padding: 13px 32px; border-radius: var(--radius);
+  border: none; cursor: pointer; font-family: var(--font);
+  transition: background 0.15s, transform 0.1s;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--gold2); transform: translateY(-1px); }
+.btn-secondary {
+  background: var(--white); color: var(--navy);
+  font-size: 15px; font-weight: 500;
+  padding: 13px 28px; border-radius: var(--radius);
+  border: 1.5px solid var(--navy); cursor: pointer;
+  font-family: var(--font); transition: all 0.15s;
+  display: inline-block;
+}
+.btn-secondary:hover { background: var(--section2); }
+.hero-note { font-size: 12px; color: var(--muted); }
+
+/* ── Ticker ── */
+.ticker-strip {
+  background: var(--navy); overflow: hidden;
+  padding: 0.7rem 0;
+}
+.ticker-inner {
+  display: flex; gap: 3rem;
+  animation: ticker 32s linear infinite;
+  white-space: nowrap; width: max-content;
+}
+.ticker-item {
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  display: flex; align-items: center; gap: 10px;
+}
+.ticker-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ── Stats ── */
+.stats-bar {
+  background: var(--navy3);
+  padding: clamp(1.5rem, 3vw, 2rem) clamp(1.25rem, 4vw, 2rem);
+}
+.stats-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%),1fr));
+  gap: 1.5rem; text-align: center;
+}
+.stat-num { font-size: 2rem; font-weight: 700; color: var(--gold2); line-height: 1; margin-bottom: 4px; }
+.stat-lbl { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+/* ── Sections ── */
+.section { max-width: 1100px; margin: 0 auto; padding: clamp(3rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem); }
+.section-label {
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem;
+}
+.section-bg { background: var(--section); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.section-bg2 { background: var(--section2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+/* ── Problem ── */
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.problem-grid h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 700; color: var(--navy); line-height: 1.15;
+}
+.problem-grid h2 em { font-style: normal; color: var(--muted); }
+.body-text { font-size: 15px; color: var(--body); line-height: 1.8; }
+.body-text p + p { margin-top: 1rem; }
+.pull-quote {
+  border-left: 3px solid var(--gold);
+  padding: 0.75rem 1rem;
+  background: var(--gold-bg);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin-top: 1.5rem;
+  font-size: 15px; color: var(--navy); line-height: 1.6; font-weight: 500;
+}
+
+/* ── How it works ── */
+.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 2.5rem; }
+.step {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.75rem;
+  position: relative;
+}
+.step-num {
+  font-size: 3rem; font-weight: 700;
+  color: var(--section2); line-height: 1;
+  margin-bottom: 1rem;
+}
+.step h3 { font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+.step-body { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── Features ── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+  gap: 16px; margin-top: 2.5rem;
+}
+.feature-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.feature-card:hover { border-color: var(--gold); }
+.feature-icon {
+  width: 40px; height: 40px;
+  background: var(--gold-bg);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.feature-title { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.feature-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ── Comparison table ── */
+.compare-table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+.compare-table th {
+  padding: 1rem 1.25rem; font-size: 13px; font-weight: 600;
+  text-align: left; border-bottom: 2px solid var(--border);
+  color: var(--navy);
+}
+.compare-table th.highlight { background: var(--gold-bg); color: var(--gold); border-bottom-color: var(--gold); }
+.compare-table td {
+  padding: 0.9rem 1.25rem; font-size: 14px;
+  border-bottom: 1px solid var(--border); color: var(--body);
+}
+.compare-table td.highlight { background: var(--gold-bg); font-weight: 500; color: var(--navy); }
+.compare-table tr:last-child td { border-bottom: none; }
+.check { color: var(--green); font-weight: 700; }
+.cross { color: var(--red); }
+
+/* ── Mockup ── */
+.mockup-shell {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(26,58,92,0.10);
+  max-width: 860px; margin: 2.5rem auto 0;
+}
+.mockup-bar {
+  background: var(--navy3);
+  padding: 10px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.mockup-logo { font-size: 13px; font-weight: 700; color: var(--white); letter-spacing: 0.1em; }
+.mockup-ticker { font-size: 11px; color: var(--gold2); text-align: right; }
+.mockup-ticker-num { font-size: 1.3rem; font-weight: 300; display: block; }
+.mockup-body { display: grid; grid-template-columns: 210px 1fr; min-height: 280px; }
+.mockup-sidebar { border-right: 1px solid var(--border); padding: 14px; background: var(--section); }
+.mockup-field { margin-bottom: 10px; }
+.mockup-field-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+.mockup-field-val { background: var(--white); border: 1px solid var(--border); border-radius: 5px; padding: 5px 9px; font-size: 12px; color: var(--navy); font-weight: 500; }
+.mockup-debt-item { background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 6px 9px; margin-bottom: 5px; display: flex; justify-content: space-between; }
+.mockup-debt-n { font-size: 11px; color: var(--body); }
+.mockup-debt-a { font-size: 11px; font-weight: 600; color: var(--navy); }
+.mockup-content { padding: 14px; }
+.mockup-metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 12px; }
+.mockup-metric { background: var(--section); border-radius: var(--radius); padding: 10px; }
+.mockup-metric-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+.mockup-metric-val { font-size: 15px; font-weight: 700; color: var(--navy); }
+.mockup-metric.gold .mockup-metric-val { color: var(--gold); }
+.mockup-tbl { width: 100%; border-collapse: collapse; }
+.mockup-th { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; padding: 5px 7px; border-bottom: 1px solid var(--border); text-align: left; }
+.mockup-td { padding: 6px 7px; border-bottom: 1px solid var(--section); font-size: 11px; color: var(--body); }
+.mockup-td.bold { font-weight: 600; color: var(--navy); }
+.mockup-td.gold { color: var(--gold); font-weight: 600; }
+.badge-cl { display: inline-flex; align-items: center; background: var(--green-bg); color: var(--green); font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 20px; white-space: nowrap; }
+
+/* ── FAQ ── */
+.faq-list { margin-top: 2rem; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q {
+  width: 100%; text-align: left;
+  background: none; border: none;
+  padding: 1.25rem 0;
+  font-size: 15px; font-weight: 500; color: var(--navy);
+  cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  gap: 1rem; font-family: var(--font);
+}
+.faq-icon { font-size: 1.3rem; color: var(--gold); flex-shrink: 0; transition: transform 0.2s; }
+.faq-a { font-size: 14px; color: var(--muted); line-height: 1.75; padding-bottom: 1.25rem; display: none; }
+.faq-item.open .faq-a { display: block; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+
+/* ── Quote ── */
+.quote-section { background: var(--navy); padding: clamp(3rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem); text-align: center; }
+.quote-inner { max-width: 680px; margin: 0 auto; }
+.quote-text {
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+  font-weight: 300; color: var(--white); line-height: 1.5;
+}
+.quote-text strong { color: var(--gold2); font-weight: 600; }
+
+/* ── CTA section ── */
+.cta-section { background: var(--gold); padding: clamp(3rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem); text-align: center; }
+.cta-section h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; color: var(--navy3); line-height: 1.1; margin-bottom: 0.75rem; }
+.cta-section p { font-size: 16px; color: rgba(26,58,92,0.75); margin-bottom: 2rem; }
+.btn-cta-dark { background: var(--navy); color: var(--white); font-size: 15px; font-weight: 600; padding: 13px 36px; border-radius: var(--radius); border: none; cursor: pointer; font-family: var(--font); transition: background 0.15s; display: inline-block; }
+.btn-cta-dark:hover { background: var(--navy2); }
+
+/* ── Calculator section ── */
+.calc-section { background: var(--section); border-top: 3px solid var(--gold); }
+.calc-header { max-width: 1100px; margin: 0 auto; padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 4vw, 2rem) 1.5rem; }
+.calc-header h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+.calc-header p { font-size: 14px; color: var(--muted); }
+
+/* ── Form panel ── */
+.main { display: grid; grid-template-columns: 400px 1fr; max-width: 1100px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2rem) clamp(2rem, 5vw, 4rem); gap: clamp(1rem, 2vw, 2rem); }
+.form-panel {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 2rem;
+  position: sticky; top: 80px; max-height: calc(100vh - 100px);
+  overflow-y: auto; align-self: start;
+}
+.results-panel { min-height: 400px; }
+
+/* ── Form elements ── */
+.section-head {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem;
+  padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.form-section { margin-bottom: 1.75rem; }
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+.field label { font-size: 12px; color: var(--muted); font-weight: 500; }
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--body);
+  font-family: var(--font); font-size: 14px;
+  padding: 9px 12px; width: 100%; outline: none;
+  transition: border-color 0.15s;
+}
+input:focus, select:focus { border-color: var(--gold); }
+input::placeholder { color: #bbb; }
+select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6C72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; cursor: pointer; -webkit-appearance: none; appearance: none; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+.item-card {
+  background: var(--section); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px;
+  margin-bottom: 8px; position: relative;
+}
+.remove-btn {
+  position: absolute; top: 10px; right: 10px;
+  background: none; border: none; color: var(--muted);
+  cursor: pointer; font-size: 18px; line-height: 1; padding: 0;
+  transition: color 0.15s;
+}
+.remove-btn:hover { color: var(--red); }
+.add-btn {
+  width: 100%; padding: 9px;
+  background: none; border: 1.5px dashed var(--border);
+  border-radius: var(--radius); color: var(--muted);
+  font-family: var(--font); font-size: 13px;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 6px;
+  transition: all 0.15s; margin-bottom: 6px;
+}
+.add-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-bg); }
+
+.type-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; padding: 3px 10px;
+  border-radius: 20px; cursor: pointer;
+  border: 1.5px solid transparent; transition: all 0.15s;
+  margin-top: 8px;
+}
+.type-closeable { background: var(--green-bg); color: var(--green); border-color: rgba(29,131,72,0.3); }
+.type-fixed { background: var(--gold-bg); color: var(--gold); border-color: rgba(212,137,26,0.3); }
+.minpay-row { margin-top: 8px; }
+
+.strat-group { display: flex; gap: 6px; }
+.strat-btn {
+  flex: 1; padding: 8px 12px;
+  background: none; border: 1.5px solid var(--border);
+  border-radius: var(--radius); color: var(--muted);
+  font-family: var(--font); font-size: 12px;
+  cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.strat-btn.active {
+  border-color: var(--gold); color: var(--gold);
+  background: var(--gold-bg); font-weight: 600;
+}
+.run-btn {
+  width: 100%; padding: 13px;
+  background: var(--gold); color: var(--white);
+  border: none; border-radius: var(--radius);
+  font-family: var(--font); font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background 0.15s; margin-top: 0.5rem;
+}
+.run-btn:hover { background: var(--gold2); }
+
+/* ── Results ── */
+.summary-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%),1fr));
+  gap: 12px; margin-bottom: 1.75rem;
+}
+.summary-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1rem;
+}
+.summary-card.highlight { border-color: var(--gold); background: var(--gold-bg); }
+.sc-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 5px; }
+.sc-value { font-size: 1.5rem; font-weight: 700; color: var(--navy); line-height: 1; }
+.summary-card.highlight .sc-value { color: var(--gold); }
+.sc-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+.order-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+.order-chip {
+  font-size: 12px; font-weight: 500;
+  padding: 4px 12px; border-radius: 20px;
+  display: flex; align-items: center; gap: 5px;
+}
+.chip-num { font-weight: 700; }
+
+.compare-block {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 18px; margin-bottom: 1.5rem;
+}
+.compare-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.compare-row:last-child { border-bottom: none; font-weight: 600; color: var(--gold); }
+.cr-label { color: var(--muted); }
+.cr-val { color: var(--navy); }
+
+.shortcut-block {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 18px; margin-bottom: 1.5rem;
+}
+.sh-title { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
+.shortcut-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.shortcut-row label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.shortcut-row input { width: 110px; }
+.shortcut-result { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.6; }
+
+.tbl-section-head {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 2rem; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 600px; }
+thead th {
+  background: var(--section); font-size: 11px; font-weight: 600;
+  color: var(--muted); text-align: left;
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  letter-spacing: 0.04em; white-space: nowrap;
+}
+tbody tr:hover { background: var(--section); }
+tbody td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--body); vertical-align: top; }
+tbody tr:last-child td { border-bottom: none; }
+.td-month { font-weight: 600; color: var(--navy); white-space: nowrap; }
+.td-year { font-size: 11px; color: var(--muted); display: block; }
+.td-num { font-size: 14px; }
+.td-muted { color: var(--muted); }
+.badge-closed {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--green-bg); color: var(--green);
+  font-size: 11px; font-weight: 600;
+  padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+}
+.badge-bonus {
+  display: inline-flex; align-items: center;
+  background: var(--gold-bg); color: var(--gold);
+  font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: 20px; margin-left: 4px;
+}
+.badge-p2 {
+  display: inline-flex; align-items: center;
+  background: var(--section2); color: var(--navy2);
+  font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: 20px; margin-left: 4px;
+}
+.debt-progress { font-size: 12px; color: var(--body); line-height: 1.7; }
+.dp-partial { color: var(--muted); }
+
+.alert { padding: 12px 16px; border-radius: var(--radius); font-size: 13px; margin-bottom: 1rem; line-height: 1.5; }
+.alert-warn { background: var(--red-bg); border: 1px solid rgba(192,57,43,0.25); color: var(--red); }
+
+.empty-state {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 400px; text-align: center; gap: 10px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 2rem;
+}
+.es-icon { font-size: 3.5rem; color: var(--border); line-height: 1; }
+.es-title { font-size: 16px; font-weight: 600; color: var(--navy); }
+.es-text { font-size: 14px; color: var(--muted); max-width: 280px; line-height: 1.6; }
+
+/* ── Phase 2 popup ── */
+.p2-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(26,58,92,0.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 999; padding: 1rem;
+}
+.p2-box {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 2rem; max-width: 440px; width: 100%;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(26,58,92,0.2);
+}
+.p2-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.p2-title { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+.p2-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
+.p2-debt-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; background: var(--section);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  margin-bottom: 6px; cursor: pointer; transition: border-color 0.15s;
+}
+.p2-debt-item:hover { border-color: var(--gold); }
+.p2-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+  transition: all 0.15s;
+}
+.p2-debt-name { font-size: 14px; color: var(--navy); font-weight: 500; }
+.p2-debt-detail { font-size: 12px; color: var(--muted); }
+.p2-actions { display: flex; gap: 8px; margin-top: 1.25rem; }
+.p2-btn-primary { flex: 1; padding: 11px; background: var(--gold); color: var(--white); border: none; border-radius: var(--radius); font-weight: 600; font-family: var(--font); font-size: 14px; cursor: pointer; transition: background 0.15s; }
+.p2-btn-primary:hover { background: var(--gold2); }
+.p2-btn-ghost { padding: 11px 16px; background: none; border: 1px solid var(--border); border-radius: var(--radius); color: var(--muted); font-size: 13px; cursor: pointer; font-family: var(--font); transition: all 0.15s; }
+.p2-btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
+
+/* ── Footer ── */
+footer {
+  background: var(--navy3); padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 4vw, 2.5rem);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+.footer-logo { font-size: 1.1rem; font-weight: 700; color: var(--white); letter-spacing: 0.08em; }
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.footer-link { font-size: 13px; color: rgba(255,255,255,0.4); transition: color 0.15s; }
+.footer-link:hover { color: rgba(255,255,255,0.8); }
+.footer-note { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+/* ── Responsive ── */
+@media (max-width:1000px) { .main { grid-template-columns: 1fr; } .form-panel { position: static; max-height: none; } }
+@media (max-width:860px) { .problem-grid, .steps { grid-template-columns: 1fr; } .mockup-body { grid-template-columns: 1fr; } .mockup-sidebar { border-right: none; border-bottom: 1px solid var(--border); } .mockup-metrics { grid-template-columns: repeat(2,1fr); } .nav-links { display: none; } }
+@media (max-width:520px) { .row2, .row3 { grid-template-columns: 1fr; } .hero-actions { flex-direction: column; width: 100%; } .btn-primary, .btn-secondary { width: 100%; text-align: center; } .stats-inner { grid-template-columns: repeat(2,1fr); gap: 1rem; } }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-logo">
+    <svg viewBox="0 0 130 32" width="130" height="32" role="img" aria-label="Kronus logo">
+      <path d="M10 26 L16 8 L22 18 L28 4 L34 26" fill="none" stroke="#D4891A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="10" y1="26" x2="34" y2="26" stroke="#D4891A" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="44" y="23" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="700" fill="#1A3A5C" letter-spacing="1">KRONUS</text>
+    </svg>
+  </div>
+  <div class="nav-links">
+    <a href="#how-it-works" class="nav-link">How it works</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#compare" class="nav-link">Why Kronus</a>
+    <a href="#faq" class="nav-link">FAQ</a>
+  </div>
+  <div class="nav-actions">
+    <a href="#calculator" class="nav-cta" onclick="event.preventDefault();document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Try free</a>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero" aria-labelledby="hero-h1">
+  <div class="hero-eyebrow">Free debt payoff sequencer</div>
+  <h1 id="hero-h1">
+    Other tools show you<br>
+    how long <span>minimum payments</span> take.<br>
+    Kronus shows you the <span>fastest way out.</span>
+  </h1>
+  <p class="hero-sub">
+    With discipline and a clear sequence, Kronus builds your personal payoff plan from your real income, fixed bills, and protected savings. You see exactly which debt closes first, which comes next, and the precise date you owe nothing to anyone.
+  </p>
+  <div class="hero-actions">
+    <a href="#calculator" class="btn-primary" onclick="event.preventDefault();document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Start being debt free</a>
+    <a href="#how-it-works" class="btn-secondary">See how it works</a>
+  </div>
+  <p class="hero-note">Free to start. No account required. No credit card.</p>
+
+  <div class="ticker-strip" aria-hidden="true" style="margin-top:3.5rem">
+    <div class="ticker-inner">
+      <div class="ticker-item"><span class="ticker-dot"></span>One debt at a time, closed in full</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Your full surplus attacks the target</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Savings always protected</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Every debt gets a closing date</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Payment stacks when a debt closes</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Built from your real numbers</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>One debt at a time, closed in full</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Your full surplus attacks the target</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Savings always protected</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Every debt gets a closing date</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Payment stacks when a debt closes</div>
+      <div class="ticker-item"><span class="ticker-dot"></span>Built from your real numbers</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats ── -->
+<div class="stats-bar" aria-label="Key statistics">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">$65.3T</div>
+      <div class="stat-lbl">Total global household debt in 2026, per the Institute of International Finance, and it keeps climbing</div>
+    </div>
+    <div>
+      <div class="stat-num">40+ yrs</div>
+      <div class="stat-lbl">How long minimum payments actually take to clear a $5,000 balance at 20% APR. Most people have no idea.</div>
+    </div>
+    <div>
+      <div class="stat-num">21.52%</div>
+      <div class="stat-lbl">Average APR on credit card balances currently accruing interest in Q1 2026, per the Federal Reserve</div>
+    </div>
+    <div>
+      <div class="stat-num">$27T</div>
+      <div class="stat-lbl">Borrowed globally by governments and companies in 2025 alone, a record high, double the level of ten years ago, per the OECD</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Problem ── -->
+<section aria-labelledby="problem-h2">
+  <div class="section">
+    <div class="section-label">The problem with other calculators</div>
+    <div class="problem-grid">
+      <div>
+        <h2 id="problem-h2">They tell you how long.<br><em>Not how to finish faster.</em></h2>
+      </div>
+      <div class="body-text">
+        <p>Every other debt calculator starts from minimum payments and works forward. It shows you a payoff date years away, assumes you keep paying the same amount forever, and gives you nothing to act on.</p>
+        <p>Kronus starts from your discipline. It takes your full available surplus each month and directs it entirely at one debt until that debt is gone. When it closes, that freed payment stacks into the next one. The speed compounds every time you win.</p>
+        <p>Your savings are protected from the start. Your fixed bills are accounted for. What remains is your payoff weapon, and Kronus shows you exactly what it can do.</p>
+        <div class="pull-quote">
+          The question is not how long minimum payments take. The question is: with real discipline, how fast can I actually be free?
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How it works ── -->
+<div class="section-bg" id="how-it-works">
+  <div class="section">
+    <div class="section-label">How it works</div>
+    <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--navy);max-width:520px;line-height:1.15">A sequence, not a calculator.</h2>
+    <div class="steps">
+      <article class="step">
+        <div class="step-num">1</div>
+        <h3>Enter your real numbers</h3>
+        <p class="step-body">Your take-home income, every fixed bill (rent, phone, insurance), and your monthly savings amount. Your savings are set aside first and never touched for debt.</p>
+      </article>
+      <article class="step">
+        <div class="step-num">2</div>
+        <h3>Add every debt</h3>
+        <p class="step-body">Credit cards, lines of credit, personal loans, car loans. Kronus orders them into a closing sequence using the snowball or avalanche method. One target at a time.</p>
+      </article>
+      <article class="step">
+        <div class="step-num">3</div>
+        <h3>Get your exact timeline</h3>
+        <p class="step-body">A month-by-month plan showing exactly when each debt closes, what carries forward, and the precise date you owe nothing. Built from your actual numbers, updated whenever you change them.</p>
+      </article>
+    </div>
+  </div>
+</div>
+
+<!-- ── Compare ── -->
+<section id="compare" aria-labelledby="compare-h2">
+  <div class="section">
+    <div class="section-label">Why Kronus</div>
+    <h2 id="compare-h2" style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--navy);margin-bottom:0.5rem">Built differently from the ground up.</h2>
+    <p style="font-size:15px;color:var(--muted);margin-bottom:0">Most tools are designed to show you your debt. Kronus is designed to end it.</p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Feature</th>
+          <th>Other calculators</th>
+          <th class="highlight">Kronus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Payoff strategy</td>
+          <td>Minimum payments spread across all debts</td>
+          <td class="highlight"><span class="check">✓</span> Full surplus attacks one debt at a time</td>
+        </tr>
+        <tr>
+          <td>Payment stacking</td>
+          <td><span class="cross">✗</span> Not available</td>
+          <td class="highlight"><span class="check">✓</span> Freed payments roll into the next debt automatically</td>
+        </tr>
+        <tr>
+          <td>Closing date per debt</td>
+          <td><span class="cross">✗</span> Final date only</td>
+          <td class="highlight"><span class="check">✓</span> Every debt gets its own closing date</td>
+        </tr>
+        <tr>
+          <td>Protected savings</td>
+          <td><span class="cross">✗</span> Not tracked</td>
+          <td class="highlight"><span class="check">✓</span> Ring-fenced monthly, shown growing alongside debt</td>
+        </tr>
+        <tr>
+          <td>Fixed bill debts</td>
+          <td><span class="cross">✗</span> Not modelled</td>
+          <td class="highlight"><span class="check">✓</span> Tracked in Phase 1, attacked with full surplus in Phase 2</td>
+        </tr>
+        <tr>
+          <td>Strategy comparison</td>
+          <td>Snowball or avalanche, pick one</td>
+          <td class="highlight"><span class="check">✓</span> Both shown side by side with exact time and money saved</td>
+        </tr>
+        <tr>
+          <td>Cost</td>
+          <td>Free to basic, paid for full features</td>
+          <td class="highlight"><span class="check">✓</span> Free to start, no account required</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<div class="section-bg" id="features">
+  <div class="section">
+    <div class="section-label">What Kronus includes</div>
+    <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--navy);margin-bottom:0.5rem">Everything a serious payoff plan needs.</h2>
+    <p style="font-size:15px;color:var(--muted)">No fluff, no upsells inside the tool.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15 L7 5 L11 10 L15 2 L19 15" stroke="#D4891A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="3" y1="15" x2="19" y2="15" stroke="#D4891A" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="feature-title">Payment stacking</div>
+        <p class="feature-body">When a debt closes, its full payment rolls immediately into the next target. Your payoff speed compounds with every win.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#D4891A" stroke-width="1.8"/><path d="M10 4 A6 6 0 0 1 16 10" stroke="#D4891A" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="10" cy="10" r="1.5" fill="#D4891A"/><line x1="10" y1="10" x2="10" y2="5" stroke="#D4891A" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="feature-title">Closing date per debt</div>
+        <p class="feature-body">Not just a final debt-free date. Every debt on your list gets its own closing month and year.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="3" stroke="#D4891A" stroke-width="1.8"/><path d="M7 10 L9 12 L13 8" stroke="#D4891A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="feature-title">Protected savings</div>
+        <p class="feature-body">Your savings amount is set aside before the debt calculation runs. It is never touched, and you watch it grow month by month.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16 L4 8 L10 4 L16 8 L16 16" stroke="#D4891A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="8" y="11" width="4" height="5" rx="1" stroke="#D4891A" stroke-width="1.5"/></svg>
+        </div>
+        <div class="feature-title">Fixed bill debts</div>
+        <p class="feature-body">Car loans and mortgages pay minimums while your queue runs. Once every closeable debt is cleared, your full surplus pivots to attack them in Phase 2.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="10" x2="16" y2="10" stroke="#D4891A" stroke-width="1.8" stroke-linecap="round"/><line x1="4" y1="6" x2="10" y2="6" stroke="#D4891A" stroke-width="1.8" stroke-linecap="round"/><line x1="4" y1="14" x2="13" y2="14" stroke="#D4891A" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div class="feature-title">Snowball vs. avalanche</div>
+        <p class="feature-body">Toggle between strategies. Kronus shows the difference in months and total interest paid side by side so you can choose with full information.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#D4891A" stroke-width="1.8"/><path d="M10 6 L10 10 L13 13" stroke="#D4891A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="feature-title">Savings shortcut</div>
+        <p class="feature-body">See how reducing your monthly savings by a fixed amount moves your debt-free date forward. You decide what the trade-off is worth.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── App preview ── -->
+<section aria-labelledby="preview-h2">
+  <div class="section" style="text-align:center">
+    <div class="section-label">The tool</div>
+    <h2 id="preview-h2" style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--navy)">See where every dollar goes, every month.</h2>
+    <p style="font-size:15px;color:var(--muted);margin-top:0.5rem">The math is honest. The date is real.</p>
+    <div class="mockup-shell" role="img" aria-label="Kronus debt sequencer showing a month-by-month payoff timeline">
+      <div class="mockup-bar">
+        <div class="mockup-logo">KRONUS</div>
+        <div class="mockup-ticker"><span class="mockup-ticker-num">8m</span>to debt-free</div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-sidebar">
+          <div class="mockup-field"><div class="mockup-field-lbl">Monthly income</div><div class="mockup-field-val">$4,800</div></div>
+          <div class="mockup-field"><div class="mockup-field-lbl">Fixed bills</div><div class="mockup-field-val">$1,200</div></div>
+          <div class="mockup-field"><div class="mockup-field-lbl">Protected savings</div><div class="mockup-field-val">$500</div></div>
+          <div style="height:1px;background:var(--border);margin:10px 0"></div>
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Closing queue</div>
+          <div class="mockup-debt-item"><span class="mockup-debt-n">Credit card</span><span class="mockup-debt-a">$2,400</span></div>
+          <div class="mockup-debt-item"><span class="mockup-debt-n">Personal loan</span><span class="mockup-debt-a">$5,500</span></div>
+          <div class="mockup-debt-item"><span class="mockup-debt-n">Line of credit</span><span class="mockup-debt-a">$3,200</span></div>
+          <div class="mockup-debt-item"><span class="mockup-debt-n">Car loan</span><span class="mockup-debt-a">$9,800</span></div>
+        </div>
+        <div class="mockup-content">
+          <div class="mockup-metrics">
+            <div class="mockup-metric gold"><div class="mockup-metric-lbl">Debt-free</div><div class="mockup-metric-val">Jan 2027</div></div>
+            <div class="mockup-metric"><div class="mockup-metric-lbl">Total debt</div><div class="mockup-metric-val">$20,900</div></div>
+            <div class="mockup-metric"><div class="mockup-metric-lbl">Monthly pool</div><div class="mockup-metric-val">$3,100</div></div>
+            <div class="mockup-metric"><div class="mockup-metric-lbl">Savings built</div><div class="mockup-metric-val">$4,000</div></div>
+          </div>
+          <table class="mockup-tbl">
+            <thead><tr><th class="mockup-th">Month</th><th class="mockup-th">Income</th><th class="mockup-th">Pool</th><th class="mockup-th">Activity</th><th class="mockup-th">Carry</th></tr></thead>
+            <tbody>
+              <tr><td class="mockup-td bold">June</td><td class="mockup-td">$4,800</td><td class="mockup-td gold">$3,100</td><td class="mockup-td"><span class="badge-cl">✓ Credit card closed</span></td><td class="mockup-td">$700</td></tr>
+              <tr><td class="mockup-td bold">July</td><td class="mockup-td">$4,800</td><td class="mockup-td gold">$3,800</td><td class="mockup-td"><span class="badge-cl">✓ Line of credit closed</span></td><td class="mockup-td">$600</td></tr>
+              <tr><td class="mockup-td bold">Aug</td><td class="mockup-td">$4,800</td><td class="mockup-td gold">$4,100</td><td class="mockup-td" style="font-size:10px;color:var(--muted)">Personal loan: $4,100 paid, $1,400 left</td><td class="mockup-td">$0</td></tr>
+              <tr><td class="mockup-td bold">Sep</td><td class="mockup-td">$4,800</td><td class="mockup-td gold">$3,100</td><td class="mockup-td"><span class="badge-cl">✓ Personal loan closed</span></td><td class="mockup-td">$1,700</td></tr>
+              <tr><td class="mockup-td bold">Jan 2027</td><td class="mockup-td">$4,800</td><td class="mockup-td gold">$4,800</td><td class="mockup-td"><span class="badge-cl">✓ Car loan closed</span></td><td class="mockup-td">$420</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:2.5rem">
+      <a href="#calculator" class="btn-primary" onclick="event.preventDefault();document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Start being debt free</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Quote ── -->
+<div class="quote-section">
+  <div class="quote-inner">
+    <p class="quote-text">
+      Most apps tell you how long minimum payments take.<br>
+      Kronus tells you something different:<br><br>
+      <strong>With discipline, this is how fast you can actually be free.</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ── FAQ ── -->
+<div class="section-bg" id="faq">
+  <div class="section">
+    <div class="section-label">Frequently asked questions</div>
+    <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--navy)">Everything you need to know.</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>How is Kronus different from other debt payoff calculators?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Most calculators take your minimum payments and show you how long your debt will last. Kronus does the opposite. It takes your full available surplus each month and directs it entirely at one debt until that debt closes. When it closes, the freed payment stacks into the next one. The result is the fastest mathematically possible payoff path built from your real numbers, not a worst-case minimum-payment projection.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>How does Kronus sequence my debt payoff?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Kronus subtracts your fixed bills and protected savings from your monthly income to find your available pool. Each month, that full pool attacks your current target debt. When it closes, the freed payment rolls into the next debt automatically. This gives you a closing date for every debt in the sequence, not just the last one.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>What is the debt snowball method?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">The snowball method pays off your smallest balance first while making minimum payments on all others. Once the smallest closes, its payment rolls into the next smallest, building momentum. Research consistently shows that the snowball method helps people stay motivated and stick to their plan, which matters more than mathematical optimisation in the short term.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>What is the debt avalanche method and how does it compare?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">The avalanche method attacks your highest interest rate debt first. It saves the most money in total interest over time. Kronus lets you toggle between snowball and avalanche and shows the difference in months and total interest paid side by side, so you can choose with full information rather than a guess.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>Can I protect my savings while paying off debt?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes, and this is a core feature. You set a monthly savings amount and it is ring-fenced before any debt calculation runs. It is never used for payments, even in months where the pool runs tight. Your savings balance grows every month alongside your shrinking debt, so you can see both at the same time.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>What happens to car loans and mortgages?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">You decide how to classify them. Mark a debt as a fixed bill and Kronus pays its minimum every month while your closing queue runs. Once all closeable debts are cleared, Kronus enters Phase 2 and your full surplus pivots to attack fixed bill debts in the order you choose, with a closing date for each one.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false"><span>Is Kronus free?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">The full sequencer is free to start. No account required. No credit card. You can run your simulation, see your debt-free date, and get your complete month-by-month timeline without paying anything. Because the first thing you need is to trust it, and you cannot trust something you paid for before you have seen it work.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<div class="cta-section">
+  <h2>Your debt has a last month.<br>Find out which one.</h2>
+  <p>Free to start. Takes two minutes. No account needed.</p>
+  <a href="#calculator" class="btn-cta-dark" onclick="event.preventDefault();document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Start being debt free</a>
+</div>
+
+<!-- ══ CALCULATOR ══ -->
+<div id="calculator" class="calc-section">
+  <div class="calc-header">
+    <div class="section-label">Your numbers</div>
+    <h2>Build your payoff sequence</h2>
+    <p>Fill in your income, bills, and debts. Hit Build and see your exact sequence.</p>
+  </div>
+
+  <div class="main">
+    <aside class="form-panel">
+
+      <div class="form-section">
+        <div class="section-head">Income</div>
+        <div class="row3" style="margin-bottom:10px">
+          <div class="field"><label>Currency</label>
+            <select id="currency" onchange="liveUpdate()">
+              <option value="CAD">CAD $</option><option value="USD">USD $</option>
+              <option value="SAR">SAR ر.س</option><option value="AED">AED د.إ</option>
+              <option value="GBP">GBP £</option><option value="EUR">EUR €</option><option value="AUD">AUD $</option>
+            </select>
+          </div>
+          <div class="field"><label>Pay frequency</label>
+            <select id="freq" onchange="onFreqChange()">
+              <option value="monthly">Monthly</option>
+              <option value="biweekly">Biweekly</option>
+            </select>
+          </div>
+          <div class="field"><label id="incomeLabel">Monthly income</label>
+            <input type="number" id="income" placeholder="5500" min="0" oninput="liveUpdate()">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Start month</label>
+            <select id="startMonth" onchange="liveUpdate()">
+              <option value="0">January</option><option value="1">February</option><option value="2">March</option>
+              <option value="3">April</option><option value="4">May</option><option value="5" selected>June</option>
+              <option value="6">July</option><option value="7">August</option><option value="8">September</option>
+              <option value="9">October</option><option value="10">November</option><option value="11">December</option>
+            </select>
+          </div>
+          <div class="field"><label>Start year</label>
+            <input type="number" id="startYear" value="2026" min="2020" max="2040" oninput="liveUpdate()">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-head">Fixed bills</div>
+        <div id="billList"></div>
+        <button class="add-btn" onclick="addBill()">+ Add a bill</button>
+      </div>
+
+      <div class="form-section">
+        <div class="section-head">Debts</div>
+        <div id="debtList"></div>
+        <button class="add-btn" onclick="addDebt()">+ Add a debt</button>
+        <div style="margin-top:1.25rem">
+          <div class="section-head" style="margin-bottom:8px">Payoff order</div>
+          <div class="strat-group">
+            <button class="strat-btn active" id="btn-snowball" onclick="setStrat('snowball')">Snowball<br><span style="font-size:10px;opacity:0.7">smallest first</span></button>
+            <button class="strat-btn" id="btn-avalanche" onclick="setStrat('avalanche')">Avalanche<br><span style="font-size:10px;opacity:0.7">largest first</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="section-head">Protected savings</div>
+        <div class="row2">
+          <div class="field"><label>Monthly amount</label><input type="number" id="savings" placeholder="1000" min="0" oninput="liveUpdate()"></div>
+          <div class="field"><label>Label (optional)</label><input type="text" id="savingsLbl" placeholder="Emergency fund"></div>
+        </div>
+        <p style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:6px">Ring-fenced every month. Never used for debt.</p>
+      </div>
+
+      <button class="run-btn" onclick="runSim()">Show me when I'm free</button>
+
+    </aside>
+
+    <main class="results-panel" id="resultsPanel">
+      <div class="empty-state" id="emptyState">
+        <div class="es-icon">◎</div>
+        <div class="es-title">Your timeline will appear here</div>
+        <p class="es-text">Fill in your income, bills, and debts on the left, then hit Build.</p>
+      </div>
+      <div id="resultsContent" style="display:none"></div>
+    </main>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">KRONUS</div>
+    <div class="footer-links">
+      <a href="#how-it-works" class="footer-link">How it works</a>
+      <a href="#features" class="footer-link">Features</a>
+      <a href="#compare" class="footer-link">Why Kronus</a>
+      <a href="#faq" class="footer-link">FAQ</a>
+      <a href="#calculator" class="footer-link">Try the sequencer</a>
+    </div>
+    <div class="footer-note">Built for people who are ready to be done.</div>
+  </div>
+</footer>
+
+<script>
+// ── State ──
+let strategy = 'snowball';
+let billIdCtr = 0, debtIdCtr = 0;
+let billIds = [], debtIds = [];
+
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+const CHIP_COLORS = [
+  { bg:'rgba(29,131,72,0.12)',  color:'#1D8348',  border:'rgba(29,131,72,0.3)' },
+  { bg:'rgba(26,58,92,0.1)',    color:'#1A3A5C',  border:'rgba(26,58,92,0.25)' },
+  { bg:'rgba(192,57,43,0.1)',   color:'#C0392B',  border:'rgba(192,57,43,0.25)' },
+  { bg:'rgba(212,137,26,0.12)', color:'#D4891A',  border:'rgba(212,137,26,0.3)' },
+  { bg:'rgba(46,92,138,0.12)',  color:'#2E5C8A',  border:'rgba(46,92,138,0.3)' },
+  { bg:'rgba(106,70,14,0.1)',   color:'#7D5A0E',  border:'rgba(106,70,14,0.25)' },
+];
+
+// ── Frequency ──
+function onFreqChange() {
+  const bw = document.getElementById('freq').value === 'biweekly';
+  document.getElementById('incomeLabel').textContent = bw ? 'Income per paycheque' : 'Monthly income';
+  liveUpdate();
+}
+
+// ── Strategy ──
+function setStrat(s) {
+  strategy = s;
+  document.getElementById('btn-snowball').classList.toggle('active', s === 'snowball');
+  document.getElementById('btn-avalanche').classList.toggle('active', s === 'avalanche');
+  liveUpdate();
+}
+
+// ── Bills ──
+function addBill(name='', amount='') {
+  const id = billIdCtr++;
+  billIds.push(id);
+  const el = document.createElement('div');
+  el.className = 'item-card';
+  el.id = 'bill-' + id;
+  el.innerHTML = `
+    <button class="remove-btn" onclick="removeBill(${id})" aria-label="Remove bill">×</button>
+    <div class="row2">
+      <div class="field"><label>Bill name</label>
+        <input type="text" id="bname-${id}" placeholder="e.g. Rent, phone, insurance" value="${name}" oninput="liveUpdate()">
+      </div>
+      <div class="field"><label>Monthly amount</label>
+        <input type="number" id="bamt-${id}" placeholder="0" min="0" value="${amount}" oninput="liveUpdate()">
+      </div>
+    </div>`;
+  document.getElementById('billList').appendChild(el);
+}
+
+function removeBill(id) {
+  billIds = billIds.filter(b => b !== id);
+  document.getElementById('bill-' + id)?.remove();
+  liveUpdate();
+}
+
+// ── Debts ──
+function addDebt(name='', balance='', isFixed=false, minPayment='') {
+  const id = debtIdCtr++;
+  debtIds.push(id);
+  const el = document.createElement('div');
+  el.className = 'item-card';
+  el.id = 'debt-' + id;
+  const badgeClass = isFixed ? 'type-badge type-fixed' : 'type-badge type-closeable';
+  const badgeText  = isFixed ? '⚙ Fixed bill: min payment only' : '✓ Closeable debt';
+  el.innerHTML = `
+    <button class="remove-btn" onclick="removeDebt(${id})" aria-label="Remove debt">×</button>
+    <div class="row2 gap">
+      <div class="field"><label>Debt name</label>
+        <input type="text" id="dname-${id}" placeholder="e.g. Credit card" value="${name}" oninput="liveUpdate()">
+      </div>
+      <div class="field"><label>Balance owing</label>
+        <input type="number" id="dbal-${id}" placeholder="0" min="0" value="${balance}" oninput="liveUpdate()">
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+      <button class="${badgeClass}" id="dtype-${id}" onclick="toggleDebtType(${id})">
+        <span id="dtype-lbl-${id}">${badgeText}</span>
+      </button>
+      <div id="minpay-wrap-${id}" style="${isFixed?'':'display:none'}" class="field minpay-row">
+        <label>Min. payment / mo</label>
+        <input type="number" id="dmin-${id}" placeholder="0" min="0" style="width:130px" value="${minPayment}" oninput="liveUpdate()">
+      </div>
+    </div>
+    <div class="field" style="max-width:200px">
+      <label style="display:flex;align-items:center;gap:6px">
+        Interest rate %
+        <span style="font-size:10px;color:var(--muted);font-weight:400">(optional)</span>
+      </label>
+      <input type="number" id="drate-${id}" placeholder="e.g. 19.9" min="0" max="100" step="0.1"
+        style="width:100%" oninput="liveUpdate()">
+    </div>`;
+  document.getElementById('debtList').appendChild(el);
+}
+
+function removeDebt(id) {
+  debtIds = debtIds.filter(d => d !== id);
+  document.getElementById('debt-' + id)?.remove();
+  liveUpdate();
+}
+
+function toggleDebtType(id) {
+  const btn  = document.getElementById('dtype-' + id);
+  const lbl  = document.getElementById('dtype-lbl-' + id);
+  const wrap = document.getElementById('minpay-wrap-' + id);
+  const isFixed = btn.classList.contains('type-fixed');
+  if (isFixed) {
+    btn.classList.replace('type-fixed','type-closeable');
+    lbl.textContent = '✓ Closeable debt';
+    wrap.style.display = 'none';
+  } else {
+    btn.classList.replace('type-closeable','type-fixed');
+    lbl.textContent = '⚙ Fixed bill: min payment only';
+    wrap.style.display = '';
+  }
+  liveUpdate();
+}
+
+function getDebtType(id) {
+  return document.getElementById('dtype-' + id).classList.contains('type-fixed') ? 'fixed' : 'closeable';
+}
+
+// ── Formatters ──
+function fmt(n, cur) {
+  const syms = { CAD:'$', USD:'$', SAR:'ر.س', AED:'د.إ', GBP:'£', EUR:'€', AUD:'$' };
+  const sym = syms[cur] || '$';
+  const abs = Math.abs(Math.round(n));
+  return (n < 0 ? '-' : '') + sym + abs.toLocaleString();
+}
+
+function fmtM(m) {
+  if (m >= 12) { const y = Math.floor(m/12), mo = m%12; return y+'y'+(mo?' '+mo+'m':''); }
+  return m+'m';
+}
+
+// ── Simulation engine ──
+function simulate(closeableDebts, fixedBillDebts, baseBillTotal, savingsPerMonth, incomePerMonth, strat, startMonthIdx, startYear, phase2Order) {
+  const freq = document.getElementById('freq').value;
+  const MAX  = 480;
+
+  let p1 = closeableDebts.map(d => ({ ...d, remaining: d.balance }));
+  if (strat === 'snowball') p1.sort((a, b) => a.balance - b.balance);
+  else                      p1.sort((a, b) => b.balance - a.balance);
+
+  let p2 = fixedBillDebts.map(d => ({ ...d, remaining: d.balance }));
+  if (phase2Order && phase2Order.length) {
+    const ord = [];
+    phase2Order.forEach(id => { const f = p2.find(d => d.id === id); if (f) ord.push(f); });
+    p2.filter(d => !phase2Order.includes(d.id)).forEach(d => ord.push(d));
+    p2 = ord;
+  } else {
+    if (strat === 'snowball') p2.sort((a, b) => a.balance - b.balance);
+    else                      p2.sort((a, b) => b.balance - a.balance);
+  }
+
+  const rows = [], closingDates = {};
+  let totalPaid = 0;
+  let carry = 0, offset = 0, phase = 1;
+  let phase2BillTotal = baseBillTotal;
+  const hasP2 = p2.length > 0;
+
+  while (offset < MAX) {
+    const p1done = !p1.some(d => d.remaining > 0);
+    const p2done = !p2.some(d => d.remaining > 0);
+    if (phase === 1 && p1done) {
+      if (!hasP2 || p2done) break;
+      phase = 2;
+    }
+    if (phase === 2 && p2done) break;
+
+    const mIdx  = (startMonthIdx + offset) % 12;
+    const year  = startYear + Math.floor((startMonthIdx + offset) / 12);
+    let income  = incomePerMonth, isBonus = false;
+    if (freq === 'biweekly' && (mIdx === 2 || mIdx === 7)) { income = incomePerMonth * 1.5; isBonus = true; }
+
+    const billTotal = phase === 1 ? baseBillTotal : phase2BillTotal;
+    const pool      = +(carry + income - billTotal - savingsPerMonth).toFixed(2);
+    let available   = pool;
+    const events    = [];
+    const queue     = phase === 1 ? p1 : p2;
+    let i = 0;
+
+    [...p1, ...p2].forEach(d => {
+      if (d.remaining > 0 && d.rate > 0) {
+        d.remaining = +(d.remaining * (1 + d.rate / 100 / 12)).toFixed(2);
+      }
+    });
+
+    while (available > 0.005 && i < queue.length) {
+      const d = queue[i];
+      if (d.remaining <= 0) { i++; continue; }
+      if (available >= d.remaining) {
+        available = +(available - d.remaining).toFixed(2);
+        events.push({ name: d.name, paid: d.remaining, closed: true, leftOnDebt: 0, phase });
+        closingDates[d.name] = { monthName: MONTHS[mIdx], year, offset };
+        totalPaid = +(totalPaid + d.remaining).toFixed(2);
+        d.remaining = 0;
+        if (phase === 2) phase2BillTotal = +(phase2BillTotal - (d.minPayment || 0)).toFixed(2);
+        i++;
+      } else {
+        events.push({ name: d.name, paid: available, closed: false, leftOnDebt: +(d.remaining - available).toFixed(2), phase });
+        totalPaid = +(totalPaid + available).toFixed(2);
+        d.remaining = +(d.remaining - available).toFixed(2);
+        available = 0;
+      }
+    }
+
+    const fixedOngoing = phase === 1
+      ? fixedBillDebts.map(d => ({ name: d.name, minPayment: d.minPayment }))
+      : [];
+
+    carry = +available.toFixed(2);
+    rows.push({ monthName: MONTHS[mIdx], year, income: +income.toFixed(2), billTotal, savingsPerMonth, pool, carry, events, fixedOngoing, isBonus, phase });
+    offset++;
+  }
+
+  return { rows, totalMonths: offset, closingDates, totalPaid: +totalPaid.toFixed(2) };
+}
+
+// ── Gather form data ──
+function gatherData() {
+  const cur     = document.getElementById('currency').value;
+  const freq    = document.getElementById('freq').value;
+  const raw     = parseFloat(document.getElementById('income').value) || 0;
+  const income  = freq === 'biweekly' ? raw * 2 : raw;
+  const savings = parseFloat(document.getElementById('savings').value) || 0;
+  const startM  = parseInt(document.getElementById('startMonth').value);
+  const startY  = parseInt(document.getElementById('startYear').value) || 2025;
+
+  const billData = billIds.map(id => ({
+    name:   document.getElementById('bname-' + id)?.value || 'Bill',
+    amount: parseFloat(document.getElementById('bamt-' + id)?.value) || 0
+  }));
+
+  const allDebts = debtIds.map(id => ({
+    id,
+    name:       document.getElementById('dname-' + id)?.value || 'Debt',
+    balance:    parseFloat(document.getElementById('dbal-' + id)?.value) || 0,
+    type:       getDebtType(id),
+    minPayment: parseFloat(document.getElementById('dmin-' + id)?.value) || 0,
+    rate:       parseFloat(document.getElementById('drate-' + id)?.value) || 0
+  })).filter(d => d.balance > 0);
+
+  const fixedBillDebts   = allDebts.filter(d => d.type === 'fixed');
+  const closeableDebts   = allDebts.filter(d => d.type === 'closeable');
+  const baseBillTotal    = billData.reduce((s, b) => s + b.amount, 0)
+    + fixedBillDebts.reduce((s, d) => s + d.minPayment, 0);
+  const surplus          = income - baseBillTotal - savings;
+
+  return { cur, income, savings, startM, startY, billData, allDebts, fixedBillDebts, closeableDebts, baseBillTotal, surplus };
+}
+
+// ── Live ticker ──
+function liveUpdate() {
+  const { income, savings, baseBillTotal, closeableDebts, fixedBillDebts, surplus, startM, startY } = gatherData();
+  const ticker = document.getElementById('liveTicker');
+  const num    = document.getElementById('tickerNum');
+  if (!income || !closeableDebts.length || surplus <= 0) {
+    if (ticker) ticker.style.display = 'none';
+    return;
+  }
+  const r = simulate(closeableDebts, fixedBillDebts, baseBillTotal, savings, income, strategy, startM, startY, []);
+  if (ticker) ticker.style.display = 'flex';
+  if (num) num.textContent = r.totalMonths;
+}
+
+// ── Phase 2 popup ──
+function showPhase2Popup(fixedBillDebts, cur, onConfirm) {
+  const existing = document.getElementById('p2popup');
+  if (existing) existing.remove();
+
+  const backdrop = document.createElement('div');
+  backdrop.id = 'p2popup';
+  backdrop.className = 'p2-backdrop';
+
+  const sorted = [...fixedBillDebts].sort((a,b) => a.balance - b.balance);
+  const items  = sorted.map((d, i) => `
+    <div class="p2-debt-item" id="p2item-${i}" onclick="toggleP2Item(${i},${JSON.stringify(d.id)})">
+      <div class="p2-check" id="p2check-${i}"></div>
+      <div>
+        <div class="p2-debt-name">${d.name}</div>
+        <div class="p2-debt-detail">${fmt(d.balance,cur)} balance · ${fmt(d.minPayment,cur)}/mo minimum</div>
+      </div>
+    </div>`).join('');
+
+  backdrop.innerHTML = `
+    <div class="p2-box">
+      <div class="p2-eyebrow">Phase 2: Fixed debts</div>
+      <h3 class="p2-title">Closeable debts cleared.</h3>
+      <p class="p2-sub">Number your fixed bill debts in the order you want to attack them. Leave unselected to use your current strategy order.</p>
+      ${items}
+      <div class="p2-actions">
+        <button class="p2-btn-primary" onclick="confirmP2Order()">Continue simulation</button>
+        <button class="p2-btn-ghost" onclick="dismissP2Popup()">Use strategy order</button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(backdrop);
+  window._p2Debts   = sorted;
+  window._p2Confirm = onConfirm;
+  window._p2Chosen  = [];
+}
+
+function toggleP2Item(idx, id) {
+  const check = document.getElementById('p2check-' + idx);
+  const item  = document.getElementById('p2item-' + idx);
+  const pos   = window._p2Chosen.indexOf(id);
+  if (pos === -1) {
+    window._p2Chosen.push(id);
+    const num = window._p2Chosen.length;
+    check.textContent = num;
+    check.style.background    = 'var(--gold)';
+    check.style.borderColor   = 'var(--gold)';
+    check.style.color         = '#fff';
+    item.style.borderColor    = 'var(--gold)';
+  } else {
+    window._p2Chosen.splice(pos, 1);
+    check.textContent = '';
+    check.style.background  = 'transparent';
+    check.style.borderColor = 'var(--border)';
+    check.style.color       = '';
+    item.style.borderColor  = 'var(--border)';
+    window._p2Chosen.forEach((cid, i) => {
+      const d = window._p2Debts.findIndex(d => d.id === cid);
+      if (d !== -1) {
+        const c = document.getElementById('p2check-' + d);
+        if (c) c.textContent = i + 1;
+      }
+    });
+  }
+}
+
+function confirmP2Order() {
+  const order = window._p2Chosen.length ? window._p2Chosen : [];
+  document.getElementById('p2popup')?.remove();
+  window._p2Confirm(order);
+}
+
+function dismissP2Popup() {
+  document.getElementById('p2popup')?.remove();
+  window._p2Confirm([]);
+}
+
+// ── Main simulation render ──
+function runSim(phase2Order) {
+  phase2Order = phase2Order || [];
+  const { cur, income, savings, startM, startY, allDebts, fixedBillDebts, closeableDebts, baseBillTotal, surplus } = gatherData();
+  const empty   = document.getElementById('emptyState');
+  const content = document.getElementById('resultsContent');
+
+  if (!income)                { showError('Enter your income to get started.'); return; }
+  if (!allDebts.length)       { showError('Add your debts on the left to get started.'); return; }
+  if (!closeableDebts.length) {
+    showError("All your debts are set to fixed bill. Tap the green badge on at least one debt to mark it as closeable. That is the one Kronus will attack first.");
+    return;
+  }
+  if (surplus <= 0) {
+    showError(`After fixed bills and savings, your surplus is ${fmt(surplus, cur)}. Free up at least ${fmt(Math.abs(surplus)+1, cur)}/mo to start making progress.`);
+    return;
+  }
+
+  if (fixedBillDebts.length > 0 && phase2Order.length === 0 && !window._p2SkipPopup) {
+    window._p2SkipPopup = false;
+    showPhase2Popup(fixedBillDebts, cur, (order) => {
+      window._p2SkipPopup = true;
+      runSim(order);
+    });
+    return;
+  }
+  window._p2SkipPopup = false;
+
+  const result   = simulate(closeableDebts, fixedBillDebts, baseBillTotal, savings, income, strategy, startM, startY, phase2Order);
+  const altStrat = strategy === 'snowball' ? 'avalanche' : 'snowball';
+  const altRes   = simulate(closeableDebts, fixedBillDebts, baseBillTotal, savings, income, altStrat, startM, startY, phase2Order);
+
+  const allDebtsTotal = allDebts.reduce((s, d) => s + d.balance, 0);
+  const savingsAtEnd  = savings * result.totalMonths;
+  const endM          = (startM + result.totalMonths - 1) % 12;
+  const endY          = startY + Math.floor((startM + result.totalMonths - 1) / 12);
+  const debtFreeDate  = MONTHS[endM] + ' ' + endY;
+  const monthDiff     = Math.abs(result.totalMonths - altRes.totalMonths);
+
+  const queueOrder = [...closeableDebts];
+  if (strategy === 'snowball') queueOrder.sort((a,b) => a.balance - b.balance);
+  else                         queueOrder.sort((a,b) => b.balance - a.balance);
+
+  const p2order = phase2Order.length
+    ? [...fixedBillDebts].sort((a,b) => {
+        const ai = phase2Order.indexOf(a.id), bi = phase2Order.indexOf(b.id);
+        if (ai === -1 && bi === -1) return 0;
+        if (ai === -1) return 1; if (bi === -1) return -1;
+        return ai - bi;
+      })
+    : [...fixedBillDebts].sort((a,b) => strategy === 'snowball' ? a.balance - b.balance : b.balance - a.balance);
+
+  // Update ticker
+  const _t = document.getElementById('liveTicker');
+  const _n = document.getElementById('tickerNum');
+  if (_t) _t.style.display = 'flex';
+  if (_n) _n.textContent = result.totalMonths;
+
+  const hasInterest = allDebts.some(d => d.rate > 0);
+
+  let html = '';
+
+  // Summary cards
+  html += `<div class="summary-grid">
+    <div class="summary-card highlight">
+      <div class="sc-label">Fully debt-free</div>
+      <div class="sc-value" style="font-size:1.3rem">${debtFreeDate}</div>
+      <div class="sc-sub">${fmtM(result.totalMonths)} from now, all debts</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">Total debt</div>
+      <div class="sc-value">${fmt(allDebtsTotal, cur)}</div>
+      <div class="sc-sub">${closeableDebts.length} closeable, ${fixedBillDebts.length} fixed</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">Monthly surplus</div>
+      <div class="sc-value">${fmt(surplus, cur)}</div>
+      <div class="sc-sub">After bills and savings</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">Savings at payoff</div>
+      <div class="sc-value">${fmt(savingsAtEnd, cur)}</div>
+      <div class="sc-sub">Protected throughout</div>
+    </div>
+  </div>`;
+
+  // Closing dates
+  html += `<div class="tbl-section-head" style="margin-bottom:10px">Closing dates: every debt</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-bottom:1.5rem">`;
+
+  queueOrder.forEach((d, i) => {
+    const c    = CHIP_COLORS[i % CHIP_COLORS.length];
+    const date = result.closingDates[d.name];
+    html += `<div style="background:var(--section);border:1px solid var(--border);border-left:3px solid ${c.color};border-radius:10px;padding:12px 14px">
+      <div style="font-size:10px;color:var(--muted);margin-bottom:2px;text-transform:uppercase;letter-spacing:0.06em">Closeable</div>
+      <div style="font-weight:600;color:var(--navy);font-size:14px;margin-bottom:4px">${d.name}</div>
+      <div style="font-size:1.05rem;font-weight:700;color:${c.color}">${date ? date.monthName + ' ' + date.year : 'Calculating...'}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${fmt(d.balance, cur)} balance</div>
+    </div>`;
+  });
+
+  p2order.forEach((d) => {
+    const date = result.closingDates[d.name];
+    html += `<div style="background:var(--gold-bg);border:1px solid rgba(212,137,26,0.3);border-left:3px solid var(--gold);border-radius:10px;padding:12px 14px">
+      <div style="font-size:10px;color:var(--gold);margin-bottom:2px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600">Phase 2: fixed</div>
+      <div style="font-weight:600;color:var(--navy);font-size:14px;margin-bottom:4px">${d.name}</div>
+      <div style="font-size:1.05rem;font-weight:700;color:var(--gold)">${date ? date.monthName + ' ' + date.year : 'Calculating...'}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${fmt(d.balance, cur)} balance, ${fmt(d.minPayment, cur)}/mo minimum</div>
+    </div>`;
+  });
+
+  html += `</div>`;
+
+  // Payoff queue
+  html += `<div class="tbl-section-head" style="margin-bottom:10px">Closing sequence (${strategy})</div>
+  <div class="order-list">`;
+  queueOrder.forEach((d, i) => {
+    const c = CHIP_COLORS[i % CHIP_COLORS.length];
+    html += `<div class="order-chip" style="background:${c.bg};color:${c.color};border:1px solid ${c.border}">
+      <span class="chip-num">${i+1}</span>${d.name}, ${fmt(d.balance, cur)}
+    </div>`;
+  });
+  if (fixedBillDebts.length) {
+    html += `<div style="display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;background:var(--gold-bg);border:1px solid rgba(212,137,26,0.3);font-size:12px;color:var(--gold);font-weight:500">
+      Phase 2: ${p2order.map(d=>d.name).join(', ')}
+    </div>`;
+  }
+  html += `</div>`;
+
+  // Strategy comparison
+  const noInterestNote = !hasInterest
+    ? `<div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.6;padding:8px 12px;border-top:1px solid var(--border)">No interest rates entered. Both strategies take the same time without interest. Add rates to your debts to see the real difference.</div>`
+    : '';
+
+  const swPaid   = strategy === 'snowball'  ? result.totalPaid : altRes.totalPaid;
+  const avPaid   = strategy === 'avalanche' ? result.totalPaid : altRes.totalPaid;
+  const paidDiff = Math.round(swPaid - avPaid);
+
+  html += `<div class="tbl-section-head" style="margin-bottom:10px">Strategy comparison</div>
+  <div class="compare-block">
+    <div class="compare-row"><span class="cr-label">Snowball, smallest first</span><span class="cr-val">${fmtM(strategy==='snowball'?result.totalMonths:altRes.totalMonths)}</span></div>
+    <div class="compare-row"><span class="cr-label">Avalanche, largest first</span><span class="cr-val">${fmtM(strategy==='avalanche'?result.totalMonths:altRes.totalMonths)}</span></div>
+    <div class="compare-row"><span class="cr-label">Snowball total paid</span><span class="cr-val">${fmt(swPaid, cur)}</span></div>
+    <div class="compare-row"><span class="cr-label">Avalanche total paid</span><span class="cr-val">${fmt(avPaid, cur)}</span></div>
+    <div class="compare-row"><span class="cr-label">Avalanche saves</span><span>${hasInterest ? (paidDiff > 0 ? fmt(paidDiff, cur) + ' less paid' : 'Same total with these balances') : 'Add interest rates to compare'}</span></div>
+    ${noInterestNote}
+  </div>`;
+
+  // Savings shortcut
+  if (savings > 0) {
+    html += `<div class="tbl-section-head" style="margin-bottom:10px">Savings shortcut</div>
+    <div class="shortcut-block">
+      <div class="sh-title">What if I reduce my monthly savings?</div>
+      <div class="shortcut-row">
+        <label>Reduce savings by</label>
+        <input type="number" id="reduceInput" placeholder="0" min="0" max="${savings}" step="50"
+          oninput="calcShortcut(${result.totalMonths},${savings},${income},${baseBillTotal},${startM},${startY},'${cur}')">
+      </div>
+      <div class="shortcut-result" id="shortcutResult">
+        Your savings (${fmt(savings,cur)}/mo) are fully protected. Reduce this to see how much sooner you would be debt-free.
+      </div>
+    </div>`;
+  }
+
+  // Timeline table
+  html += `<div class="tbl-section-head">Month-by-month timeline</div>
+  <div class="tbl-wrap"><table>
+    <thead><tr>
+      <th>Month</th><th>Income</th><th>Bills</th><th>Savings</th><th>Pool</th><th>Activity</th><th>Carry</th>
+    </tr></thead><tbody>`;
+
+  result.rows.forEach(r => {
+    const phaseLabel = r.phase === 2
+      ? `<span class="badge-p2">phase 2</span>`
+      : '';
+    const evHTML = r.events.map(e => {
+      if (e.closed) return `<span class="badge-closed">✓ ${e.name} closed</span>`;
+      return `<span class="debt-progress"><span>${e.name}</span><br><span class="dp-partial">${fmt(e.paid,cur)} paid, ${fmt(e.leftOnDebt,cur)} remaining</span></span>`;
+    }).join('<br>');
+    const fixedHTML = r.fixedOngoing.length
+      ? r.fixedOngoing.map(f => `<span style="font-size:11px;color:var(--muted)">${f.name}: ${fmt(f.minPayment,cur)} min</span>`).join('<br>')
+      : '';
+    const activityHTML = [evHTML, fixedHTML].filter(Boolean).join('<br>') || '<span class="td-muted">—</span>';
+    const bonusHTML    = r.isBonus ? `<span class="badge-bonus">3rd cheque</span>` : '';
+
+    html += `<tr>
+      <td class="td-month">${r.monthName}${bonusHTML}${phaseLabel}<span class="td-year">${r.year}</span></td>
+      <td class="td-num">${fmt(r.income,cur)}</td>
+      <td class="td-num td-muted">${fmt(r.billTotal,cur)}</td>
+      <td class="td-num td-muted">${fmt(r.savingsPerMonth,cur)}</td>
+      <td class="td-num" style="color:var(--gold);font-weight:600">${fmt(r.pool,cur)}</td>
+      <td>${activityHTML}</td>
+      <td class="td-num td-muted">${fmt(r.carry,cur)}</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+
+  empty.style.display   = 'none';
+  content.style.display = 'block';
+  content.innerHTML     = html;
+  content.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ── Savings shortcut ──
+function calcShortcut(baseMo, baseSavings, income, baseBillTotal, startM, startY, cur) {
+  const reduce     = parseFloat(document.getElementById('reduceInput')?.value) || 0;
+  const newSavings = Math.max(0, baseSavings - reduce);
+  const cd = debtIds.map(id => ({
+    id, name: document.getElementById('dname-'+id)?.value || 'Debt',
+    balance: parseFloat(document.getElementById('dbal-'+id)?.value) || 0,
+    type: getDebtType(id),
+    minPayment: parseFloat(document.getElementById('dmin-'+id)?.value) || 0
+  })).filter(d => d.balance > 0);
+  const cl = cd.filter(d => d.type === 'closeable');
+  const fx = cd.filter(d => d.type === 'fixed');
+  const r  = simulate(cl, fx, baseBillTotal, newSavings, income, strategy, startM, startY, []);
+  const diff = baseMo - r.totalMonths;
+  const endM = (startM + r.totalMonths - 1) % 12;
+  const endY = startY + Math.floor((startM + r.totalMonths - 1) / 12);
+  const el   = document.getElementById('shortcutResult');
+  if (!el) return;
+  if (reduce <= 0) {
+    el.textContent = `Your savings (${fmt(baseSavings,cur)}/mo) are fully protected. Reduce this to see how much sooner you would be debt-free.`;
+    return;
+  }
+  if (diff > 0) {
+    el.innerHTML = `Saving <strong style="color:var(--gold)">${fmt(newSavings,cur)}/mo</strong> instead makes you debt-free <strong style="color:var(--gold)">${diff} month${diff>1?'s':''} sooner</strong>, ${MONTHS[endM]} ${endY}. Savings at payoff: ${fmt(newSavings*r.totalMonths,cur)}.`;
+  } else {
+    el.textContent = 'No change to timeline at this reduction amount.';
+  }
+}
+
+// ── Error display ──
+function showError(msg) {
+  document.getElementById('emptyState').style.display = 'none';
+  const content = document.getElementById('resultsContent');
+  content.style.display = 'block';
+  content.innerHTML = `<div class="alert alert-warn">${msg}</div>`;
+}
+
+// ── FAQ ──
+function toggleFaq(el) {
+  const item = el.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.faq-q').setAttribute('aria-expanded','false');
+  });
+  if (!isOpen) { item.classList.add('open'); el.setAttribute('aria-expanded','true'); }
+}
+
+// ── Scroll wheel ──
+document.addEventListener('wheel', function(e) {
+  if (document.activeElement && document.activeElement.type === 'number') {
+    document.activeElement.blur();
+  }
+}, { passive: false });
+
+// ── Init — empty form ──
+// Set start month/year to today
+(function() {
+  const now = new Date();
+  const monthSel = document.getElementById('startMonth');
+  const yearInp  = document.getElementById('startYear');
+  if (monthSel) monthSel.value = now.getMonth();
+  if (yearInp)  yearInp.value  = now.getFullYear();
+})();
+// Start with one empty bill and one empty debt as placeholders
+addBill();
+addDebt();
+</script>
+</body>
+</html>
