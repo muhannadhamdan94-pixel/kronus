@@ -350,19 +350,19 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Calculator section ── */
 .calc-section { background: var(--section); border-top: 3px solid var(--gold); }
-.calc-header { max-width: 1100px; margin: 0 auto; padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 4vw, 2rem) 1.5rem; }
+.calc-header { max-width: 100%; margin: 0 auto; padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 4vw, 2.5rem) 1.5rem; }
 .calc-header h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
 .calc-header p { font-size: 14px; color: var(--muted); }
 
 /* ── Form panel ── */
-.main { display: grid; grid-template-columns: clamp(300px, 38%, 420px) 1fr; max-width: 1100px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2rem) clamp(2rem, 5vw, 4rem); gap: clamp(1rem, 2vw, 2rem); }
+.main { display: grid; grid-template-columns: clamp(300px, 35%, 420px) 1fr; max-width: 100%; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2.5rem) clamp(2rem, 5vw, 4rem); gap: clamp(1.25rem, 2.5vw, 2.5rem); }
 .form-panel {
   background: var(--white); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 2rem;
+  border-radius: var(--radius-lg); padding: 2rem 2.25rem;
   position: sticky; top: 72px; max-height: calc(100vh - 88px);
   overflow-y: auto; align-self: start;
 }
-.results-panel { min-height: 400px; }
+.results-panel { min-height: 600px; }
 
 /* ── Form elements ── */
 .section-head {
@@ -816,11 +816,216 @@ footer {
 }
 .tool-gate-btn:hover { background: var(--gold2); }
 
+
+/* ── Password requirements ── */
+.pw-rules {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 8px;
+}
+.pw-rule {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+.pw-rule.met { color: var(--green); }
+.pw-rule.unmet { color: var(--muted); }
+.pw-rule-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.pw-rule.met .pw-rule-dot { background: var(--green); }
+
+/* ── Usage limit banner ── */
+.usage-banner {
+  background: var(--gold-bg);
+  border: 1px solid rgba(212,137,26,0.3);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.usage-banner strong { color: var(--navy); }
+.usage-banner-btn {
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.usage-banner-btn:hover { background: var(--gold2); }
+
+/* ── Full screen tool mode (logged in) ── */
+body.tool-mode {
+  overflow: hidden;
+}
+.tool-mode .landing-only {
+  display: none !important;
+}
+.tool-mode #calculator {
+  position: fixed;
+  inset: 0;
+  top: 64px;
+  z-index: 50;
+  overflow-y: auto;
+  background: var(--section);
+  border-top: none;
+}
+.tool-mode .main {
+  max-width: 100%;
+  padding: 0 clamp(1rem, 3vw, 2rem) clamp(1.5rem, 3vw, 2.5rem);
+  min-height: calc(100vh - 64px);
+  grid-template-columns: clamp(300px, 32%, 400px) 1fr;
+}
+.tool-mode .form-panel {
+  max-height: calc(100vh - 112px);
+}
+.tool-mode .calc-header {
+  padding: 1.5rem clamp(1rem, 3vw, 2rem) 1rem;
+}
+@media (max-width: 1024px) {
+  .tool-mode .main { grid-template-columns: 1fr; }
+  .tool-mode #calculator { overflow-y: auto; }
+}
+
+
+/* ── Footer privacy section ── */
+.footer-privacy {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: clamp(2rem, 4vw, 3rem) clamp(1.25rem, 4vw, 2.5rem);
+}
+.footer-privacy-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px,100%), 1fr));
+  gap: 2rem;
+}
+.fp-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.fp-body {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.75;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 1.25rem clamp(1.25rem, 4vw, 2.5rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  max-width: 100%;
+}
+
+/* ── Delete account button ── */
+.nav-delete-btn {
+  font-size: 12px;
+  color: var(--red, #C0392B);
+  background: none;
+  border: 1px solid rgba(192,57,43,0.3);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.15s;
+}
+.nav-delete-btn:hover {
+  background: var(--red-bg, #FDECEA);
+  border-color: rgba(192,57,43,0.6);
+}
+
+/* ── Delete confirm modal ── */
+.delete-backdrop {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(26,58,92,0.65);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.delete-backdrop.open { opacity: 1; pointer-events: all; }
+.delete-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  width: 100%; max-width: min(420px, calc(100vw - 2rem));
+  box-shadow: 0 24px 64px rgba(26,58,92,0.2);
+  text-align: center;
+}
+.delete-icon {
+  font-size: 2.5rem; margin-bottom: 1rem; color: var(--red, #C0392B);
+}
+.delete-title {
+  font-size: 1.15rem; font-weight: 700; color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+.delete-sub {
+  font-size: 13px; color: var(--muted); line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+.delete-actions {
+  display: flex; gap: 10px;
+}
+.delete-cancel {
+  flex: 1; padding: 11px;
+  background: none; border: 1.5px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; font-weight: 500;
+  color: var(--muted); cursor: pointer; font-family: var(--font);
+  transition: all 0.15s;
+}
+.delete-cancel:hover { border-color: var(--navy); color: var(--navy); }
+.delete-confirm-btn {
+  flex: 1; padding: 11px;
+  background: #C0392B; color: var(--white);
+  border: none; border-radius: var(--radius);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: var(--font);
+  transition: background 0.15s;
+}
+.delete-confirm-btn:hover { background: #a93226; }
+.delete-confirm-btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+.delete-error {
+  background: #FDECEA; border: 1px solid rgba(192,57,43,0.25);
+  color: #C0392B; font-size: 12px; padding: 8px 12px;
+  border-radius: var(--radius); margin-bottom: 1rem; display: none;
+}
+.delete-error.show { display: block; }
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+<div class="landing-only">
 <!-- ── Nav ── -->
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-logo">
@@ -841,6 +1046,7 @@ footer {
     <div class="nav-user" id="navUser" style="display:none">
       <span class="nav-user-email" id="navUserEmail"></span>
       <button class="nav-signout" onclick="signOut()">Sign out</button>
+      <button class="nav-delete-btn" onclick="openDeleteModal()" title="Delete account">Delete account</button>
     </div>
   </div>
 </nav>
@@ -1160,6 +1366,7 @@ footer {
   <a href="#calculator" class="btn-cta-dark" onclick="event.preventDefault();document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Start being debt free</a>
 </div>
 
+</div><!-- end landing-only -->
 <!-- ══ CALCULATOR ══ -->
 <div id="calculator" class="calc-section">
   <div class="calc-header">
@@ -1234,7 +1441,8 @@ footer {
         <p style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:6px">Ring-fenced every month. Never used for debt.</p>
       </div>
 
-      <button class="run-btn" onclick="runSim()">Show me when I'm free</button>
+      <div id="usageBanner" class="usage-banner" style="display:none"></div>
+      <button class="run-btn" id="mainRunBtn" onclick="handleRunWithLimit()">Show me when I'm free</button>
 
     </aside>
 
@@ -1261,6 +1469,37 @@ footer {
       <a href="#calculator" class="footer-link">Try the sequencer</a>
     </div>
     <div class="footer-note">Built for people who are ready to be done.</div>
+  </div>
+
+  <div class="footer-privacy">
+    <div class="footer-privacy-inner">
+
+      <div class="fp-block">
+        <div class="fp-title">What we store</div>
+        <p class="fp-body">When you create a Kronus account, we store your email address and an encrypted password. That is all. We use Supabase as our database provider, hosted on secure infrastructure. Your password is never stored in plain text — it is hashed before it reaches our database.</p>
+      </div>
+
+      <div class="fp-block">
+        <div class="fp-title">What we never store</div>
+        <p class="fp-body">Every number you enter into the Kronus sequencer — your income, debts, bills, savings amounts, interest rates, or any simulation result — runs entirely inside your browser. None of it is transmitted to our servers. None of it is stored anywhere. When you close the tab, it is gone. We have no access to your financial information and we never will.</p>
+      </div>
+
+      <div class="fp-block">
+        <div class="fp-title">Third-party services</div>
+        <p class="fp-body">Kronus uses Supabase for authentication only. We do not use advertising networks, analytics trackers, or data brokers. We do not sell your information to any third party. We do not share your email address with anyone.</p>
+      </div>
+
+      <div class="fp-block">
+        <div class="fp-title">Deleting your account</div>
+        <p class="fp-body">You can delete your account at any time from inside the tool. When you delete your account, your email address and password hash are permanently removed from our database within 24 hours. There is nothing else to delete because we never stored anything else.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Kronus. Built for people who are ready to be done.</span>
+    <span style="color:rgba(255,255,255,0.2)">Your financial data never leaves your device.</span>
   </div>
 </footer>
 
@@ -1882,6 +2121,25 @@ addBill();
 addDebt();
 </script>
 
+<!-- ── Delete Account Confirm Modal ── -->
+<div class="delete-backdrop" id="deleteBackdrop" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+  <div class="delete-box">
+    <div class="delete-icon">⚠</div>
+    <div class="delete-title" id="deleteTitle">Delete your account?</div>
+    <p class="delete-sub">
+      This permanently removes your email and password from our database.
+      There is nothing else stored, so nothing else to delete.
+      <br><br>
+      <strong>This cannot be undone.</strong>
+    </p>
+    <div class="delete-error" id="deleteError"></div>
+    <div class="delete-actions">
+      <button class="delete-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <button class="delete-confirm-btn" id="deleteConfirmBtn" onclick="handleDeleteAccount()">Yes, delete my account</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── Sign Up Modal ── -->
 <div class="auth-backdrop" id="signupBackdrop" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
   <div class="auth-box">
@@ -1902,8 +2160,15 @@ addDebt();
       <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email">
     </div>
     <div class="auth-field">
-      <label for="signupPassword">Password <span style="font-weight:400">(min. 8 characters)</span></label>
-      <input type="password" id="signupPassword" placeholder="Choose a strong password" autocomplete="new-password">
+      <label for="signupPassword">Password</label>
+      <input type="password" id="signupPassword" placeholder="Choose a strong password" autocomplete="new-password" oninput="checkPwRules(this.value)">
+      <div class="pw-rules" id="pwRules">
+        <div class="pw-rule unmet" id="rule-len"><span class="pw-rule-dot"></span>At least 6 characters</div>
+        <div class="pw-rule unmet" id="rule-upper"><span class="pw-rule-dot"></span>Uppercase letter</div>
+        <div class="pw-rule unmet" id="rule-lower"><span class="pw-rule-dot"></span>Lowercase letter</div>
+        <div class="pw-rule unmet" id="rule-digit"><span class="pw-rule-dot"></span>Number</div>
+        <div class="pw-rule unmet" id="rule-symbol"><span class="pw-rule-dot"></span>Symbol (!@#$...)</div>
+      </div>
     </div>
     <button class="auth-btn" id="signupBtn" onclick="handleSignUp()">Create account</button>
     <div class="auth-switch">Already have an account? <a onclick="switchToSignIn()">Sign in</a></div>
@@ -1987,8 +2252,13 @@ function setUserState(user) {
   if (navSignIn) navSignIn.style.display = 'none';
   if (navUser)   navUser.style.display   = 'flex';
   if (emailEl)   emailEl.textContent     = user.email;
-  // Show tool, remove gate
+  // Show tool, remove gate, enter full screen mode
+  // Reset and permanently hide the usage counter — signed-in users get unlimited access
+  resetUsage();
+  const banner = document.getElementById('usageBanner');
+  if (banner) banner.style.display = 'none';
   showTool();
+  enterToolMode();
 }
 
 // ── Update UI for guest ──
@@ -1998,8 +2268,11 @@ function setGuestState() {
   const navSignIn = document.getElementById('navSignIn');
   if (navSignIn) navSignIn.style.display = 'block';
   if (navUser)   navUser.style.display   = 'none';
-  // Gate the tool
+  // Gate the tool and exit full screen mode
   showGate();
+  exitToolMode();
+  // Counter is NOT reset on sign-out — guests must sign in to use the tool
+  updateUsageBanner();
 }
 
 
@@ -2058,8 +2331,9 @@ async function handleSignUp() {
     errEl.classList.add('show');
     return;
   }
-  if (password.length < 8) {
-    errEl.textContent = 'Password must be at least 8 characters.';
+  const pwError = validatePassword(password);
+  if (pwError) {
+    errEl.textContent = pwError;
     errEl.classList.add('show');
     return;
   }
@@ -2122,6 +2396,84 @@ async function signOut() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// ── Delete account modal ──
+function openDeleteModal() {
+  const el = document.getElementById('deleteBackdrop');
+  const errEl = document.getElementById('deleteError');
+  const btn   = document.getElementById('deleteConfirmBtn');
+  if (errEl) errEl.classList.remove('show');
+  if (btn)   { btn.disabled = false; btn.textContent = 'Yes, delete my account'; }
+  if (el)    el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+  const el = document.getElementById('deleteBackdrop');
+  if (el) el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+async function handleDeleteAccount() {
+  const btn   = document.getElementById('deleteConfirmBtn');
+  const errEl = document.getElementById('deleteError');
+  if (errEl) errEl.classList.remove('show');
+
+  btn.disabled    = true;
+  btn.textContent = 'Deleting...';
+
+  // Call Supabase Edge Function to delete user
+  // Supabase requires a server-side call to delete a user account
+  // We use the RPC approach via the admin API through a Supabase Edge Function
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) {
+      errEl.textContent = 'Session expired. Please sign in again.';
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Yes, delete my account';
+      return;
+    }
+
+    // Call the delete-user edge function
+    const res = await fetch(SUPABASE_URL + '/functions/v1/delete-user', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + session.access_token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error || 'Deletion failed. Please try again.');
+    }
+
+    // Sign out locally and reset
+    await sb.auth.signOut();
+    closeDeleteModal();
+    resetUsage();
+    // Show confirmation message briefly before reload
+    document.body.innerHTML = `
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+        font-family:Inter,Arial,sans-serif;background:#F4F7FB;text-align:center;padding:2rem">
+        <div>
+          <div style="font-size:2rem;margin-bottom:1rem">✓</div>
+          <div style="font-size:1.2rem;font-weight:700;color:#1A3A5C;margin-bottom:0.5rem">Account deleted</div>
+          <p style="font-size:14px;color:#6B6C72;max-width:320px">
+            Your email and password have been permanently removed. Redirecting you now.
+          </p>
+        </div>
+      </div>`;
+    setTimeout(() => window.location.reload(), 2500);
+
+  } catch (err) {
+    errEl.textContent = err.message || 'Something went wrong. Please try again.';
+    errEl.classList.add('show');
+    btn.disabled    = false;
+    btn.textContent = 'Yes, delete my account';
+  }
+}
+
 // ── Tool gate: show when guest ──
 function showGate() {
   const panel = document.getElementById('resultsPanel');
@@ -2141,11 +2493,11 @@ function showGate() {
     results.innerHTML = `
       <div class="tool-gate">
         <div class="tool-gate-icon">◎</div>
-        <div class="tool-gate-title">Create a free account to use the sequencer</div>
-        <p class="tool-gate-sub">Sign up takes 30 seconds. We only ask for your email and a password. Nothing you enter into the tool is ever stored.</p>
-        <button class="tool-gate-btn" onclick="openAuth('signup')">Start being debt free</button>
+        <div class="tool-gate-title">Sign in to use the sequencer</div>
+        <p class="tool-gate-sub">A free account is required to access the tool. Takes 30 seconds to create. Nothing you enter is ever stored.</p>
+        <button class="tool-gate-btn" onclick="openAuth(\'signin\')">Sign in</button>
         <div style="font-size:12px;color:var(--muted);margin-top:0.5rem">
-          Already have an account? <a onclick="openAuth('signin')" style="color:var(--gold);cursor:pointer;font-weight:500">Sign in</a>
+          No account yet? <a onclick="openAuth(\'signup\')" style="color:var(--gold);cursor:pointer;font-weight:500">Create one free</a>
         </div>
       </div>`;
   }
@@ -2297,8 +2649,9 @@ async function handleNewPassword() {
     errEl.classList.add('show');
     return;
   }
-  if (pw.length < 8) {
-    errEl.textContent = 'Password must be at least 8 characters.';
+  const newPwError = validatePassword(pw);
+  if (newPwError) {
+    errEl.textContent = newPwError;
     errEl.classList.add('show');
     return;
   }
@@ -2344,16 +2697,141 @@ function friendlyError(msg) {
   return msg;
 }
 
+// ── Password rule checker ──
+function checkPwRules(val) {
+  const rules = {
+    'rule-len':    val.length >= 6,
+    'rule-upper':  /[A-Z]/.test(val),
+    'rule-lower':  /[a-z]/.test(val),
+    'rule-digit':  /[0-9]/.test(val),
+    'rule-symbol': /[^A-Za-z0-9]/.test(val),
+  };
+  Object.entries(rules).forEach(([id, met]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('met', met);
+    el.classList.toggle('unmet', !met);
+  });
+  return Object.values(rules).every(Boolean);
+}
+
+function validatePassword(pw) {
+  if (pw.length < 6)          return 'Password must be at least 6 characters.';
+  if (!/[A-Z]/.test(pw))      return 'Password must include at least one uppercase letter.';
+  if (!/[a-z]/.test(pw))      return 'Password must include at least one lowercase letter.';
+  if (!/[0-9]/.test(pw))      return 'Password must include at least one number.';
+  if (!/[^A-Za-z0-9]/.test(pw)) return 'Password must include at least one symbol (!@#$%...).';
+  return null;
+}
+
+// ── Handle run with usage limit ──
+function handleRunWithLimit() {
+  if (currentUser) {
+    // Signed-in users have unlimited access — always run, never count
+    const banner = document.getElementById('usageBanner');
+    if (banner) banner.style.display = 'none';
+    runSim();
+    return;
+  }
+  const used = incrementUsage();
+  updateUsageBanner();
+  if (used > USAGE_LIMIT) {
+    // Hard block — show signup
+    const empty   = document.getElementById('emptyState');
+    const results = document.getElementById('resultsContent');
+    if (empty) empty.style.display = 'none';
+    if (results) {
+      results.style.display = 'block';
+      results.innerHTML = `
+        <div class="tool-gate">
+          <div class="tool-gate-icon">◎</div>
+          <div class="tool-gate-title">Sign in to keep going</div>
+          <p class="tool-gate-sub">You have used your 5 free previews. A free account gives you unlimited access — no payment, ever.</p>
+          <button class="tool-gate-btn" onclick="openAuth('signin')">Sign in</button>
+          <div style="font-size:12px;color:var(--muted);margin-top:0.5rem">
+            No account yet? <a onclick="openAuth('signup')" style="color:var(--gold);cursor:pointer;font-weight:500">Create one free</a>
+          </div>
+        </div>`;
+    }
+    return;
+  }
+  runSim();
+}
+
+// ── Usage limit (5 runs before signup prompt) ──
+const USAGE_KEY   = 'kronus_runs';
+const USAGE_LIMIT = 5;
+
+function getUsageCount() {
+  return parseInt(localStorage.getItem(USAGE_KEY) || '0', 10);
+}
+
+function incrementUsage() {
+  const n = getUsageCount() + 1;
+  localStorage.setItem(USAGE_KEY, n);
+  return n;
+}
+
+function resetUsage() {
+  localStorage.removeItem(USAGE_KEY);
+}
+
+function updateUsageBanner() {
+  const banner = document.getElementById('usageBanner');
+  if (!banner || currentUser) return;
+  const used = getUsageCount();
+  const remaining = Math.max(0, USAGE_LIMIT - used);
+  if (used === 0) {
+    banner.style.display = 'none';
+    return;
+  }
+  banner.style.display = 'flex';
+  if (remaining <= 0) {
+    banner.innerHTML = `
+      <span><strong>You have used all 5 free simulations.</strong> Sign up free to keep going.</span>
+      <button class="usage-banner-btn" onclick="openAuth('signup')">Sign up free</button>`;
+  } else {
+    banner.innerHTML = `
+      <span><strong>${remaining} free simulation${remaining === 1 ? '' : 's'} remaining.</strong> Sign up to get unlimited access.</span>
+      <button class="usage-banner-btn" onclick="openAuth('signup')">Sign up free</button>`;
+  }
+}
+
+// ── Full screen tool mode for logged-in users ──
+function enterToolMode() {
+  document.body.classList.add('tool-mode');
+  // Scroll to top so tool fills screen from nav down
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  // Add a nav button to go back to landing
+  const navActions = document.getElementById('navActions');
+  if (navActions && !document.getElementById('navBackBtn')) {
+    const backBtn = document.createElement('button');
+    backBtn.id = 'navBackBtn';
+    backBtn.className = 'nav-signout';
+    backBtn.textContent = 'Back to home';
+    backBtn.onclick = exitToolMode;
+    navActions.insertBefore(backBtn, navActions.firstChild);
+  }
+}
+
+function exitToolMode() {
+  document.body.classList.remove('tool-mode');
+  const backBtn = document.getElementById('navBackBtn');
+  if (backBtn) backBtn.remove();
+}
+
 // ── Init on load ──
 window.addEventListener('DOMContentLoaded', () => {
   initAuth();
   checkPasswordReset();
 });
 
-// Also close forgot modal on backdrop click
+// Close modals on backdrop click
 document.addEventListener('DOMContentLoaded', () => {
-  const el = document.getElementById('forgotBackdrop');
-  if (el) el.addEventListener('click', e => { if (e.target === el) closeForgot(); });
+  const forgot = document.getElementById('forgotBackdrop');
+  if (forgot) forgot.addEventListener('click', e => { if (e.target === forgot) closeForgot(); });
+  const del = document.getElementById('deleteBackdrop');
+  if (del) del.addEventListener('click', e => { if (e.target === del) closeDeleteModal(); });
 });
 </script>
 
