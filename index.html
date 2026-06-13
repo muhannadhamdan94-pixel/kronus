@@ -1021,7 +1021,7 @@ body.tool-mode {
 .delete-error.show { display: block; }
 
 </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script></script>
+  </script>
 </head>
 <body>
 
@@ -2214,22 +2214,38 @@ addDebt();
 </div>
 
 
-<script>
+<script type="module">
 // ── Supabase Auth ──
-const SUPABASE_URL  = 'https://lxmzjdkafokteictdjfx.supabase.co';
-const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4bXpqZGthZm9rdGVpY3RkamZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjAyNDEsImV4cCI6MjA5NjkzNjI0MX0.7jDFiWoWf59lNrDGJh9i4wfXOxhHhItwdV0gcz3_1bE';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// Safety check — wait for SDK if not yet available
-let sb;
-function initSupabase() {
-  if (typeof window.supabase === 'undefined') {
-    console.error('Supabase SDK not loaded');
-    return false;
-  }
-  const { createClient } = window.supabase;
-  sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-  return true;
+const SUPABASE_URL = 'https://lxmzjdkafokteictdjfx.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4bXpqZGthZm9rdGVpY3RkamZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNjAyNDEsImV4cCI6MjA5NjkzNjI0MX0.7jDFiWoWf59lNrDGJh9i4wfXOxhHhItwdV0gcz3_1bE';
+
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Expose functions used by inline HTML onclick handlers to window
+// (type="module" scopes functions — we need them globally accessible)
+function exposeGlobals() {
+  window.openAuth        = openAuth;
+  window.closeAuth       = closeAuth;
+  window.switchToSignIn  = switchToSignIn;
+  window.switchToSignUp  = switchToSignUp;
+  window.handleSignUp    = handleSignUp;
+  window.handleSignIn    = handleSignIn;
+  window.signOut         = signOut;
+  window.openDeleteModal  = openDeleteModal;
+  window.closeDeleteModal = closeDeleteModal;
+  window.handleDeleteAccount = handleDeleteAccount;
+  window.showForgotPassword  = showForgotPassword;
+  window.closeForgot         = closeForgot;
+  window.handleForgotPassword = handleForgotPassword;
+  window.handleNewPassword    = handleNewPassword;
+  // Note: runSim, calcShortcut, toggleFaq, toggleP2Item, confirmP2Order,
+  // dismissP2Popup are defined in the main tool script (already global)
+  window.handleRunWithLimit   = handleRunWithLimit;
 }
+
+function initSupabase() { return true; }
 
 // ── Session state ──
 let currentUser = null;
@@ -2832,19 +2848,10 @@ function exitToolMode() {
 
 // ── Init on load ──
 window.addEventListener('DOMContentLoaded', () => {
-  if (!initSupabase()) {
-    // SDK failed to load — show a friendly error
-    const gate = document.getElementById('resultsContent');
-    const empty = document.getElementById('emptyState');
-    if (empty) empty.style.display = 'none';
-    if (gate) {
-      gate.style.display = 'block';
-      gate.innerHTML = '<div class="alert alert-warn">Connection error. Please refresh the page and try again.</div>';
-    }
-    return;
-  }
+  exposeGlobals();
   initAuth();
   checkPasswordReset();
+  updateUsageBanner();
 });
 
 // Close modals on backdrop click
