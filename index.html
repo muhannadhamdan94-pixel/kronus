@@ -878,6 +878,10 @@ footer {
 body.tool-mode {
   overflow: hidden;
 }
+.tool-mode .nav-links { display: none !important; }
+.tool-mode #navSignIn { display: none !important; }
+.tool-mode #navTryFree { display: none !important; }
+.tool-mode #navUser { display: flex !important; }
 .tool-mode .landing-only {
   display: none !important;
 }
@@ -1025,7 +1029,6 @@ body.tool-mode {
 </head>
 <body>
 
-<div class="landing-only">
 <!-- ── Nav ── -->
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-logo">
@@ -1052,6 +1055,7 @@ body.tool-mode {
   </div>
 </nav>
 
+<div class="landing-only">
 <!-- ── Hero ── -->
 <section class="hero" aria-labelledby="hero-h1">
   <div class="hero-eyebrow">Free debt payoff sequencer</div>
@@ -2246,6 +2250,8 @@ function exposeGlobals() {
   window.handleRunWithLimit = handleRunWithLimit;
   window.getVisitorIP       = getVisitorIP;
   window.updateUsageBanner  = updateUsageBanner;
+  window.enterToolMode      = enterToolMode;
+  window.exitToolMode       = exitToolMode;
 }
 
 function initSupabase() { return true; }
