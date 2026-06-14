@@ -2471,15 +2471,23 @@ async function initAuth() {
 }
 
 // ── Update UI for signed-in user ──
-function setUserState(user) {
+async function setUserState(user) {
   currentUser = user;
   // Set email in nav
   const emailEl = document.getElementById('navUserEmail');
   if (emailEl) emailEl.textContent = user.email;
-  // Reset usage counter — signed-in users get unlimited access
+  // Reset guest usage counter — signed-in users get unlimited access
   resetUsage();
   const banner = document.getElementById('usageBanner');
   if (banner) banner.style.display = 'none';
+  // Reset member run counter so 5-use feedback counts from first logged-in use
+  // Only reset if this looks like a fresh login (counter was from guest session)
+  const memberRuns = parseInt(localStorage.getItem(MEMBER_USE_KEY) || '0', 10);
+  const guestRuns  = await getUsageCount().catch(() => 0);
+  // If member counter matches or is less than guest runs, it hasn't started yet
+  if (memberRuns === 0 || memberRuns <= guestRuns) {
+    localStorage.removeItem(MEMBER_USE_KEY);
+  }
   // Show tool and enter full screen — enterToolMode handles all nav visibility
   showTool();
   enterToolMode();
@@ -2488,14 +2496,19 @@ function setUserState(user) {
 // ── Update UI for guest ──
 function setGuestState() {
   currentUser = null;
-  // exitToolMode restores landing page and nav buttons
+  // Restore landing page and nav
   exitToolMode();
-  // Hide nav user section
   const navUser = document.getElementById('navUser');
   if (navUser) navUser.style.display = 'none';
-  // Gate the tool
-  showGate();
-  // Update usage banner but don't reset counter
+  // Restore form panel — guests can use the tool for 3 runs freely
+  const form = document.querySelector('.form-panel');
+  if (form) { form.style.pointerEvents = ''; form.style.opacity = ''; }
+  // Show empty state (not the gate)
+  const empty   = document.getElementById('emptyState');
+  const results = document.getElementById('resultsContent');
+  if (empty)   empty.style.display   = 'flex';
+  if (results) { results.style.display = 'none'; results.innerHTML = ''; }
+  // Update usage banner — shows remaining runs if they've used any
   updateUsageBanner();
 }
 
@@ -2730,17 +2743,11 @@ function showGate() {
 // ── Unlock tool for signed-in users ──
 function showTool() {
   const form = document.querySelector('.form-panel');
-  if (form) {
-    form.style.pointerEvents = '';
-    form.style.opacity       = '';
-  }
+  if (form) { form.style.pointerEvents = ''; form.style.opacity = ''; }
   const results = document.getElementById('resultsContent');
   const empty   = document.getElementById('emptyState');
-  if (results) {
-    results.style.display = 'none';
-    results.innerHTML     = '';
-  }
-  if (empty) empty.style.display = 'flex';
+  if (results) { results.style.display = 'none'; results.innerHTML = ''; }
+  if (empty)   empty.style.display = 'flex';
 }
 
 // ── Forgot password ──
@@ -2965,8 +2972,9 @@ async function handleRunWithLimit() {
   }
   const used = await incrementUsage();
   await updateUsageBanner();
+
   if (used > USAGE_LIMIT) {
-    // Hard block after 3 uses — require sign in
+    // Use 4+ — hard gate, simulation blocked
     const empty   = document.getElementById('emptyState');
     const results = document.getElementById('resultsContent');
     if (empty) empty.style.display = 'none';
@@ -2977,18 +2985,25 @@ async function handleRunWithLimit() {
           <div class="tool-gate-icon">◎</div>
           <div class="tool-gate-title">Sign in to keep going</div>
           <p class="tool-gate-sub">You have used your 3 free previews. Create a free account for unlimited access — no payment, ever.</p>
-          <button class="tool-gate-btn" onclick="openAuth('signin')">Sign in</button>
+          <button class="tool-gate-btn" onclick="window.openAuth('signin')">Sign in</button>
           <div style="font-size:12px;color:var(--muted);margin-top:0.75rem">
-            No account yet? <a onclick="openAuth('signup')" style="color:var(--gold);cursor:pointer;font-weight:500">Create one free</a>
+            No account yet? <a onclick="window.openAuth('signup')" style="color:var(--gold);cursor:pointer;font-weight:500">Create one free</a>
           </div>
           <div style="font-size:12px;color:var(--muted);margin-top:0.5rem">
-            Not now? <a onclick="handleGuestDecline()" style="color:var(--muted);cursor:pointer;text-decoration:underline">Continue without signing up</a>
+            Not now? <a onclick="window.handleGuestDecline()" style="color:var(--muted);cursor:pointer;text-decoration:underline">Continue without signing up</a>
           </div>
         </div>`;
     }
     return;
   }
+
+  // Use 1, 2, 3 — simulation runs normally
   runSim();
+
+  // Use 3 — last free run: show feedback prompt after simulation completes
+  if (used === USAGE_LIMIT && shouldShowGuestFeedback(used)) {
+    setTimeout(() => openFeedback('guest'), 2000);
+  }
 }
 
 // ── Usage limit — IP-based, survives refresh ──
@@ -3103,7 +3118,10 @@ const MEMBER_USE_KEY      = 'kronus_member_runs';
 let   feedbackRating      = 0;
 
 function shouldShowGuestFeedback(used) {
-  return used === 3 && !localStorage.getItem(FEEDBACK_KEY_GUEST) && !localStorage.getItem(FEEDBACK_DONE_KEY);
+  const fbState = localStorage.getItem(FEEDBACK_KEY_GUEST);
+  const done    = localStorage.getItem(FEEDBACK_DONE_KEY);
+  // Show if on 3rd use AND feedback hasn't been shown/done yet
+  return used === USAGE_LIMIT && !fbState && !done;
 }
 
 function shouldShowMemberFeedback() {
@@ -3145,8 +3163,14 @@ function closeFeedback() {
   const backdrop = document.getElementById('feedbackBackdrop');
   if (!backdrop) return;
   const ctx = backdrop.dataset.context;
-  if (ctx === 'guest')  { localStorage.setItem(FEEDBACK_KEY_GUEST, 'dismissed'); showLandingFeedbackIcon(); }
-  if (ctx === 'member') { localStorage.setItem(FEEDBACK_KEY_MEMBER, 'dismissed'); showNavFeedbackIcon(); }
+  if (ctx === 'guest' || ctx === 'manual-guest') {
+    localStorage.setItem(FEEDBACK_KEY_GUEST, 'dismissed');
+    showLandingFeedbackIcon();
+  }
+  if (ctx === 'member' || ctx === 'manual-member') {
+    localStorage.setItem(FEEDBACK_KEY_MEMBER, 'dismissed');
+    showNavFeedbackIcon();
+  }
   backdrop.classList.remove('open');
   document.body.style.overflow = '';
 }
@@ -3220,15 +3244,22 @@ function hideFeedbackIcons() {
 }
 
 function handleGuestDecline() {
+  // User chose not to sign up — close the gate
   const results = document.getElementById('resultsContent');
   const empty   = document.getElementById('emptyState');
   if (results) results.style.display = 'none';
   if (empty)   empty.style.display   = 'flex';
+
+  // Show feedback if not already seen and not already submitted
   if (!localStorage.getItem(FEEDBACK_KEY_GUEST) && !localStorage.getItem(FEEDBACK_DONE_KEY)) {
-    setTimeout(() => openFeedback('guest'), 300);
-  } else {
+    // Mark as shown immediately to prevent double-trigger
+    localStorage.setItem(FEEDBACK_KEY_GUEST, 'triggered');
+    setTimeout(() => openFeedback('guest'), 400);
+  } else if (localStorage.getItem(FEEDBACK_KEY_GUEST) === 'dismissed') {
+    // Already dismissed feedback — just show the landing icon
     showLandingFeedbackIcon();
   }
+  // If FEEDBACK_DONE_KEY is set — already submitted, nothing to show
 }
 
 function initFeedbackIcons() {
