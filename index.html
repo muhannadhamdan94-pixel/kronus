@@ -1024,6 +1024,106 @@ body.tool-mode {
 }
 .delete-error.show { display: block; }
 
+
+/* ── Feedback modal ── */
+.feedback-backdrop {
+  position: fixed; inset: 0; z-index: 250;
+  background: rgba(26,58,92,0.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.feedback-backdrop.open { opacity: 1; pointer-events: all; }
+.feedback-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  width: 100%; max-width: min(480px, calc(100vw - 2rem));
+  box-shadow: 0 24px 64px rgba(26,58,92,0.18);
+  position: relative;
+}
+.feedback-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 1.3rem; line-height: 1;
+  padding: 4px; transition: color 0.15s;
+}
+.feedback-close:hover { color: var(--navy); }
+.feedback-eyebrow {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.6rem;
+}
+.feedback-title {
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 0.4rem;
+}
+.feedback-sub {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.6; margin-bottom: 1.25rem;
+}
+.feedback-stars {
+  display: flex; gap: 8px;
+  margin-bottom: 1.25rem;
+}
+.feedback-star {
+  font-size: 1.8rem; cursor: pointer;
+  color: var(--border); transition: color 0.15s; line-height: 1;
+  background: none; border: none; padding: 2px;
+}
+.feedback-star.active,
+.feedback-star:hover { color: var(--gold); }
+.feedback-field { margin-bottom: 1rem; }
+.feedback-field label {
+  display: block; font-size: 12px; font-weight: 500;
+  color: var(--muted); margin-bottom: 5px;
+}
+.feedback-field textarea {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px; font-family: var(--font);
+  color: var(--body); outline: none; resize: vertical;
+  min-height: 90px; transition: border-color 0.15s;
+}
+.feedback-field textarea:focus { border-color: var(--gold); }
+.feedback-privacy {
+  font-size: 11px; color: var(--muted);
+  line-height: 1.6; margin-bottom: 1rem;
+  padding: 8px 12px;
+  background: var(--section);
+  border-radius: var(--radius);
+}
+.feedback-actions { display: flex; gap: 8px; }
+.feedback-submit {
+  flex: 1; padding: 11px;
+  background: var(--gold); color: var(--white);
+  border: none; border-radius: var(--radius);
+  font-size: 14px; font-weight: 600;
+  font-family: var(--font); cursor: pointer;
+  transition: background 0.15s;
+}
+.feedback-submit:hover { background: var(--gold2); }
+.feedback-submit:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+.feedback-skip {
+  padding: 11px 16px;
+  background: none; border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--muted);
+  font-size: 13px; cursor: pointer;
+  font-family: var(--font); transition: all 0.15s;
+}
+.feedback-skip:hover { border-color: var(--navy); color: var(--navy); }
+.feedback-success {
+  text-align: center; padding: 1rem 0;
+}
+.feedback-success-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.feedback-success-title {
+  font-size: 1rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 0.4rem;
+}
+.feedback-success-sub { font-size: 13px; color: var(--muted); }
+
 </style>
   </script>
 </head>
@@ -2252,6 +2352,10 @@ function exposeGlobals() {
   window.updateUsageBanner  = updateUsageBanner;
   window.enterToolMode      = enterToolMode;
   window.exitToolMode       = exitToolMode;
+  window.openFeedback       = openFeedback;
+  window.closeFeedback      = closeFeedback;
+  window.setRating          = setRating;
+  window.submitFeedback     = submitFeedback;
 }
 
 function initSupabase() { return true; }
@@ -2761,11 +2865,21 @@ async function handleRunWithLimit() {
     // Signed-in users — unlimited access always
     const banner = document.getElementById('usageBanner');
     if (banner) banner.style.display = 'none';
+    // Check if we should show member feedback (after 5th use)
+    if (shouldShowMemberFeedback()) {
+      runSim();
+      setTimeout(() => openFeedback('member'), 2000);
+      return;
+    }
     runSim();
     return;
   }
   const used = await incrementUsage();
   await updateUsageBanner();
+  // Show feedback after 3rd guest use (their last free run)
+  if (shouldShowGuestFeedback(used)) {
+    setTimeout(() => openFeedback('guest'), 1500);
+  }
   if (used > USAGE_LIMIT) {
     // Hard block after 3 uses — require sign in
     const empty   = document.getElementById('emptyState');
@@ -2900,12 +3014,143 @@ function exitToolMode() {
 }
 
 // ── Init on load ──
+// ── Feedback system ──
+// Uses Web3Forms free API — sends directly to hello@kronus.app
+// Users see no email address
+const FEEDBACK_KEY   = 'kronus_feedback_shown';
+const W3F_ACCESS_KEY = '2877e336-8706-4a50-b54e-e3b410310310'; // Replace after getting key from web3forms.com
+let   feedbackRating = 0;
+
+// Track when to show feedback:
+// Guest: after 3rd use (their last free use)
+// Logged in: after 5th use (milestone)
+const FEEDBACK_KEY_GUEST  = 'kronus_fb_guest';
+const FEEDBACK_KEY_MEMBER = 'kronus_fb_member';
+const MEMBER_USE_KEY      = 'kronus_member_runs';
+
+function shouldShowGuestFeedback(used) {
+  // Show after 3rd use — once only
+  return used === 3 && !localStorage.getItem(FEEDBACK_KEY_GUEST);
+}
+
+function shouldShowMemberFeedback() {
+  // Show after 5th logged-in use — once only
+  const runs = parseInt(localStorage.getItem(MEMBER_USE_KEY) || '0', 10) + 1;
+  localStorage.setItem(MEMBER_USE_KEY, runs);
+  return runs === 5 && !localStorage.getItem(FEEDBACK_KEY_MEMBER);
+}
+
+function openFeedback(context) {
+  // context: 'guest' or 'member'
+  const backdrop = document.getElementById('feedbackBackdrop');
+  const form     = document.getElementById('feedbackFormContent');
+  const success  = document.getElementById('feedbackSuccessContent');
+  const sub      = document.getElementById('feedbackSub');
+
+  // Reset form
+  feedbackRating = 0;
+  document.querySelectorAll('.feedback-star').forEach(s => s.classList.remove('active'));
+  const txt   = document.getElementById('feedbackText');
+  const email = document.getElementById('feedbackEmail');
+  const btn   = document.getElementById('feedbackSubmitBtn');
+  if (txt)   txt.value       = '';
+  if (email) email.value     = '';
+  if (btn)   { btn.disabled = false; btn.textContent = 'Send feedback'; }
+  if (form)    form.style.display    = '';
+  if (success) success.style.display = 'none';
+
+  if (context === 'member') {
+    if (sub) sub.textContent = 'You have been using Kronus — we would love to know what you think.';
+  } else {
+    if (sub) sub.textContent = 'Quick question before you go — takes 30 seconds.';
+  }
+
+  if (backdrop) {
+    backdrop.classList.add('open');
+    backdrop.dataset.context = context;
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFeedback() {
+  const backdrop = document.getElementById('feedbackBackdrop');
+  if (backdrop) {
+    // Mark as shown so it doesn't appear again
+    const ctx = backdrop.dataset.context;
+    if (ctx === 'guest')  localStorage.setItem(FEEDBACK_KEY_GUEST, '1');
+    if (ctx === 'member') localStorage.setItem(FEEDBACK_KEY_MEMBER, '1');
+    backdrop.classList.remove('open');
+  }
+  document.body.style.overflow = '';
+}
+
+function setRating(val) {
+  feedbackRating = val;
+  document.querySelectorAll('.feedback-star').forEach(star => {
+    const v = parseInt(star.dataset.val, 10);
+    star.classList.toggle('active', v <= val);
+  });
+}
+
+async function submitFeedback() {
+  const text    = document.getElementById('feedbackText')?.value.trim() || '';
+  const email   = document.getElementById('feedbackEmail')?.value.trim() || '';
+  const btn     = document.getElementById('feedbackSubmitBtn');
+  const backdrop = document.getElementById('feedbackBackdrop');
+  const context  = backdrop?.dataset.context || 'unknown';
+  const userType = currentUser ? 'Member (' + currentUser.email + ')' : 'Guest';
+
+  if (!feedbackRating && !text) {
+    // Require at least a rating or a comment
+    if (btn) { btn.textContent = 'Please add a rating or comment'; }
+    setTimeout(() => { if (btn) btn.textContent = 'Send feedback'; }, 2000);
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+
+  const payload = {
+    access_key:    W3F_ACCESS_KEY,
+    subject:       'Kronus Feedback — ' + (feedbackRating ? feedbackRating + '★' : 'No rating') + ' — ' + userType,
+    from_name:     'Kronus Feedback',
+    replyto:       email || 'noreply@kronus.app',
+    message: 'Rating: ' + (feedbackRating ? feedbackRating + ' / 5' : 'Not given') + '\nContext: ' + (context === 'guest' ? 'Guest (after 3 free uses)' : 'Member (after 5 logged-in uses)') + '\nUser type: ' + userType + '\nFeedback: ' + (text || 'None provided') + '\nReply to: ' + (email || 'No email provided')
+  };
+
+  try {
+    const res  = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (data.success) {
+      // Mark as shown
+      if (context === 'guest')  localStorage.setItem(FEEDBACK_KEY_GUEST, '1');
+      if (context === 'member') localStorage.setItem(FEEDBACK_KEY_MEMBER, '1');
+      // Show success
+      const form    = document.getElementById('feedbackFormContent');
+      const success = document.getElementById('feedbackSuccessContent');
+      if (form)    form.style.display    = 'none';
+      if (success) success.style.display = '';
+      setTimeout(() => closeFeedback(), 2500);
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch {
+    if (btn) { btn.disabled = false; btn.textContent = 'Try again'; }
+  }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   exposeGlobals();
   initAuth();
   checkPasswordReset();
   // Fetch IP on load so counter is ready
   getVisitorIP().then(() => updateUsageBanner());
+  // Close feedback on backdrop click
+  const fb = document.getElementById('feedbackBackdrop');
+  if (fb) fb.addEventListener('click', e => { if (e.target === fb) closeFeedback(); });
 });
 
 // Close modals on backdrop click
@@ -2940,6 +3185,48 @@ document.addEventListener('DOMContentLoaded', () => {
     <button class="auth-btn" id="forgotBtn" onclick="handleForgotPassword()">Send reset link</button>
     <div class="auth-switch">
       Remembered it? <a onclick="closeForgot();openAuth('signin')">Back to sign in</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Feedback Modal ── -->
+<div class="feedback-backdrop" id="feedbackBackdrop" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+  <div class="feedback-box">
+    <button class="feedback-close" onclick="closeFeedback()" aria-label="Close">×</button>
+    <div id="feedbackFormContent">
+      <div class="feedback-eyebrow">Quick feedback</div>
+      <div class="feedback-title" id="feedbackTitle">How is Kronus working for you?</div>
+      <p class="feedback-sub" id="feedbackSub">Takes 30 seconds. Helps us improve.</p>
+      <div class="feedback-stars" id="feedbackStars" role="group" aria-label="Rating">
+        <button class="feedback-star" data-val="1" onclick="setRating(1)" aria-label="1 star">★</button>
+        <button class="feedback-star" data-val="2" onclick="setRating(2)" aria-label="2 stars">★</button>
+        <button class="feedback-star" data-val="3" onclick="setRating(3)" aria-label="3 stars">★</button>
+        <button class="feedback-star" data-val="4" onclick="setRating(4)" aria-label="4 stars">★</button>
+        <button class="feedback-star" data-val="5" onclick="setRating(5)" aria-label="5 stars">★</button>
+      </div>
+      <div class="feedback-field">
+        <label for="feedbackText">What would make Kronus better? <span style="font-weight:400">(optional)</span></label>
+        <textarea id="feedbackText" placeholder="Tell us what you think — what works, what doesn't, what you wish it could do..."></textarea>
+      </div>
+      <div class="feedback-privacy">
+        Your feedback is shared with the Kronus team only. No personal information is collected — we do not know who you are unless you choose to tell us below.
+      </div>
+      <div class="feedback-field">
+        <label for="feedbackEmail">Your email <span style="font-weight:400">(optional — only if you want a reply)</span></label>
+        <input type="email" id="feedbackEmail" placeholder="you@example.com">
+      </div>
+      <div class="feedback-actions">
+        <button class="feedback-submit" id="feedbackSubmitBtn" onclick="submitFeedback()">Send feedback</button>
+        <button class="feedback-skip" onclick="closeFeedback()">Maybe later</button>
+      </div>
+    </div>
+    <div id="feedbackSuccessContent" style="display:none">
+      <div class="feedback-success">
+        <div class="feedback-success-icon">✓</div>
+        <div class="feedback-success-title">Thank you for your feedback</div>
+        <p class="feedback-success-sub">It goes directly to the team and helps make Kronus better for everyone.</p>
+      </div>
     </div>
   </div>
 </div>
