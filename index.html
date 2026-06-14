@@ -2984,16 +2984,7 @@ function enterToolMode() {
   document.body.classList.add('tool-mode');
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'instant' });
-  // Add back to home button if not already there
-  const navActions = document.getElementById('navActions');
-  if (navActions && !document.getElementById('navBackBtn')) {
-    const backBtn = document.createElement('button');
-    backBtn.id        = 'navBackBtn';
-    backBtn.className = 'nav-signout';
-    backBtn.textContent = 'Back to home';
-    backBtn.onclick   = exitToolMode;
-    navActions.insertBefore(backBtn, navActions.firstChild);
-  }
+  // No back to home button — sign out handles returning to landing page
 }
 
 function exitToolMode() {
@@ -3008,9 +2999,7 @@ function exitToolMode() {
   if (navTryFree) navTryFree.style.display = 'inline-block';
   // Remove tool-mode class
   document.body.classList.remove('tool-mode');
-  // Remove back button
-  const backBtn = document.getElementById('navBackBtn');
-  if (backBtn) backBtn.remove();
+  // (no back button to remove)
 }
 
 // ── Init on load ──
