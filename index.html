@@ -55,7 +55,8 @@
 <style>
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; }
+html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; }
+body { overflow-x: hidden; max-width: 100vw; }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
@@ -93,9 +94,10 @@ a { color: inherit; text-decoration: none; }
   background: rgba(255,255,255,0.97);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(8px);
-  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  padding: 0 clamp(1rem, 4vw, 2.5rem);
   min-height: 64px;
   display: flex; align-items: center; justify-content: space-between;
+  width: 100%; max-width: 100vw;
 }
 .nav-logo {
   display: flex; align-items: center; gap: 10px;
@@ -117,9 +119,10 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Hero ── */
 .hero {
-  padding: clamp(80px, 14vw, 120px) clamp(1.25rem, 4vw, 2rem) clamp(3rem, 5vw, 5rem);
+  padding: clamp(80px, 14vw, 120px) clamp(1rem, 4vw, 2rem) clamp(3rem, 5vw, 5rem);
   background: var(--section);
   text-align: center;
+  overflow-x: hidden;
 }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
@@ -130,10 +133,11 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 1.5rem;
 }
 .hero h1 {
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  font-weight: 700; line-height: 1.1;
+  font-size: clamp(1.8rem, 6vw, 3.6rem);
+  font-weight: 700; line-height: 1.15;
   color: var(--navy);
-  max-width: 780px; margin: 0 auto 1.25rem;
+  max-width: min(780px, 100%); margin: 0 auto 1.25rem;
+  word-break: break-word;
 }
 .hero h1 span { color: var(--gold); }
 .hero-sub {
@@ -200,7 +204,7 @@ a { color: inherit; text-decoration: none; }
 .stat-lbl { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
 
 /* ── Sections ── */
-.section { max-width: 1100px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 5vw, 2rem); width: 100%; }
+.section { max-width: 1100px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 5vw, 2rem); width: 100%; box-sizing: border-box; }
 .section-label {
   font-size: 12px; font-weight: 600;
   letter-spacing: 0.16em; text-transform: uppercase;
@@ -269,7 +273,7 @@ a { color: inherit; text-decoration: none; }
 .feature-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
 /* ── Comparison table ── */
-.compare-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 2rem; border-radius: var(--radius); border: 1px solid var(--border); }
+.compare-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 2rem; border-radius: var(--radius); border: 1px solid var(--border); max-width: 100%; }
 .compare-table { width: 100%; border-collapse: collapse; min-width: 540px; }
 .compare-table th {
   padding: 1rem 1.25rem; font-size: 13px; font-weight: 600;
@@ -342,7 +346,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Quote ── */
 .quote-section { background: var(--navy); padding: clamp(3rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem); text-align: center; }
-.quote-inner { max-width: 680px; margin: 0 auto; }
+.quote-inner { max-width: min(680px, 100%); margin: 0 auto; padding: 0 1rem; }
 .quote-text {
   font-size: clamp(1.2rem, 2.5vw, 1.7rem);
   font-weight: 300; color: var(--white); line-height: 1.5;
@@ -669,13 +673,23 @@ footer {
 
 /* Small mobile: 380px and below */
 @media (max-width: 380px) {
-  .hero h1 { font-size: 1.65rem; }
-  .stats-inner { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 1.55rem; }
+  .stats-inner { grid-template-columns: 1fr 1fr; }
   .summary-grid { grid-template-columns: 1fr; }
-  .hero-eyebrow { font-size: 10px; letter-spacing: 0.12em; }
-  .section { padding: 2.5rem 1rem; }
-  .auth-box { padding: 1.5rem 1rem; }
-  .run-btn { font-size: 14px; }
+  .hero-eyebrow { font-size: 10px; letter-spacing: 0.1em; }
+  .section { padding: 2rem 0.875rem; }
+  .auth-box { padding: 1.25rem 0.875rem; }
+  .run-btn { font-size: 13px; padding: 11px; }
+  .nav-user-email { max-width: 110px; font-size: 11px; }
+  .nav-signout, .nav-delete-btn { font-size: 11px; padding: 5px 8px; }
+}
+
+@media (max-width: 320px) {
+  .hero h1 { font-size: 1.4rem; }
+  .nav-user-email { display: none; }
+  .hero-eyebrow { display: none; }
+  .stats-inner { grid-template-columns: 1fr; }
+  .auth-box { border-radius: var(--radius); }
 }
 
 /* ── Auth modals ── */
@@ -691,8 +705,9 @@ footer {
 .auth-box {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: clamp(1.5rem,4vw,2.5rem) clamp(1.25rem,4vw,2rem);
+  padding: clamp(1.25rem,4vw,2.5rem) clamp(1rem,4vw,2rem);
   width: 100%; max-width: min(400px, calc(100vw - 2rem));
+  max-height: 90vh; overflow-y: auto;
   box-shadow: 0 24px 64px rgba(26,58,92,0.18);
   position: relative;
   transform: translateY(12px);
@@ -988,8 +1003,9 @@ body.tool-mode {
 .delete-box {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 2rem;
+  padding: clamp(1.25rem,4vw,2rem);
   width: 100%; max-width: min(420px, calc(100vw - 2rem));
+  max-height: 90vh; overflow-y: auto;
   box-shadow: 0 24px 64px rgba(26,58,92,0.2);
   text-align: center;
 }
@@ -1046,8 +1062,9 @@ body.tool-mode {
 .feedback-box {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 2rem;
+  padding: clamp(1.25rem,4vw,2rem);
   width: 100%; max-width: min(480px, calc(100vw - 2rem));
+  max-height: 90vh; overflow-y: auto;
   box-shadow: 0 24px 64px rgba(26,58,92,0.18);
   position: relative;
 }
@@ -1561,6 +1578,25 @@ body.tool-mode {
 
 </div><!-- end landing-only -->
 <!-- ══ CALCULATOR ══ -->
+<script>
+// Track when tool section comes into view
+(function() {
+  const el = document.getElementById('calculator');
+  if (!el || typeof IntersectionObserver === 'undefined') return;
+  const obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        if (typeof track === 'function') track('tool_section_viewed', {});
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  document.addEventListener('DOMContentLoaded', function() {
+    const t = document.getElementById('calculator');
+    if (t) obs.observe(t);
+  });
+})();
+</script>
 <div id="calculator" class="calc-section">
   <div class="calc-header">
     <div class="section-label">Your numbers</div>
@@ -1697,6 +1733,15 @@ body.tool-mode {
 </footer>
 
 <script>
+// ── GA4 Event Tracking ──
+function track(eventName, params) {
+  try {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', eventName, params || {});
+    }
+  } catch(e) {}
+}
+
 // ── State ──
 let strategy = 'snowball';
 let billIdCtr = 0, debtIdCtr = 0;
@@ -2454,6 +2499,8 @@ function exposeGlobals() {
   window.showNavFeedbackIcon = showNavFeedbackIcon;
   window.hideFeedbackIcons   = hideFeedbackIcons;
   window.initFeedbackIcons   = initFeedbackIcons;
+  // Expose track for cross-script access
+  if (typeof track !== 'undefined') window.track = track;
 }
 
 function initSupabase() { return true; }
@@ -2595,6 +2642,7 @@ async function handleSignUp() {
     btn.disabled    = false;
     btn.textContent = 'Create account';
   } else {
+    if (typeof window.track === 'function') window.track('sign_up', { method: 'email' });
     succEl.textContent = 'Check your email to confirm your account, then come back and sign in.';
     succEl.classList.add('show');
     btn.disabled    = false;
@@ -2630,7 +2678,9 @@ async function handleSignIn() {
     errEl.classList.add('show');
     btn.disabled    = false;
     btn.textContent = 'Sign in';
+    if (typeof window.track === 'function') window.track('login_failed', { method: 'email' });
   } else {
+    if (typeof window.track === 'function') window.track('login', { method: 'email' });
     closeAuth();
     document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
   }
@@ -2695,6 +2745,7 @@ async function handleDeleteAccount() {
     }
 
     // Sign out locally and reset
+    if (typeof window.track === 'function') window.track('account_deleted', {});
     await sb.auth.signOut();
     closeDeleteModal();
     resetUsage();
@@ -2973,6 +3024,8 @@ async function handleRunWithLimit() {
     // Signed-in users — unlimited access always
     const banner = document.getElementById('usageBanner');
     if (banner) banner.style.display = 'none';
+    // Track member simulation run
+    track('simulation_run', { user_type: 'member' });
     // Check if we should show member feedback (after 5th use)
     if (shouldShowMemberFeedback()) {
       runSim();
@@ -2987,6 +3040,7 @@ async function handleRunWithLimit() {
 
   if (used > USAGE_LIMIT) {
     // Use 4+ — hard gate, simulation blocked
+    track('usage_gate_hit', { uses_attempted: used });
     const empty   = document.getElementById('emptyState');
     const results = document.getElementById('resultsContent');
     if (empty) empty.style.display = 'none';
@@ -3010,6 +3064,7 @@ async function handleRunWithLimit() {
   }
 
   // Use 1, 2, 3 — simulation runs normally
+  track('simulation_run', { user_type: 'guest', run_number: used });
   runSim();
 
   // Use 3 — last free run: show feedback prompt after simulation completes
@@ -3168,6 +3223,7 @@ function openFeedback(context) {
   if (titleEl) titleEl.textContent = t;
   if (sub)     sub.textContent     = s;
   if (backdrop) { backdrop.classList.add('open'); backdrop.dataset.context = context; }
+  track('feedback_modal_opened', { context: context });
   document.body.style.overflow = 'hidden';
 }
 
@@ -3226,6 +3282,11 @@ async function submitFeedback() {
       localStorage.setItem(FEEDBACK_DONE_KEY, '1');
       localStorage.setItem(FEEDBACK_KEY_GUEST, 'done');
       localStorage.setItem(FEEDBACK_KEY_MEMBER, 'done');
+      if (typeof window.track === 'function') window.track('feedback_submitted', {
+        context: ctx,
+        rating: feedbackRating,
+        has_comment: text.length > 0,
+      });
       hideFeedbackIcons();
       const form    = document.getElementById('feedbackFormContent');
       const success = document.getElementById('feedbackSuccessContent');
@@ -3257,6 +3318,7 @@ function hideFeedbackIcons() {
 
 function handleGuestDecline() {
   // User chose not to sign up — close the gate
+  track('gate_declined', { action: 'continue_without_signup' });
   const results = document.getElementById('resultsContent');
   const empty   = document.getElementById('emptyState');
   if (results) results.style.display = 'none';
