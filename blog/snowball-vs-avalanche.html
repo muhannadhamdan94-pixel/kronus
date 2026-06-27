@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Favicons -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <title>Snowball vs Avalanche: Which Debt Payoff Method Actually Works in 2026? | FreeByDate</title>
@@ -73,6 +79,34 @@
     transition: all 0.15s; cursor: pointer; font-family: inherit;
   }
   .nav-signin:hover { border-color: #1A3A5C; color: #1A3A5C; }
+  .nav-blog-pill {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #C07A14; text-decoration: none;
+    background: rgba(212,137,26,0.08);
+    border: 1px solid rgba(212,137,26,0.25);
+    padding: 5px 12px; border-radius: 20px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .nav-blog-pill:hover {
+    background: rgba(212,137,26,0.15);
+    border-color: rgba(212,137,26,0.5);
+  }
+  .nav-actions-blog {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-home-link {
+    font-size: 13px; font-weight: 500; color: #4A4D54;
+    text-decoration: none; white-space: nowrap;
+    padding: 7px 14px; border-radius: 7px;
+    border: 1.5px solid #D8DDE6;
+    transition: all 0.15s;
+  }
+  .nav-home-link:hover { border-color: #1A3A5C; color: #1A3A5C; }
+  @media (max-width: 480px) {
+    .nav-home-link { display: none; }
+    .nav-blog-pill { display: none; }
+  }
   .nav-cta {
     background: #D4891A; color: #ffffff !important;
     padding: 9px 20px; border-radius: 8px;
@@ -249,16 +283,9 @@
       <rect x="29" y="2"  width="4.5" height="16" rx="2.25" fill="#F0A830"/>
       <text x="46" y="22" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" fill="#1A3A5C" letter-spacing="0.2">FreeBy<tspan fill="#D4891A">Date</tspan></text>
     </svg></a>
-  <div class="nav-links">
-    <a href="/#how-it-works" class="nav-link">How it works</a>
-    <a href="/#features" class="nav-link">Features</a>
-    <a href="/#compare" class="nav-link">Why FreeByDate</a>
-    <a href="/#faq" class="nav-link">FAQ</a>
-    <a href="/blog/" class="nav-link active">Blog</a>
-  </div>
-  <div class="nav-actions">
-    <span class="nav-blog-tag">Blog</span>
-    <a href="/" class="nav-signin">← Home</a>
+  <div class="nav-actions-blog">
+    <a href="/" class="nav-home-link">← Back to FreeByDate</a>
+    <a href="/blog/" class="nav-blog-pill">Blog</a>
     <a href="/#calculator" class="nav-cta">Try it free</a>
   </div>
 </nav>
