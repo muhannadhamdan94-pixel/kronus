@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<!-- Favicons -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<title>Debt Snowball Calculator — Free Payoff Sequencer</title>
+<meta name="description" content="Free debt snowball calculator. Enter your balances and income — see the exact closing date for every debt, month by month. No spreadsheet needed.">
+<link rel="canonical" href="https://freebydate.com/debt-snowball-calculator">
+<meta property="og:title" content="Debt Snowball Calculator — Free Payoff Sequencer">
+<meta property="og:description" content="Free debt snowball calculator. Enter your balances and income — see the exact closing date for every debt, month by month. No spreadsheet needed.">
+<meta property="og:url" content="https://freebydate.com/debt-snowball-calculator">
+<meta property="og:type" content="article">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a debt snowball calculator?","acceptedAnswer":{"@type":"Answer","text":"A debt snowball calculator ranks your debts from smallest to largest balance and shows you how long each takes to close when you concentrate your full monthly surplus on one at a time. FreeByDate goes"}},{"@type":"Question","name":"Is the snowball or avalanche better?","acceptedAnswer":{"@type":"Answer","text":"The avalanche saves more money in total interest. The snowball produces earlier wins that sustain motivation. If your highest-APR debt is also your smallest balance, both methods produce the same sequ"}},{"@type":"Question","name":"How is FreeByDate different from other debt snowball calculators?","acceptedAnswer":{"@type":"Answer","text":"Most calculators ask for an "extra payment" amount on top of minimums. FreeByDate calculates your actual monthly surplus from income minus bills minus savings, then concentrates the entire surplus on "}},{"@type":"Question","name":"Do I need an account to use the debt snowball calculator?","acceptedAnswer":{"@type":"Answer","text":"No. The first three simulations are free with no account required. Sign up for a free account to get unlimited access."}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Debt Snowball Calculator — <em>See Every Closing Date,</em> Not Just the Last One","publisher":{"@type":"Organization","name":"FreeByDate","url":"https://freebydate.com"}}
+</script>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3JM36MZ0L4"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3JM36MZ0L4');</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; color-scheme: light; }
+  body { font-family: 'Inter', Arial, sans-serif; background: #FFFFFF; color: #2D2F33; overflow-x: hidden; max-width: 100vw; }
+
+  :root {
+    --navy: #1A3A5C; --gold: #D4891A; --gold2: #F0A830;
+    --muted: #4A4D54; --border: #D8DDE6; --section: #F4F7FB;
+    --green: #1D8348; --green-bg: #E8F5EE;
+    --radius: 8px; --radius-lg: 14px;
+  }
+
+  /* ── Nav — exact match to main site ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.97);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    padding: 0 clamp(1rem, 4vw, 2.5rem);
+    min-height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; max-width: 100vw;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.2rem; font-weight: 700; color: var(--navy);
+    letter-spacing: 0.04em; text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-link { font-size: 14px; color: var(--muted); font-weight: 400; text-decoration: none; transition: color 0.15s; }
+  .nav-link:hover { color: var(--navy); }
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+  .nav-cta {
+    background: var(--gold); color: var(--white);
+    font-size: 14px; font-weight: 600;
+    padding: 9px 22px; border-radius: var(--radius);
+    border: none; cursor: pointer; font-family: var(--font);
+    text-decoration: none; transition: background 0.15s;
+    display: inline-block;
+  }
+  .nav-cta:hover { background: var(--gold2); color: #fff; }
+  .nav-blog-pill {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    background: rgba(212,137,26,0.08);
+    border: 1px solid rgba(212,137,26,0.25);
+    padding: 5px 12px; border-radius: 20px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .nav-blog-pill:hover { background: rgba(212,137,26,0.15); border-color: rgba(212,137,26,0.5); }
+  .nav-signout {
+    font-size: 12px; color: var(--muted);
+    background: none; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 6px 12px;
+    cursor: pointer; font-family: var(--font);
+    transition: all 0.15s; text-decoration: none;
+  }
+  .nav-signout:hover { border-color: var(--navy); color: var(--navy); }
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .nav-blog-pill { display: none; }
+  }
+
+  /* ── Hero CTA Card ── */
+  .hero-card {
+    background: linear-gradient(135deg, #0D2440 0%, #1A3A5C 60%, #2E5C8A 100%);
+    padding: clamp(3rem,8vw,5rem) clamp(1.25rem,5vw,3rem) clamp(2rem,5vw,4rem);
+    text-align: center; margin-top: 64px;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold2); margin-bottom: 1rem;
+    background: rgba(212,137,26,0.12); border: 1px solid rgba(212,137,26,0.25);
+    display: inline-block; padding: 5px 18px; border-radius: 20px;
+  }
+  .hero-h1 {
+    font-size: clamp(1.8rem,5vw,3rem); font-weight: 700; color: #fff;
+    line-height: 1.12; letter-spacing: -0.02em;
+    margin: 1rem auto 1.25rem; max-width: 800px;
+  }
+  .hero-h1 em { font-style: normal; color: var(--gold2); }
+  .hero-sub {
+    font-size: clamp(1rem,2vw,1.15rem); color: rgba(255,255,255,0.65);
+    max-width: 620px; margin: 0 auto 2rem; line-height: 1.7;
+  }
+  .hero-cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: #fff;
+    padding: 14px 32px; border-radius: var(--radius);
+    font-size: 15px; font-weight: 700; text-decoration: none;
+    transition: background 0.15s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold2); color: #fff; }
+  .btn-secondary {
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    padding: 14px 28px; border-radius: var(--radius);
+    font-size: 14px; font-weight: 500; text-decoration: none;
+    transition: all 0.15s; display: inline-block;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.14); color: #fff; }
+  .hero-trust {
+    margin-top: 1.5rem; font-size: 12px; color: rgba(255,255,255,0.35);
+    display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+  }
+
+  /* ── Stats strip ── */
+  .stats-strip {
+    background: #F4F7FB; border-bottom: 1px solid var(--border);
+    padding: 1.25rem clamp(1rem,4vw,2.5rem);
+    display: flex; justify-content: center; gap: clamp(2rem,6vw,5rem);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--gold); }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; max-width: 140px; }
+
+  /* ── Article layout ── */
+  .article-outer { max-width: 760px; margin: 0 auto; padding: clamp(2.5rem,6vw,4rem) clamp(1.25rem,5vw,2rem); }
+  .article-body h2 {
+    font-size: 1.35rem; font-weight: 700; color: var(--navy);
+    margin: 2.5rem 0 0.75rem; line-height: 1.3;
+  }
+  .article-body h3 { font-size: 1.05rem; font-weight: 600; color: var(--navy); margin: 1.75rem 0 0.5rem; }
+  .article-body p { line-height: 1.85; margin-bottom: 1.25rem; font-size: 1rem; color: #2D2F33; }
+  .article-body ul, .article-body ol { padding-left: 1.4rem; margin-bottom: 1.25rem; }
+  .article-body li { line-height: 1.8; margin-bottom: 0.4rem; color: #2D2F33; }
+  .article-body strong { color: var(--navy); font-weight: 600; }
+  .article-body a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ── Pull quote ── */
+  .pull-quote {
+    border-left: 4px solid var(--gold);
+    padding: 1rem 1.5rem; margin: 2rem 0;
+    background: #FEF8EE; border-radius: 0 8px 8px 0;
+    font-size: 1.02rem; color: #2D2F33; line-height: 1.75; font-style: italic;
+  }
+
+  /* ── Step cards ── */
+  .steps { display: flex; flex-direction: column; gap: 16px; margin: 1.5rem 0 2rem; }
+  .step-card {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: #FFFFFF; border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+  }
+  .step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gold); color: #fff;
+    font-size: 15px; font-weight: 700; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .step-body  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* ── Comparison table ── */
+  .compare-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.5rem 0; border-radius: var(--radius-lg); border: 1.5px solid var(--border); }
+  .compare-tbl { width: 100%; border-collapse: collapse; min-width: 520px; font-size: 14px; }
+  .compare-tbl thead tr { background: var(--navy); }
+  .compare-tbl th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: #fff; }
+  .compare-tbl th.gold-col { background: var(--gold); }
+  .compare-tbl td { padding: 11px 16px; border-bottom: 1px solid #EEF0F4; color: #2D2F33; line-height: 1.5; vertical-align: top; }
+  .compare-tbl tr:last-child td { border-bottom: none; }
+  .compare-tbl tr:nth-child(even) td { background: #F7F9FC; }
+  .winner-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--green-bg); color: var(--green);
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+  }
+
+  /* ── Scenario box ── */
+  .scenario-box {
+    background: #F4F7FB; border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.5rem; margin: 1.5rem 0;
+  }
+  .scenario-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(130px,100%),1fr)); gap: 10px; }
+  .scenario-item { background: #fff; border-radius: var(--radius); padding: 10px 12px; border: 1px solid var(--border); }
+  .scenario-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .scenario-val { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+  .scenario-val.gold { color: var(--gold); }
+
+  /* ── Outcome cards ── */
+  .outcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1.5rem 0; }
+  .outcome-card { border-radius: var(--radius-lg); padding: 1.5rem; border: 1.5px solid var(--border); }
+  .outcome-card.navy-card { background: var(--navy); border-color: var(--navy); }
+  .outcome-card.gold-card  { background: #FEF8EE; border-color: var(--gold); }
+  .outcome-method { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .navy-card .outcome-method { color: rgba(255,255,255,0.5); }
+  .gold-card  .outcome-method { color: var(--gold); }
+  .outcome-result { font-size: 1.6rem; font-weight: 700; line-height: 1.1; margin-bottom: 4px; }
+  .navy-card .outcome-result { color: #fff; }
+  .gold-card  .outcome-result { color: var(--navy); }
+  .outcome-sub { font-size: 12px; line-height: 1.5; }
+  .navy-card .outcome-sub { color: rgba(255,255,255,0.5); }
+  .gold-card  .outcome-sub  { color: var(--muted); }
+  @media (max-width: 480px) { .outcome-grid { grid-template-columns: 1fr; } }
+
+  /* ── Inline CTA ── */
+  .inline-cta {
+    background: #FEF8EE; border: 2px solid var(--gold);
+    border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin: 3rem 0;
+  }
+  .inline-cta h3 { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; }
+  .inline-cta p  { font-size: 14px; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
+
+  /* ── FAQ ── */
+  .faq { margin: 0; }
+  .faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
+  .faq-q { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+  .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ── Footer ── */
+  footer { background: var(--navy); color: rgba(255,255,255,0.4); padding: 2rem clamp(1rem,4vw,2.5rem); text-align: center; font-size: 12px; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: #fff; }
+
+  @media (max-width: 640px) {
+    .hero-cta-group { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; max-width: 320px; }
+    .stats-strip { gap: 1.5rem; }
+    .step-card { flex-direction: column; gap: 10px; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html, body { background: #FFFFFF !important; color: #2D2F33 !important; color-scheme: light; }
+    .article-body p, .article-body li { color: #2D2F33 !important; }
+    .article-body h2, .article-body h3 { color: #1A3A5C !important; }
+    .pull-quote { background: #FEF8EE !important; color: #2D2F33 !important; }
+    .compare-tbl td { background: #fff !important; color: #2D2F33 !important; }
+    .compare-tbl tr:nth-child(even) td { background: #F7F9FC !important; }
+    .scenario-box { background: #F4F7FB !important; }
+    .scenario-item { background: #fff !important; }
+    .step-card { background: #fff !important; }
+    .inline-cta { background: #FEF8EE !important; }
+    .inline-cta h3 { color: #1A3A5C !important; }
+    .inline-cta p { color: #4A4D54 !important; }
+    .faq-a { color: #4A4D54 !important; }
+    .nav { background: rgba(255,255,255,0.98) !important; }
+    .nav-link { color: #4A4D54 !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-logo">
+    <svg viewBox="0 0 220 32" width="190" height="28" role="img" aria-label="FreeByDate logo">
+      <line x1="6" y1="18" x2="36" y2="18" stroke="#DDE3EC" stroke-width="0.75" stroke-dasharray="2 2"/>
+      <rect x="8"  y="18" width="4.5" height="11" rx="2.25" fill="#B4B2A9"/>
+      <rect x="15" y="18" width="4.5" height="7"  rx="2.25" fill="#B4B2A9" opacity="0.7"/>
+      <rect x="22" y="5"  width="4.5" height="13" rx="2.25" fill="#D4891A"/>
+      <rect x="29" y="2"  width="4.5" height="16" rx="2.25" fill="#F0A830"/>
+      <text x="46" y="22" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" fill="#1A3A5C" letter-spacing="0.2">FreeBy<tspan fill="#D4891A">Date</tspan></text>
+    </svg>
+  </div>
+  <div class="nav-links">
+    <a href="/#how-it-works" class="nav-link">How it works</a>
+    <a href="/#features" class="nav-link">Features</a>
+    <a href="/#compare" class="nav-link">Why FreeByDate</a>
+    <a href="/#faq" class="nav-link">FAQ</a>
+  </div>
+  <div class="nav-actions">
+    <a href="/guides/" class="nav-blog-pill">Guides</a>
+    <a href="/" class="nav-signout">← Home</a>
+    <a href="/#calculator" class="nav-cta">Try it free</a>
+  </div>
+</nav>
+
+<header>
+  <div class="hero-card">
+    <div class="hero-eyebrow">Debt Snowball Calculator</div>
+    <h1 class="hero-h1">Debt Snowball Calculator — <em>See Every Closing Date,</em> Not Just the Last One</h1>
+    <p class="hero-sub">Most snowball calculators show you a single debt-free date. FreeByDate shows you the exact closing month for every debt in your sequence — built from your real income and bills, not generic estimates.</p>
+    <div class="hero-cta-group">
+      <a href="/#calculator" class="btn-primary">Build my payoff sequence →</a>
+      <a href="/guides/" class="btn-secondary">Explore the guides</a>
+    </div>
+    <div class="hero-trust">
+      <span>Free — no account required for first 3 runs</span>
+      <span>No data stored — everything stays in your browser</span>
+      <span>Snowball &amp; Avalanche comparison built in</span>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-lbl">No account required for first 3 simulations</div></div><div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Browser-based — your numbers never leave your device</div></div><div class="stat"><div class="stat-num">2 min</div><div class="stat-lbl">Average time from first input to full payoff timeline</div></div><div class="stat"><div class="stat-num">Both</div><div class="stat-lbl">Snowball and Avalanche — toggle and compare instantly</div></div>
+  </div>
+</header>
+
+<main>
+  <div class="article-outer">
+    <article class="article-body">
+
+      <p>The debt snowball method works by ranking your debts from smallest balance to largest, then attacking the smallest one with every available dollar until it closes. When it does, the freed payment rolls to the next-smallest debt. The snowball grows. Your payoff accelerates.</p>
+
+      <p>FreeByDate is a free debt snowball calculator that works differently. Instead of showing you how long minimum payments take, it calculates your real monthly surplus — income minus bills minus savings — and sequences your entire surplus against one debt at a time. When each balance closes, the freed payment rolls forward automatically.</p>
+
+      <div class="inline-cta">
+        <h3>Skip the spreadsheet</h3>
+        <p>Enter your real numbers — FreeByDate calculates your exact surplus, sequences your debts, and shows you the closing date for every balance on your list.</p>
+        <a href="/#calculator" class="btn-primary">Try FreeByDate free →</a>
+      </div>
+
+      <h2>The step-by-step plan</h2>
+      <div class="steps">
+        <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">List your debts smallest to largest</div>
+          <div class="step-body">Enter every balance you carry. The snowball method ranks them by size, not by interest rate. Card A at $2,400 gets attacked before Card B at $5,800, regardless of which has the higher APR.</div>
+        </div>
+      </div><div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Enter your monthly income and fixed bills</div>
+          <div class="step-body">FreeByDate subtracts your rent, utilities, insurance, and other fixed bills from your income to find your available cash. This is more accurate than guessing an "extra payment" amount.</div>
+        </div>
+      </div><div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Set your protected savings</div>
+          <div class="step-body">Ring-fence a monthly savings amount before any debt calculation runs. Even $200 per month protects you from a car repair or medical bill resetting all your progress.</div>
+        </div>
+      </div><div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">See the sequence</div>
+          <div class="step-body">FreeByDate builds your snowball automatically. Each debt gets an exact closing date. When the first closes, the payment rolls forward and you can see the next date compress.</div>
+        </div>
+      </div><div class="step-card">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Toggle to Avalanche to compare</div>
+          <div class="step-body">Switch strategies in one click. See exactly how many months and dollars separate the snowball from the avalanche for your specific debt profile — not a generic example.</div>
+        </div>
+      </div>
+      </div>
+
+      <h2>Why the snowball works — the psychology behind it</h2>
+<p>The debt snowball was popularised by Dave Ramsey, but the underlying psychology is well-documented in behavioural economics. Completing a task — even a small one — produces a measurable dopamine response that reinforces the behaviour leading to the completion.</p>
+<p>In debt payoff terms: closing a balance, even a small one, creates a tangible sense of progress that sustains motivation for the longer haul. Research on debt payoff completion rates consistently shows that early wins increase the probability of following through on the full plan.</p>
+<div class="pull-quote">A plan with an 80% completion rate at slightly higher interest cost outperforms a plan with a 60% completion rate at optimal interest savings. The snowball's real advantage is not mathematical — it is motivational.</div>
+<p>This does not mean the snowball is always the right choice. If your largest debt also carries your highest APR — a common situation with credit cards — the avalanche saves meaningful money without sacrificing much in terms of timeline. FreeByDate shows you both so you can decide with real numbers rather than guesswork.</p>
+<h2>How the snowball accelerates over time</h2>
+<p>The compounding effect of the snowball is what makes it dramatically faster than minimum payments. Suppose you have three debts and $1,800 per month in surplus after bills and savings. In month one, all $1,800 goes to Debt A. When Debt A closes in month four, you add the $80 minimum you were paying toward it to your surplus. Now $1,880 attacks Debt B.</p>
+<p>When Debt B closes, you add its minimum too. By the time you reach Debt C — which looked like it would take years on minimum payments — you may be attacking it with $2,200 or more per month. It closes in a fraction of the expected time.</p>
+<p>This acceleration is why the snowball and avalanche both outperform minimum payments so dramatically — not because you are paying more in total, but because the force concentrates instead of spreading thin across every balance simultaneously.</p>
+<h2>Snowball vs spreadsheet — why a calculator matters</h2>
+<p>A common mistake is trying to run a snowball plan from a spreadsheet built around static payment amounts. The problem is that real snowball plans involve variable payment amounts — the minimum on each debt, plus the surplus, which changes as each debt closes. Tracking this manually across 12 to 24 months of data is error-prone and discouraging.</p>
+<p>FreeByDate handles the variable payment logic automatically. You enter your numbers once. It calculates the surplus, applies the snowball order, rolls payments forward as each debt closes, and outputs a month-by-month table showing exactly what happens in each period — income, pool, activity, and carry forward.</p>
+
+
+      <h2>Worked example — your numbers in action</h2>
+      <div class="scenario-box">
+      <div class="scenario-title">Your scenario — worked example</div>
+      <div class="scenario-grid">
+        <div class="scenario-item"><div class="scenario-lbl">Credit card</div><div class="scenario-val">$3,200</div><div class="scenario-lbl" style="margin-top:2px">22.99% APR</div></div><div class="scenario-item"><div class="scenario-lbl">Personal loan</div><div class="scenario-val">$6,800</div><div class="scenario-lbl" style="margin-top:2px">14.99% APR</div></div><div class="scenario-item"><div class="scenario-lbl">Car loan</div><div class="scenario-val">$11,400</div><div class="scenario-lbl" style="margin-top:2px">7.49% APR</div></div>
+        <div class="scenario-item"><div class="scenario-lbl">Monthly income</div><div class="scenario-val gold">$4,800/mo</div></div>
+        <div class="scenario-item"><div class="scenario-lbl">Fixed bills</div><div class="scenario-val">$1,900/mo</div></div>
+        <div class="scenario-item"><div class="scenario-lbl">Protected savings</div><div class="scenario-val">$300/mo</div></div>
+      </div>
+    </div>
+      <div class="outcome-grid">
+      <div class="outcome-card navy-card">
+        <div class="outcome-method">Snowball method</div>
+        <div class="outcome-result">11 months</div>
+        <div class="outcome-sub">to debt free &nbsp;·&nbsp; $2,840 in interest<br>Order: Credit card → Personal loan → Car loan</div>
+      </div>
+      <div class="outcome-card gold-card">
+        <div class="outcome-method">Avalanche method</div>
+        <div class="outcome-result">11 months</div>
+        <div class="outcome-sub">to debt free &nbsp;·&nbsp; $2,490 in interest<br>Order: Credit card → Personal loan → Car loan</div>
+      </div>
+    </div>
+
+      <h2>Snowball vs Avalanche — full comparison</h2>
+      <p>Both methods work. The difference is in what you optimise for. Here is how they compare on this specific debt profile.</p>
+      <div class="compare-wrap">
+        <table class="compare-tbl">
+          <thead>
+            <tr>
+              <th>Factor</th>
+              <th>Snowball</th>
+              <th class="gold-col">Avalanche</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Total months to debt free</strong></td><td>11 months</td><td>11 months</td></tr><tr><td><strong>Total interest paid</strong></td><td>$2,840</td><td>$2,490 <span class="winner-badge">✓ Wins</span></td></tr><tr><td><strong>First debt closes</strong></td><td>Month 2</td><td>Month 2</td></tr><tr><td><strong>Motivation (early win)</strong></td><td>High</td><td>High</td></tr><tr><td><strong>Best for</strong></td><td>Anyone — in this profile both methods produce the same order</td><td>Saves $350 in interest with identical timeline <span class="winner-badge">✓ Wins</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="inline-cta">
+        <h3>Build your debt snowball sequence now</h3>
+        <p>Enter your real balances, income, and bills. See the exact closing date for every debt — free, no account needed for your first three runs.</p>
+        <a href="/#calculator" class="btn-primary">Build my free sequence →</a>
+      </div>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq">
+        <div class="faq-item"><div class="faq-q">What is a debt snowball calculator?</div><div class="faq-a">A debt snowball calculator ranks your debts from smallest to largest balance and shows you how long each takes to close when you concentrate your full monthly surplus on one at a time. FreeByDate goes further by calculating your actual surplus from your income and bills, not a fixed extra payment amount.</div></div><div class="faq-item"><div class="faq-q">Is the snowball or avalanche better?</div><div class="faq-a">The avalanche saves more money in total interest. The snowball produces earlier wins that sustain motivation. If your highest-APR debt is also your smallest balance, both methods produce the same sequence and the distinction disappears. FreeByDate shows you both in one click.</div></div><div class="faq-item"><div class="faq-q">How is FreeByDate different from other debt snowball calculators?</div><div class="faq-a">Most calculators ask for an "extra payment" amount on top of minimums. FreeByDate calculates your actual monthly surplus from income minus bills minus savings, then concentrates the entire surplus on one target. It also shows the closing date for every debt in the sequence, not just the final one.</div></div><div class="faq-item"><div class="faq-q">Do I need an account to use the debt snowball calculator?</div><div class="faq-a">No. The first three simulations are free with no account required. Sign up for a free account to get unlimited access.</div></div>
+      </div>
+
+    </article>
+  </div>
+</main>
+
+<footer>
+  <p><a href="/">freebydate.com</a> &nbsp;·&nbsp; <a href="/guides/">Guides</a> &nbsp;·&nbsp; © 2026 FreeByDate &nbsp;·&nbsp; Your financial data never leaves your browser.</p>
+</footer>
+
+</body>
+</html>
