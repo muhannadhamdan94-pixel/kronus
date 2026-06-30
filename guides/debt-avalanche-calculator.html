@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<!-- Favicons -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<title>Debt Avalanche Calculator — Free Interest Saver</title>
+<meta name="description" content="Free debt avalanche calculator. See exactly how much interest you save by attacking highest-APR debts first — with your real income and closing dates for every balance.">
+<link rel="canonical" href="https://freebydate.com/debt-avalanche-calculator">
+<meta property="og:title" content="Debt Avalanche Calculator — Free Interest Saver">
+<meta property="og:description" content="Free debt avalanche calculator. See exactly how much interest you save by attacking highest-APR debts first — with your real income and closing dates for every balance.">
+<meta property="og:url" content="https://freebydate.com/debt-avalanche-calculator">
+<meta property="og:type" content="article">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the debt avalanche method?","acceptedAnswer":{"@type":"Answer","text":"The debt avalanche method ranks your debts from highest to lowest APR and attacks the most expensive debt first with your full monthly surplus, while paying only minimums on all others. When the first"}},{"@type":"Question","name":"Is the avalanche better than the snowball?","acceptedAnswer":{"@type":"Answer","text":"Mathematically yes — the avalanche always pays less total interest. But completion rates matter too. If the avalanche requires 8 months before your first closure and you have abandoned debt plans befo"}},{"@type":"Question","name":"How do I calculate the debt avalanche?","acceptedAnswer":{"@type":"Answer","text":"List your debts by APR, highest first. Calculate your monthly surplus (income minus bills minus savings minus all minimums). Direct the entire surplus to your highest-APR debt. When it closes, add its"}},{"@type":"Question","name":"What if two debts have the same APR?","acceptedAnswer":{"@type":"Answer","text":"When APRs are equal, use the snowball as a tiebreaker — attack the smaller balance first. This produces an earlier closure milestone without sacrificing the interest-minimisation logic of the avalanch"}}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"Debt Avalanche Calculator — <em>Mathematically Fastest</em> Path to Debt Free","publisher":{"@type":"Organization","name":"FreeByDate","url":"https://freebydate.com"}}
+</script>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3JM36MZ0L4"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3JM36MZ0L4');</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; color-scheme: light; }
+  body { font-family: 'Inter', Arial, sans-serif; background: #FFFFFF; color: #2D2F33; overflow-x: hidden; max-width: 100vw; }
+
+  :root {
+    --navy: #1A3A5C; --gold: #D4891A; --gold2: #F0A830;
+    --muted: #4A4D54; --border: #D8DDE6; --section: #F4F7FB;
+    --green: #1D8348; --green-bg: #E8F5EE;
+    --radius: 8px; --radius-lg: 14px;
+  }
+
+  /* ── Nav — exact match to main site ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.97);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    padding: 0 clamp(1rem, 4vw, 2.5rem);
+    min-height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; max-width: 100vw;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.2rem; font-weight: 700; color: var(--navy);
+    letter-spacing: 0.04em; text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-link { font-size: 14px; color: var(--muted); font-weight: 400; text-decoration: none; transition: color 0.15s; }
+  .nav-link:hover { color: var(--navy); }
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+  .nav-cta {
+    background: var(--gold); color: var(--white);
+    font-size: 14px; font-weight: 600;
+    padding: 9px 22px; border-radius: var(--radius);
+    border: none; cursor: pointer; font-family: var(--font);
+    text-decoration: none; transition: background 0.15s;
+    display: inline-block;
+  }
+  .nav-cta:hover { background: var(--gold2); color: #fff; }
+  .nav-blog-pill {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    background: rgba(212,137,26,0.08);
+    border: 1px solid rgba(212,137,26,0.25);
+    padding: 5px 12px; border-radius: 20px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .nav-blog-pill:hover { background: rgba(212,137,26,0.15); border-color: rgba(212,137,26,0.5); }
+  .nav-signout {
+    font-size: 12px; color: var(--muted);
+    background: none; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 6px 12px;
+    cursor: pointer; font-family: var(--font);
+    transition: all 0.15s; text-decoration: none;
+  }
+  .nav-signout:hover { border-color: var(--navy); color: var(--navy); }
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .nav-blog-pill { display: none; }
+  }
+
+  /* ── Hero CTA Card ── */
+  .hero-card {
+    background: linear-gradient(135deg, #0D2440 0%, #1A3A5C 60%, #2E5C8A 100%);
+    padding: clamp(3rem,8vw,5rem) clamp(1.25rem,5vw,3rem) clamp(2rem,5vw,4rem);
+    text-align: center; margin-top: 64px;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold2); margin-bottom: 1rem;
+    background: rgba(212,137,26,0.12); border: 1px solid rgba(212,137,26,0.25);
+    display: inline-block; padding: 5px 18px; border-radius: 20px;
+  }
+  .hero-h1 {
+    font-size: clamp(1.8rem,5vw,3rem); font-weight: 700; color: #fff;
+    line-height: 1.12; letter-spacing: -0.02em;
+    margin: 1rem auto 1.25rem; max-width: 800px;
+  }
+  .hero-h1 em { font-style: normal; color: var(--gold2); }
+  .hero-sub {
+    font-size: clamp(1rem,2vw,1.15rem); color: rgba(255,255,255,0.65);
+    max-width: 620px; margin: 0 auto 2rem; line-height: 1.7;
+  }
+  .hero-cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: #fff;
+    padding: 14px 32px; border-radius: var(--radius);
+    font-size: 15px; font-weight: 700; text-decoration: none;
+    transition: background 0.15s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold2); color: #fff; }
+  .btn-secondary {
+    background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    padding: 14px 28px; border-radius: var(--radius);
+    font-size: 14px; font-weight: 500; text-decoration: none;
+    transition: all 0.15s; display: inline-block;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.14); color: #fff; }
+  .hero-trust {
+    margin-top: 1.5rem; font-size: 12px; color: rgba(255,255,255,0.35);
+    display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+  }
+
+  /* ── Stats strip ── */
+  .stats-strip {
+    background: #F4F7FB; border-bottom: 1px solid var(--border);
+    padding: 1.25rem clamp(1rem,4vw,2.5rem);
+    display: flex; justify-content: center; gap: clamp(2rem,6vw,5rem);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--gold); }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; max-width: 140px; }
+
+  /* ── Article layout ── */
+  .article-outer { max-width: 760px; margin: 0 auto; padding: clamp(2.5rem,6vw,4rem) clamp(1.25rem,5vw,2rem); }
+  .article-body h2 {
+    font-size: 1.35rem; font-weight: 700; color: var(--navy);
+    margin: 2.5rem 0 0.75rem; line-height: 1.3;
+  }
+  .article-body h3 { font-size: 1.05rem; font-weight: 600; color: var(--navy); margin: 1.75rem 0 0.5rem; }
+  .article-body p { line-height: 1.85; margin-bottom: 1.25rem; font-size: 1rem; color: #2D2F33; }
+  .article-body ul, .article-body ol { padding-left: 1.4rem; margin-bottom: 1.25rem; }
+  .article-body li { line-height: 1.8; margin-bottom: 0.4rem; color: #2D2F33; }
+  .article-body strong { color: var(--navy); font-weight: 600; }
+  .article-body a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ── Pull quote ── */
+  .pull-quote {
+    border-left: 4px solid var(--gold);
+    padding: 1rem 1.5rem; margin: 2rem 0;
+    background: #FEF8EE; border-radius: 0 8px 8px 0;
+    font-size: 1.02rem; color: #2D2F33; line-height: 1.75; font-style: italic;
+  }
+
+  /* ── Step cards ── */
+  .steps { display: flex; flex-direction: column; gap: 16px; margin: 1.5rem 0 2rem; }
+  .step-card {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: #FFFFFF; border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+  }
+  .step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gold); color: #fff;
+    font-size: 15px; font-weight: 700; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .step-body  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* ── Comparison table ── */
+  .compare-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.5rem 0; border-radius: var(--radius-lg); border: 1.5px solid var(--border); }
+  .compare-tbl { width: 100%; border-collapse: collapse; min-width: 520px; font-size: 14px; }
+  .compare-tbl thead tr { background: var(--navy); }
+  .compare-tbl th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; color: #fff; }
+  .compare-tbl th.gold-col { background: var(--gold); }
+  .compare-tbl td { padding: 11px 16px; border-bottom: 1px solid #EEF0F4; color: #2D2F33; line-height: 1.5; vertical-align: top; }
+  .compare-tbl tr:last-child td { border-bottom: none; }
+  .compare-tbl tr:nth-child(even) td { background: #F7F9FC; }
+  .winner-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--green-bg); color: var(--green);
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+  }
+
+  /* ── Scenario box ── */
+  .scenario-box {
+    background: #F4F7FB; border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.5rem; margin: 1.5rem 0;
+  }
+  .scenario-title { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(130px,100%),1fr)); gap: 10px; }
+  .scenario-item { background: #fff; border-radius: var(--radius); padding: 10px 12px; border: 1px solid var(--border); }
+  .scenario-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .scenario-val { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+  .scenario-val.gold { color: var(--gold); }
+
+  /* ── Outcome cards ── */
+  .outcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1.5rem 0; }
+  .outcome-card { border-radius: var(--radius-lg); padding: 1.5rem; border: 1.5px solid var(--border); }
+  .outcome-card.navy-card { background: var(--navy); border-color: var(--navy); }
+  .outcome-card.gold-card  { background: #FEF8EE; border-color: var(--gold); }
+  .outcome-method { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .navy-card .outcome-method { color: rgba(255,255,255,0.5); }
+  .gold-card  .outcome-method { color: var(--gold); }
+  .outcome-result { font-size: 1.6rem; font-weight: 700; line-height: 1.1; margin-bottom: 4px; }
+  .navy-card .outcome-result { color: #fff; }
+  .gold-card  .outcome-result { color: var(--navy); }
+  .outcome-sub { font-size: 12px; line-height: 1.5; }
+  .navy-card .outcome-sub { color: rgba(255,255,255,0.5); }
+  .gold-card  .outcome-sub  { color: var(--muted); }
+  @media (max-width: 480px) { .outcome-grid { grid-template-columns: 1fr; } }
+
+  /* ── Inline CTA ── */
+  .inline-cta {
+    background: #FEF8EE; border: 2px solid var(--gold);
+    border-radius: var(--radius-lg); padding: 2rem; text-align: center; margin: 3rem 0;
+  }
+  .inline-cta h3 { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; }
+  .inline-cta p  { font-size: 14px; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; }
+
+  /* ── FAQ ── */
+  .faq { margin: 0; }
+  .faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
+  .faq-q { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+  .faq-a { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* ── Footer ── */
+  footer { background: var(--navy); color: rgba(255,255,255,0.4); padding: 2rem clamp(1rem,4vw,2.5rem); text-align: center; font-size: 12px; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: #fff; }
+
+  @media (max-width: 640px) {
+    .hero-cta-group { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; text-align: center; max-width: 320px; }
+    .stats-strip { gap: 1.5rem; }
+    .step-card { flex-direction: column; gap: 10px; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html, body { background: #FFFFFF !important; color: #2D2F33 !important; color-scheme: light; }
+    .article-body p, .article-body li { color: #2D2F33 !important; }
+    .article-body h2, .article-body h3 { color: #1A3A5C !important; }
+    .pull-quote { background: #FEF8EE !important; color: #2D2F33 !important; }
+    .compare-tbl td { background: #fff !important; color: #2D2F33 !important; }
+    .compare-tbl tr:nth-child(even) td { background: #F7F9FC !important; }
+    .scenario-box { background: #F4F7FB !important; }
+    .scenario-item { background: #fff !important; }
+    .step-card { background: #fff !important; }
+    .inline-cta { background: #FEF8EE !important; }
+    .inline-cta h3 { color: #1A3A5C !important; }
+    .inline-cta p { color: #4A4D54 !important; }
+    .faq-a { color: #4A4D54 !important; }
+    .nav { background: rgba(255,255,255,0.98) !important; }
+    .nav-link { color: #4A4D54 !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-logo">
+    <svg viewBox="0 0 220 32" width="190" height="28" role="img" aria-label="FreeByDate logo">
+      <line x1="6" y1="18" x2="36" y2="18" stroke="#DDE3EC" stroke-width="0.75" stroke-dasharray="2 2"/>
+      <rect x="8"  y="18" width="4.5" height="11" rx="2.25" fill="#B4B2A9"/>
+      <rect x="15" y="18" width="4.5" height="7"  rx="2.25" fill="#B4B2A9" opacity="0.7"/>
+      <rect x="22" y="5"  width="4.5" height="13" rx="2.25" fill="#D4891A"/>
+      <rect x="29" y="2"  width="4.5" height="16" rx="2.25" fill="#F0A830"/>
+      <text x="46" y="22" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" fill="#1A3A5C" letter-spacing="0.2">FreeBy<tspan fill="#D4891A">Date</tspan></text>
+    </svg>
+  </div>
+  <div class="nav-links">
+    <a href="/#how-it-works" class="nav-link">How it works</a>
+    <a href="/#features" class="nav-link">Features</a>
+    <a href="/#compare" class="nav-link">Why FreeByDate</a>
+    <a href="/#faq" class="nav-link">FAQ</a>
+  </div>
+  <div class="nav-actions">
+    <a href="/guides/" class="nav-blog-pill">Guides</a>
+    <a href="/" class="nav-signout">← Home</a>
+    <a href="/#calculator" class="nav-cta">Try it free</a>
+  </div>
+</nav>
+
+<header>
+  <div class="hero-card">
+    <div class="hero-eyebrow">Debt Avalanche Calculator</div>
+    <h1 class="hero-h1">Debt Avalanche Calculator — <em>Mathematically Fastest</em> Path to Debt Free</h1>
+    <p class="hero-sub">The avalanche method attacks your highest-APR debt first. At current credit card rates of 22%+, this saves thousands compared to minimum payments — and hundreds compared to the snowball. See your exact numbers.</p>
+    <div class="hero-cta-group">
+      <a href="/#calculator" class="btn-primary">Build my payoff sequence →</a>
+      <a href="/guides/" class="btn-secondary">Explore the guides</a>
+    </div>
+    <div class="hero-trust">
+      <span>Free — no account required for first 3 runs</span>
+      <span>No data stored — everything stays in your browser</span>
+      <span>Snowball &amp; Avalanche comparison built in</span>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat"><div class="stat-num">22%</div><div class="stat-lbl">Average credit card APR on balances carrying interest, Q1 2026 (Federal Reserve)</div></div><div class="stat"><div class="stat-num">$500+</div><div class="stat-lbl">Typical interest saved by avalanche vs snowball on a $20K portfolio</div></div><div class="stat"><div class="stat-num">1–2</div><div class="stat-lbl">Months faster the avalanche typically finishes vs the snowball</div></div><div class="stat"><div class="stat-num">Free</div><div class="stat-lbl">FreeByDate — no account needed for first 3 simulations</div></div>
+  </div>
+</header>
+
+<main>
+  <div class="article-outer">
+    <article class="article-body">
+
+      <p>The debt avalanche method ranks your debts by interest rate from highest to lowest. You concentrate your full monthly surplus on the highest-rate debt first. When it closes, the freed payment rolls to the next-highest rate. The result is the mathematically lowest total interest paid of any debt payoff strategy.</p>
+
+      <p>FreeByDate calculates your avalanche sequence from your real monthly surplus — not a fixed extra payment. Enter your income, bills, savings, and debt balances. Toggle between avalanche and snowball in one click to compare your exact timeline and total interest for each strategy.</p>
+
+      <div class="inline-cta">
+        <h3>Skip the spreadsheet</h3>
+        <p>Enter your real numbers — FreeByDate calculates your exact surplus, sequences your debts, and shows you the closing date for every balance on your list.</p>
+        <a href="/#calculator" class="btn-primary">Try FreeByDate free →</a>
+      </div>
+
+      <h2>The step-by-step plan</h2>
+      <div class="steps">
+        <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">List every debt with its exact APR</div>
+          <div class="step-body">Pull your statements. You need the precise APR for each balance — not "around 20%." The difference between 19.99% and 24.99% on a $10,000 balance is nearly $500 per year in interest. Ranking your debts by APR requires accurate rates.</div>
+        </div>
+      </div><div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Calculate your real monthly surplus</div>
+          <div class="step-body">Income minus fixed bills minus savings contribution minus all minimum payments. This is your attack amount. The avalanche concentrates this entire number on your highest-rate debt — nothing goes to other debts beyond their minimums.</div>
+        </div>
+      </div><div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Rank highest APR to lowest</div>
+          <div class="step-body">Your first target is the debt with the highest APR. Not the largest balance, not the one with the highest minimum. The one costing you the most in daily interest charges. At 24.99% vs 14.99% on equal balances, the higher-rate debt costs you $100 more per month in interest alone.</div>
+        </div>
+      </div><div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Pay minimums on everything else</div>
+          <div class="step-body">Every debt except your target receives only its minimum payment. This keeps all accounts current while concentrating your available surplus. No splitting the surplus, no "a little extra on each one."</div>
+        </div>
+      </div><div class="step-card">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Roll forward on every closure</div>
+          <div class="step-body">When your first target closes, add its full payment — minimum plus surplus — to the next-highest-rate debt. Your attacking payment grows with every closure. By the final debt, you may be paying 2 to 3 times the original surplus amount.</div>
+        </div>
+      </div>
+      </div>
+
+      <h2>How much does the avalanche actually save?</h2>
+<p>The interest savings from the avalanche vs the snowball depend on your specific debt profile — primarily the spread between your highest and lowest APRs, and the size of the balances at each rate.</p>
+<p>On a typical mixed portfolio of credit cards and personal loans with a total balance of $20,000 to $30,000, the avalanche typically saves $300 to $1,500 in total interest compared to the snowball, and finishes one to two months earlier. At higher balances — $50,000 or more — the savings can reach $3,000 to $5,000.</p>
+<p>If your highest-APR debt is also your smallest balance, the snowball and avalanche produce identical sequences and the comparison is moot. FreeByDate checks this automatically and flags when both methods give the same order.</p>
+<div class="pull-quote">At 22% APR, every $1,000 you carry costs you $220 per year in interest. Eliminating the highest-rate balance first — even if it takes a few extra months compared to clearing a smaller balance — stops the most expensive interest from compounding.</div>
+<h2>When the snowball beats the avalanche</h2>
+<p>The avalanche is not universally the right choice. If your largest balance also carries the highest APR — common with credit cards — the avalanche requires attacking your largest debt first. This can take 6 to 12 months before you see your first closure, compared to 2 to 3 months under the snowball.</p>
+<p>Research on plan completion rates consistently finds that early wins increase the probability of following through on the full plan. If you have abandoned a debt payoff plan before, the snowball's earlier milestone may be worth the marginal additional interest cost.</p>
+<p>The honest answer: run both through FreeByDate and look at the specific numbers for your portfolio. If the avalanche saves $1,200 and finishes two months earlier, it is probably worth the wait. If it saves $180 and takes three months longer to produce a first closure, the snowball may be the better choice for your psychology.</p>
+
+
+      <h2>Worked example — your numbers in action</h2>
+      <div class="scenario-box">
+      <div class="scenario-title">Your scenario — worked example</div>
+      <div class="scenario-grid">
+        <div class="scenario-item"><div class="scenario-lbl">Credit card A</div><div class="scenario-val">$8,500</div><div class="scenario-lbl" style="margin-top:2px">26.99% APR</div></div><div class="scenario-item"><div class="scenario-lbl">Credit card B</div><div class="scenario-val">$5,200</div><div class="scenario-lbl" style="margin-top:2px">19.99% APR</div></div><div class="scenario-item"><div class="scenario-lbl">Personal loan</div><div class="scenario-val">$9,300</div><div class="scenario-lbl" style="margin-top:2px">12.99% APR</div></div>
+        <div class="scenario-item"><div class="scenario-lbl">Monthly income</div><div class="scenario-val gold">$5,200/mo</div></div>
+        <div class="scenario-item"><div class="scenario-lbl">Fixed bills</div><div class="scenario-val">$2,000/mo</div></div>
+        <div class="scenario-item"><div class="scenario-lbl">Protected savings</div><div class="scenario-val">$300/mo</div></div>
+      </div>
+    </div>
+      <div class="outcome-grid">
+      <div class="outcome-card navy-card">
+        <div class="outcome-method">Snowball method</div>
+        <div class="outcome-result">13 months</div>
+        <div class="outcome-sub">to debt free &nbsp;·&nbsp; $3,640 in interest<br>Order: Card B → Card A → Personal loan</div>
+      </div>
+      <div class="outcome-card gold-card">
+        <div class="outcome-method">Avalanche method</div>
+        <div class="outcome-result">12 months</div>
+        <div class="outcome-sub">to debt free &nbsp;·&nbsp; $3,120 in interest<br>Order: Card A → Card B → Personal loan</div>
+      </div>
+    </div>
+
+      <h2>Snowball vs Avalanche — full comparison</h2>
+      <p>Both methods work. The difference is in what you optimise for. Here is how they compare on this specific debt profile.</p>
+      <div class="compare-wrap">
+        <table class="compare-tbl">
+          <thead>
+            <tr>
+              <th>Factor</th>
+              <th>Snowball</th>
+              <th class="gold-col">Avalanche</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Total months</strong></td><td>13 months</td><td>12 months <span class="winner-badge">✓ Wins</span></td></tr><tr><td><strong>Total interest</strong></td><td>$3,640</td><td>$3,120 <span class="winner-badge">✓ Wins</span></td></tr><tr><td><strong>Interest saved</strong></td><td>$520 less</td><td>$520 more saved <span class="winner-badge">✓ Wins</span></td></tr><tr><td><strong>First closure</strong></td><td>Month 4 (Card B) <span class="winner-badge">✓ Wins</span></td><td>Month 6 (Card A)</td></tr><tr><td><strong>Completion risk</strong></td><td>Lower — early win in month 4 <span class="winner-badge">✓ Wins</span></td><td>Slightly higher — first win in month 6</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="inline-cta">
+        <h3>Calculate your avalanche sequence now</h3>
+        <p>Enter your real balances and APRs. FreeByDate builds your avalanche sequence, compares it to the snowball, and shows the closing date for every debt — free.</p>
+        <a href="/#calculator" class="btn-primary">Build my free sequence →</a>
+      </div>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq">
+        <div class="faq-item"><div class="faq-q">What is the debt avalanche method?</div><div class="faq-a">The debt avalanche method ranks your debts from highest to lowest APR and attacks the most expensive debt first with your full monthly surplus, while paying only minimums on all others. When the first debt closes, the freed payment rolls to the next-highest rate. It is the mathematically optimal strategy for minimising total interest paid.</div></div><div class="faq-item"><div class="faq-q">Is the avalanche better than the snowball?</div><div class="faq-a">Mathematically yes — the avalanche always pays less total interest. But completion rates matter too. If the avalanche requires 8 months before your first closure and you have abandoned debt plans before, the snowball's early win in month 2 or 3 may produce a better outcome even at slightly higher interest cost.</div></div><div class="faq-item"><div class="faq-q">How do I calculate the debt avalanche?</div><div class="faq-a">List your debts by APR, highest first. Calculate your monthly surplus (income minus bills minus savings minus all minimums). Direct the entire surplus to your highest-APR debt. When it closes, add its payment to the next-highest-rate debt. FreeByDate automates this and shows you the closing date for every debt.</div></div><div class="faq-item"><div class="faq-q">What if two debts have the same APR?</div><div class="faq-a">When APRs are equal, use the snowball as a tiebreaker — attack the smaller balance first. This produces an earlier closure milestone without sacrificing the interest-minimisation logic of the avalanche.</div></div>
+      </div>
+
+    </article>
+  </div>
+</main>
+
+<footer>
+  <p><a href="/">freebydate.com</a> &nbsp;·&nbsp; <a href="/guides/">Guides</a> &nbsp;·&nbsp; © 2026 FreeByDate &nbsp;·&nbsp; Your financial data never leaves your browser.</p>
+</footer>
+
+</body>
+</html>
