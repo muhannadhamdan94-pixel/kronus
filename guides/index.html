@@ -1,1 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Favicons -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Blog — Debt Payoff Guides and Strategy | FreeByDate</title>
+<meta name="description" content="Plain-language articles about getting out of debt faster. Snowball vs avalanche, minimum payment math, and sequencing strategies grounded in real 2026 data.">
+<link rel="canonical" href="https://freebydate.com/guides/">
+<meta property="og:title" content="Blog — Debt Payoff Guides and Strategy">
+<meta property="og:description" content="Plain-language articles about getting out of debt faster. Snowball vs avalanche, minimum payment math, and sequencing strategies grounded in real 2026 data.">
+<meta property="og:url" content="https://freebydate.com/guides/">
+<meta property="og:type" content="article">
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3JM36MZ0L4"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3JM36MZ0L4');</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; overflow-x: hidden; color-scheme: light; }
+  body { font-family: 'Inter', Arial, sans-serif; color: #2D2F33; overflow-x: hidden; max-width: 100vw; background: #FFFFFF !important; }
+  /* Force light mode — prevent browser dark mode from inverting colours */
+  @media (prefers-color-scheme: dark) {
+    html { background: #FFFFFF !important; color-scheme: light; }
+    body { background: #FFFFFF !important; color: #2D2F33 !important; }
+    .article-body p { color: #2D2F33 !important; }
+    .article-body h2, .article-body h3 { color: #1A3A5C !important; }
+    .article-body li { color: #2D2F33 !important; }
+    .article-sub { color: #4A4D54 !important; }
+    .pull-quote { background: #FEF8EE !important; color: #2D2F33 !important; }
+    .data-box { background: #F2F5F9 !important; }
+    .data-lbl { color: #4A4D54 !important; }
+    .compare-table td { background: #FFFFFF !important; color: #2D2F33 !important; }
+    .compare-table tr:nth-child(even) td { background: #F7F9FC !important; }
+    .blog-card { background: #FFFFFF !important; }
+    .blog-card-sub { color: #4A4D54 !important; }
+    .nav { background: rgba(255,255,255,0.98) !important; }
+    .nav-link { color: #4A4D54 !important; }
+    .nav-link.active { color: #D4891A !important; }
+    .nav-signin { color: #4A4D54 !important; border-color: #D8DDE6 !important; }
+    .cta-box { background: #FEF8EE !important; border-color: #D4891A !important; }
+    .cta-box h3 { color: #1A3A5C !important; }
+    .cta-box p { color: #4A4D54 !important; }
+    .cta-box a { color: #ffffff !important; background: #D4891A !important; }
+  }
 
+  /* Nav */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.98); border-bottom: 1px solid #E2E6EC;
+    padding: 0 clamp(1rem, 4vw, 2.5rem); min-height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(8px); gap: 1.5rem;
+  }
+  .nav-logo { text-decoration: none; flex-shrink: 0; }
+  .nav-links {
+    display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 2rem);
+    flex: 1;
+  }
+  .nav-link {
+    font-size: 13px; font-weight: 500; color: #4A4D54;
+    text-decoration: none; white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .nav-link:hover { color: #1A3A5C; }
+  .nav-link.active { color: #D4891A; font-weight: 600; }
+  .nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .nav-signin {
+    font-size: 13px; font-weight: 500; color: #4A4D54;
+    text-decoration: none; white-space: nowrap;
+    background: none; border: 1.5px solid #D8DDE6;
+    padding: 7px 16px; border-radius: 7px;
+    transition: all 0.15s; cursor: pointer; font-family: inherit;
+  }
+  .nav-signin:hover { border-color: #1A3A5C; color: #1A3A5C; }
+  .nav-blog-pill {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #C07A14; text-decoration: none;
+    background: rgba(212,137,26,0.08);
+    border: 1px solid rgba(212,137,26,0.25);
+    padding: 5px 12px; border-radius: 20px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .nav-blog-pill:hover {
+    background: rgba(212,137,26,0.15);
+    border-color: rgba(212,137,26,0.5);
+  }
+  .nav-actions-blog {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-home-link {
+    font-size: 13px; font-weight: 500; color: #4A4D54;
+    text-decoration: none; white-space: nowrap;
+    padding: 7px 14px; border-radius: 7px;
+    border: 1.5px solid #D8DDE6;
+    transition: all 0.15s;
+  }
+  .nav-home-link:hover { border-color: #1A3A5C; color: #1A3A5C; }
+  @media (max-width: 480px) {
+    .nav-home-link { display: none; }
+    .nav-blog-pill { display: none; }
+  }
+  .nav-cta {
+    background: #D4891A; color: #ffffff !important;
+    padding: 9px 20px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    text-decoration: none; white-space: nowrap;
+    transition: background 0.15s; border: none; cursor: pointer;
+    font-family: inherit;
+  }
+  .nav-cta:hover { background: #B8750F; }
+  .nav-blog-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #D4891A;
+    background: rgba(212,137,26,0.08); border: 1px solid rgba(212,137,26,0.2);
+    padding: 3px 10px; border-radius: 20px; flex-shrink: 0;
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-signin { display: none; }
+  }
+  @media (max-width: 480px) {
+    .nav-blog-tag { display: none; }
+  }
+
+  /* Article layout */
+  .article-wrap { max-width: 720px; margin: 0 auto; padding: 100px 1.5rem 5rem; }
+
+  /* Hero */
+  .article-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #C07A14; margin-bottom: 1rem;
+  }
+  .article-title {
+    font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 700;
+    color: #1A3A5C; line-height: 1.12; margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .article-sub {
+    font-size: 1.05rem; color: #4A4D54; line-height: 1.75;
+    margin-bottom: 1.5rem; max-width: 620px;
+  }
+  .article-meta {
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    font-size: 12px; color: #6B6C72; margin-bottom: 2.5rem;
+    padding-bottom: 2rem; border-bottom: 1.5px solid #E2E6EC;
+  }
+  .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: #C4C8D0; }
+
+  /* Body text */
+  .article-body h2 {
+    font-size: 1.4rem; font-weight: 700; color: #1A3A5C;
+    margin: 2.5rem 0 0.75rem; line-height: 1.3;
+  }
+  .article-body h3 {
+    font-size: 1.1rem; font-weight: 600; color: #1A3A5C;
+    margin: 1.75rem 0 0.5rem;
+  }
+  .article-body p {
+    line-height: 1.85; margin-bottom: 1.35rem;
+    font-size: 1rem; color: #2D2F33;
+  }
+  .article-body ul, .article-body ol { padding-left: 1.4rem; margin-bottom: 1.25rem; }
+  .article-body li { line-height: 1.8; margin-bottom: 0.5rem; color: #2D2F33; }
+  .article-body strong { color: #1A3A5C; font-weight: 600; }
+  .article-body a { color: #B8750F; text-decoration: underline; text-underline-offset: 3px; }
+  .article-body a:hover { color: #D4891A; }
+
+  /* Pull quote — light amber background, dark text */
+  .pull-quote {
+    border-left: 4px solid #D4891A;
+    padding: 1.1rem 1.5rem; margin: 2rem 0;
+    background: #FEF8EE; border-radius: 0 8px 8px 0;
+    font-size: 1.02rem; color: #2D2F33; line-height: 1.75;
+    font-style: italic;
+  }
+
+  /* Data callout — very light grey, dark text */
+  .data-box {
+    background: #F2F5F9; border: 1.5px solid #D8DDE6;
+    border-radius: 12px; padding: 1.75rem 1.5rem;
+    margin: 2rem 0; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(160px,100%), 1fr));
+    gap: 1.5rem;
+  }
+  .data-item { text-align: center; }
+  .data-num { font-size: 2rem; font-weight: 700; color: #B8750F; line-height: 1; }
+  .data-lbl { font-size: 12px; color: #4A4D54; margin-top: 6px; line-height: 1.5; }
+
+  /* Comparison table — clean, high contrast */
+  .compare-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.5rem 0; border-radius: 10px; border: 1.5px solid #D8DDE6; }
+  .compare-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 14px; min-width: 480px;
+  }
+  .compare-table th {
+    background: #1A3A5C; color: #ffffff;
+    padding: 11px 14px; text-align: left;
+    font-weight: 600; font-size: 12px; letter-spacing: 0.04em;
+  }
+  .compare-table th.gold { background: #C07A14; color: #ffffff; }
+  .compare-table td {
+    padding: 10px 14px; border-bottom: 1px solid #EEF0F4;
+    vertical-align: top; line-height: 1.6; color: #2D2F33;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: #F7F9FC; }
+
+  /* CTA box — light background, works on all devices including dark mode */
+  .cta-box {
+    background: #FEF8EE;
+    border: 2px solid #D4891A;
+    border-radius: 16px;
+    padding: 2.5rem 2rem; text-align: center;
+    margin: 3rem 0;
+  }
+  .cta-box h3 { font-size: 1.45rem; font-weight: 700; color: #1A3A5C !important; margin-bottom: 0.75rem; }
+  .cta-box p { font-size: 14px; color: #4A4D54 !important; margin-bottom: 1.5rem; line-height: 1.7; }
+  .cta-box a {
+    display: inline-block;
+    background: #D4891A; color: #ffffff !important;
+    padding: 13px 32px; border-radius: 8px;
+    font-size: 14px; font-weight: 700;
+    text-decoration: none; transition: background 0.15s;
+  }
+  .cta-box a:hover { background: #B8750F; }
+
+  /* Footer */
+  footer {
+    background: #1A3A5C; color: #A8C0D8;
+    padding: 2rem clamp(1rem, 4vw, 2.5rem);
+    text-align: center; font-size: 12px;
+    margin-top: 4rem;
+  }
+  footer a { color: #C8DAEA; text-decoration: none; }
+  footer a:hover { color: #ffffff; }
+
+  /* Blog index grid */
+  .blog-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px,100%),1fr));
+    gap: 1.5rem; margin-top: 2.5rem;
+  }
+  .blog-card {
+    border: 1.5px solid #D8DDE6; border-radius: 12px;
+    padding: 1.5rem; text-decoration: none;
+    background: #ffffff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    display: block;
+  }
+  .blog-card:hover { border-color: #D4891A; box-shadow: 0 4px 20px rgba(26,58,92,0.1); }
+  .blog-card-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C07A14; margin-bottom: 0.6rem; }
+  .blog-card-title { font-size: 1.05rem; font-weight: 700; color: #1A3A5C; margin-bottom: 0.5rem; line-height: 1.35; }
+  .blog-card-sub { font-size: 13px; color: #4A4D54; line-height: 1.65; }
+  .blog-card-meta { font-size: 11px; color: #6B6C72; margin-top: 1rem; }
+
+  @media (max-width: 640px) {
+    .article-wrap { padding: 88px 1rem 4rem; }
+    .data-box { grid-template-columns: 1fr 1fr; }
+    .article-title { font-size: 1.7rem; }
+    .compare-table { font-size: 13px; }
+    .compare-table td, .compare-table th { padding: 9px 10px; }
+  }
+  @media (max-width: 380px) {
+    .data-box { grid-template-columns: 1fr; }
+    .article-title { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/" class="nav-logo"><svg viewBox="0 0 220 32" width="160" height="24" role="img" aria-label="FreeByDate logo">
+      <line x1="6" y1="18" x2="36" y2="18" stroke="#DDE3EC" stroke-width="0.75" stroke-dasharray="2 2"/>
+      <rect x="8"  y="18" width="4.5" height="11" rx="2.25" fill="#B4B2A9"/>
+      <rect x="15" y="18" width="4.5" height="7"  rx="2.25" fill="#B4B2A9" opacity="0.7"/>
+      <rect x="22" y="5"  width="4.5" height="13" rx="2.25" fill="#D4891A"/>
+      <rect x="29" y="2"  width="4.5" height="16" rx="2.25" fill="#F0A830"/>
+      <text x="46" y="22" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" fill="#1A3A5C" letter-spacing="0.2">FreeBy<tspan fill="#D4891A">Date</tspan></text>
+    </svg></a>
+  <div class="nav-actions-blog">
+    <a href="/" class="nav-home-link">← Back to FreeByDate</a>
+    <a href="/guides/" class="nav-blog-pill">Guides</a>
+    <a href="/#calculator" class="nav-cta">Try it free</a>
+  </div>
+</nav>
+
+<div class="article-wrap">
+  <p class="article-eyebrow">Guides</p>
+  <h1 class="article-title">Debt payoff guides, strategies, and real numbers</h1>
+  <p class="article-sub">Plain-language articles about getting out of debt faster. No affiliate links, no product pitches — just the math and the method.</p>
+
+  <div class="blog-grid">
+
+    <a href="/guides/snowball-vs-avalanche" class="blog-card">
+      <div class="blog-card-tag">Debt Strategy</div>
+      <div class="blog-card-title">Snowball vs Avalanche: Which Debt Payoff Method Actually Works in 2026?</div>
+      <div class="blog-card-sub">The math favours avalanche. The psychology favours snowball. Here is how to decide which one you will actually finish — and a third option most people overlook.</div>
+      <div class="blog-card-meta">8 min read &nbsp;·&nbsp; June 2026</div>
+    </a>
+
+    <a href="/guides/why-minimum-payments-cost-you-a-decade" class="blog-card">
+      <div class="blog-card-tag">Debt Education</div>
+      <div class="blog-card-title">Why Minimum Payments Are Costing You a Decade</div>
+      <div class="blog-card-sub">At 22% APR, a $10,000 balance on minimum payments takes nearly 20 years to clear and costs more in interest than the original debt. Here is the exact math.</div>
+      <div class="blog-card-meta">7 min read &nbsp;·&nbsp; June 2026</div>
+    </a>
+
+    <a href="/guides/how-to-pay-off-20000-in-debt" class="blog-card">
+      <div class="blog-card-tag">Debt Strategy</div>
+      <div class="blog-card-title">How to Pay Off $20,000 in Debt Without Earning More</div>
+      <div class="blog-card-sub">You do not need a raise or a windfall. A sequenced plan using your existing income can close $20,000 in debt in under a year. Here is the exact method.</div>
+      <div class="blog-card-meta">9 min read &nbsp;·&nbsp; June 2026</div>
+    </a>
+
+  </div>
+
+  <p class="article-eyebrow" style="margin-top:3.5rem">Calculators &amp; Tools</p>
+  <h2 style="font-size:1.5rem;font-weight:700;color:#1A3A5C;margin-bottom:0.5rem">Free calculators for specific debt scenarios</h2>
+  <p class="article-sub" style="margin-bottom:0">Built for exact situations — pick the one that matches yours.</p>
+
+  <div class="blog-grid">
+
+    <a href="/debt-snowball-calculator" class="blog-card">
+      <div class="blog-card-tag">Calculator</div>
+      <div class="blog-card-title">Debt Snowball Calculator</div>
+      <div class="blog-card-sub">See the exact closing date for every debt, month by month — not just a final payoff date.</div>
+      <div class="blog-card-meta">Free tool</div>
+    </a>
+
+    <a href="/debt-avalanche-calculator" class="blog-card">
+      <div class="blog-card-tag">Calculator</div>
+      <div class="blog-card-title">Debt Avalanche Calculator</div>
+      <div class="blog-card-sub">Attack your highest-APR debt first. See exactly how much interest you save.</div>
+      <div class="blog-card-meta">Free tool</div>
+    </a>
+
+    <a href="/debt-free-date-calculator" class="blog-card">
+      <div class="blog-card-tag">Calculator</div>
+      <div class="blog-card-title">Debt Free Date Calculator</div>
+      <div class="blog-card-sub">Find your exact month and year — plus a closing date for every individual debt.</div>
+      <div class="blog-card-meta">Free tool</div>
+    </a>
+
+    <a href="/how-long-to-pay-off-credit-card-debt" class="blog-card">
+      <div class="blog-card-tag">Guide + Calculator</div>
+      <div class="blog-card-title">How Long to Pay Off Credit Card Debt?</div>
+      <div class="blog-card-sub">The real timeline on minimum payments vs a sequenced plan — with your own numbers.</div>
+      <div class="blog-card-meta">Free tool</div>
+    </a>
+
+    <a href="/pay-off-30k-credit-card-debt" class="blog-card">
+      <div class="blog-card-tag">Scenario Guide</div>
+      <div class="blog-card-title">Pay Off $30,000 in Credit Card Debt</div>
+      <div class="blog-card-sub">A worked example for larger balances — exact sequencing and timeline.</div>
+      <div class="blog-card-meta">Free tool</div>
+    </a>
+
+    <a href="/pay-off-car-loan-early" class="blog-card">
+      <div class="blog-card-tag">Scenario Guide</div>
+      <div class="blog-card-title">Pay Off Car Loan Early</div>
+      <div class="blog-card-sub">See exactly how much you save and when your car loan closes in Phase 2.</div>
+      <div class="blog-card-meta">Free tool</div>
+    </a>
+
+    <a href="/pay-off-student-loans-faster" class="blog-card">
+      <div class="blog-card-tag">Scenario Guide</div>
+      <div class="blog-card-title">Pay Off Student Loans Faster</div>
+      <div class="blog-card-sub">Where student loans fit in your sequence relative to credit cards and other debt.</div>
+      <div class="blog-card-meta">Free tool</div>
+    </a>
+
+    <a href="/get-out-of-debt-on-low-income" class="blog-card">
+      <div class="blog-card-tag">Scenario Guide</div>
+      <div class="blog-card-title">Get Out of Debt on a Low Income</div>
+      <div class="blog-card-sub">A realistic plan when every dollar of surplus counts.</div>
+      <div class="blog-card-meta">Free tool</div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">freebydate.com</a> &nbsp;·&nbsp; <a href="/guides/">Guides</a> &nbsp;·&nbsp; © 2026 FreeByDate</p>
+</footer>
+</body>
+</html>
