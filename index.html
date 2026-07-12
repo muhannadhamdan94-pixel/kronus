@@ -21,6 +21,7 @@
 <meta name="description" content="FreeByDate is a free debt payoff sequencer that shows you the fastest path to debt freedom using a disciplined sequencing strategy. Not minimum payments. A real plan.">
 <meta name="keywords" content="debt payoff calculator, debt free date calculator, snowball debt calculator, pay off debt faster, debt payoff planner">
 <meta name="robots" content="index, follow">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="canonical" href="https://freebydate.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://freebydate.com/">
@@ -692,6 +693,11 @@ footer {
 }
 
 /* Small mobile: 380px and below */
+@media (max-width: 640px) {
+  #resources > div > div:last-child {
+    grid-template-columns: 1fr !important;
+  }
+}
 @media (max-width: 380px) {
   .hero h1 { font-size: 1.55rem; }
   .stats-inner { grid-template-columns: 1fr 1fr; }
@@ -1708,6 +1714,113 @@ body.tool-mode {
   </div>
 </div>
 
+<!-- ── Resources section ── -->
+<section class="section landing-only" id="resources" style="background:var(--section); padding:clamp(3rem,6vw,4rem) clamp(1rem,5vw,2rem)">
+  <div style="max-width:1100px;margin:0 auto">
+
+    <div style="text-align:center;margin-bottom:2.5rem">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem">Free resources</div>
+      <h2 style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;color:var(--navy);margin-bottom:0.75rem">Guides, calculators, and payoff strategies</h2>
+      <p style="font-size:15px;color:var(--muted);max-width:540px;margin:0 auto;line-height:1.7">Everything you need to understand the method and run your own numbers.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2.5rem">
+
+      <!-- Guides column -->
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--navy);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:2px solid var(--gold)">Guides</div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem">
+          <a href="/guides/" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">All debt payoff guides</div>
+              <div style="font-size:12px;color:var(--muted)">The complete resource hub</div>
+            </div>
+          </a>
+          <a href="/guides/snowball-vs-avalanche" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Snowball vs Avalanche</div>
+              <div style="font-size:12px;color:var(--muted)">Which method actually works in 2026?</div>
+            </div>
+          </a>
+          <a href="/guides/why-minimum-payments-cost-you-a-decade" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Why minimum payments cost you a decade</div>
+              <div style="font-size:12px;color:var(--muted)">The exact math at 22% APR</div>
+            </div>
+          </a>
+          <a href="/guides/how-to-pay-off-20000-in-debt" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">How to pay off $20,000 without earning more</div>
+              <div style="font-size:12px;color:var(--muted)">Sequencing on your existing income</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Calculators column -->
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--navy);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:2px solid var(--gold)">Calculators &amp; scenarios</div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem">
+          <a href="/debt-snowball-calculator" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Debt snowball calculator</div>
+              <div style="font-size:12px;color:var(--muted)">Closing date for every debt</div>
+            </div>
+          </a>
+          <a href="/debt-avalanche-calculator" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Debt avalanche calculator</div>
+              <div style="font-size:12px;color:var(--muted)">Minimise total interest paid</div>
+            </div>
+          </a>
+          <a href="/debt-free-date-calculator" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Debt free date calculator</div>
+              <div style="font-size:12px;color:var(--muted)">Your exact month and year</div>
+            </div>
+          </a>
+          <a href="/pay-off-30k-credit-card-debt" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Pay off $30K in credit card debt</div>
+              <div style="font-size:12px;color:var(--muted)">Worked example with exact timeline</div>
+            </div>
+          </a>
+          <a href="/pay-off-car-loan-early" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Pay off car loan early</div>
+              <div style="font-size:12px;color:var(--muted)">Interest saved and exact close date</div>
+            </div>
+          </a>
+          <a href="/pay-off-student-loans-faster" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Pay off student loans faster</div>
+              <div style="font-size:12px;color:var(--muted)">Where student debt fits in your sequence</div>
+            </div>
+          </a>
+          <a href="/get-out-of-debt-on-low-income" style="text-decoration:none;display:flex;align-items:flex-start;gap:10px;padding:10px 0">
+            <span style="color:var(--gold);font-size:1rem;flex-shrink:0;margin-top:1px">→</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:2px">Get out of debt on a low income</div>
+              <div style="font-size:12px;color:var(--muted)">A realistic plan when every dollar counts</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ── end resources ── -->
 <!-- ── Footer ── -->
 <footer>
   <div class="footer-inner">
