@@ -1,6 +1,18 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/blog",
+      "destination": "/guides",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/guides/:path*",
+      "permanent": true
+    }
+  ],
   "routes": [
     {
       "src": "/guides",
@@ -8,14 +20,6 @@
     },
     {
       "src": "/guides/(.*)",
-      "dest": "/guides/$1.html"
-    },
-    {
-      "src": "/blog",
-      "dest": "/guides/index.html"
-    },
-    {
-      "src": "/blog/(.*)",
       "dest": "/guides/$1.html"
     },
     {
