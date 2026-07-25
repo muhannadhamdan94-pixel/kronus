@@ -1250,6 +1250,131 @@ body.tool-mode {
 }
 .nav-feedback-btn:hover::after { opacity: 1; }
 
+
+/* ── Pro / Upgrade system ── */
+.pro-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: linear-gradient(135deg, #D4891A, #F0A830);
+  color: white; font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  vertical-align: middle; margin-left: 6px;
+}
+.upgrade-banner {
+  background: linear-gradient(135deg, #1A3A5C, #2E5C8A);
+  border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+}
+.upgrade-banner-text { color: white; }
+.upgrade-banner-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.upgrade-banner-sub   { font-size: 12px; color: rgba(255,255,255,0.6); }
+.upgrade-banner-btn {
+  background: var(--gold); color: white;
+  border: none; border-radius: var(--radius);
+  padding: 9px 20px; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: var(--font);
+  white-space: nowrap; transition: background 0.15s; flex-shrink: 0;
+}
+.upgrade-banner-btn:hover { background: var(--gold2); }
+
+/* Save indicator */
+.save-indicator {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--muted);
+  margin-top: 8px; height: 16px;
+  transition: opacity 0.3s;
+}
+.save-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--border); flex-shrink: 0;
+  transition: background 0.3s;
+}
+.save-indicator.saving .save-dot  { background: var(--gold); }
+.save-indicator.saved  .save-dot  { background: var(--green); }
+.save-indicator.saving span { color: var(--gold); }
+.save-indicator.saved  span { color: var(--green); }
+
+/* Upgrade modal */
+.upgrade-backdrop {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(26,58,92,0.65);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.upgrade-backdrop.open { opacity: 1; pointer-events: all; }
+.upgrade-box {
+  background: white; border-radius: var(--radius-lg);
+  padding: clamp(1.5rem,4vw,2.5rem);
+  width: 100%; max-width: min(480px, calc(100vw - 2rem));
+  box-shadow: 0 24px 64px rgba(26,58,92,0.2);
+  text-align: center; max-height: 90vh; overflow-y: auto;
+}
+.upgrade-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.upgrade-title {
+  font-size: 1.3rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 0.5rem;
+}
+.upgrade-sub {
+  font-size: 14px; color: var(--muted);
+  line-height: 1.6; margin-bottom: 1.5rem;
+}
+.upgrade-features {
+  background: var(--section); border-radius: var(--radius);
+  padding: 1rem 1.25rem; margin-bottom: 1.5rem;
+  text-align: left;
+}
+.upgrade-feature {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; color: var(--body);
+  padding: 5px 0; border-bottom: 1px solid var(--border);
+}
+.upgrade-feature:last-child { border-bottom: none; }
+.upgrade-feature-icon { color: var(--green); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.upgrade-plans {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 1.25rem;
+}
+.plan-card {
+  border: 2px solid var(--border); border-radius: var(--radius);
+  padding: 1rem; cursor: pointer; transition: all 0.15s;
+  position: relative;
+}
+.plan-card:hover { border-color: var(--gold); }
+.plan-card.selected { border-color: var(--gold); background: var(--gold-bg); }
+.plan-card.popular::before {
+  content: 'Best value';
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: white;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+  padding: 2px 10px; border-radius: 20px; white-space: nowrap;
+  text-transform: uppercase;
+}
+.plan-name  { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.plan-price { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+.plan-price span { font-size: 12px; font-weight: 400; color: var(--muted); }
+.plan-saving { font-size: 10px; color: var(--green); font-weight: 600; margin-top: 2px; }
+.upgrade-cta {
+  width: 100%; padding: 13px;
+  background: var(--gold); color: white;
+  border: none; border-radius: var(--radius);
+  font-size: 15px; font-weight: 700;
+  cursor: pointer; font-family: var(--font);
+  transition: background 0.15s; margin-bottom: 0.75rem;
+}
+.upgrade-cta:hover { background: var(--gold2); }
+.upgrade-cancel {
+  background: none; border: none;
+  font-size: 13px; color: var(--muted);
+  cursor: pointer; font-family: var(--font);
+}
+.upgrade-cancel:hover { color: var(--navy); }
+.upgrade-trust {
+  font-size: 11px; color: var(--muted);
+  margin-top: 0.75rem; line-height: 1.6;
+}
+
 </style>
   </script>
 </head>
@@ -1638,13 +1763,6 @@ body.tool-mode {
       <div class="form-section">
         <div class="section-head">Income</div>
         <div class="row3" style="margin-bottom:10px">
-          <div class="field"><label>Currency</label>
-            <select id="currency" onchange="liveUpdate()">
-              <option value="CAD">CAD $</option><option value="USD">USD $</option>
-              <option value="SAR">SAR ر.س</option><option value="AED">AED د.إ</option>
-              <option value="GBP">GBP £</option><option value="EUR">EUR €</option><option value="AUD">AUD $</option>
-            </select>
-          </div>
           <div class="field"><label>Pay frequency</label>
             <select id="freq" onchange="onFreqChange()">
               <option value="monthly">Monthly</option>
@@ -1698,8 +1816,19 @@ body.tool-mode {
         <p style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:6px">Ring-fenced every month. Never used for debt.</p>
       </div>
 
+      <div id="upgradeBanner" class="upgrade-banner" style="display:none">
+        <div class="upgrade-banner-text">
+          <div class="upgrade-banner-title">Your plan disappears when you close this tab</div>
+          <div class="upgrade-banner-sub">Upgrade to Pro to save your sequence permanently</div>
+        </div>
+        <button class="upgrade-banner-btn" onclick="window.openUpgrade('save')">Upgrade — $5/mo</button>
+      </div>
       <div id="usageBanner" class="usage-banner" style="display:none"></div>
       <button class="run-btn" id="mainRunBtn" onclick="handleRunWithLimit()">Show me when I'm free</button>
+      <div class="save-indicator" id="saveIndicator" style="display:none">
+        <div class="save-dot"></div>
+        <span id="saveIndicatorText">Saving plan...</span>
+      </div>
 
     </aside>
 
@@ -2002,8 +2131,7 @@ function getDebtType(id) {
 
 // ── Formatters ──
 function fmt(n, cur) {
-  const syms = { CAD:'$', USD:'$', SAR:'ر.س', AED:'د.إ', GBP:'£', EUR:'€', AUD:'$' };
-  const sym = syms[cur] || '$';
+  const sym = '$';
   const abs = Math.abs(Math.round(n));
   return (n < 0 ? '-' : '') + sym + abs.toLocaleString();
 }
@@ -2099,7 +2227,7 @@ function simulate(closeableDebts, fixedBillDebts, baseBillTotal, savingsPerMonth
 
 // ── Gather form data ──
 function gatherData() {
-  const cur     = document.getElementById('currency').value;
+  const cur     = '$';
   const freq    = document.getElementById('freq').value;
   const raw     = parseFloat(document.getElementById('income').value) || 0;
   const income  = freq === 'biweekly' ? raw * 2 : raw;
@@ -2143,6 +2271,14 @@ function liveUpdate() {
   if (ticker) ticker.style.display = 'flex';
   if (num) num.textContent = r.totalMonths;
 }
+
+// ── Auto-save after simulation for Pro users ──
+  if (typeof window.maybeShowUpgradeBanner === 'function') {
+    window.maybeShowUpgradeBanner();
+  }
+  if (typeof window.saveSequence === 'function' && typeof userIsPro !== 'undefined' && userIsPro) {
+    window.saveSequence();
+  }
 
 // ── Phase 2 popup ──
 function showPhase2Popup(fixedBillDebts, cur, onConfirm) {
@@ -2636,6 +2772,15 @@ function exposeGlobals() {
   window.initFeedbackIcons   = initFeedbackIcons;
   // Expose track for cross-script access
   if (typeof track !== 'undefined') window.track = track;
+  // Pro system
+  window.openUpgrade   = openUpgrade;
+  window.closeUpgrade  = closeUpgrade;
+  window.selectPlan    = selectPlan;
+  window.handleUpgrade = handleUpgrade;
+  window.saveSequence          = saveSequence;
+  window.loadSequence          = loadSequence;
+  window.maybeShowUpgradeBanner = maybeShowUpgradeBanner;
+  window.scheduleAutoSave       = scheduleAutoSave;
 }
 
 function initSupabase() { return true; }
@@ -2679,9 +2824,12 @@ async function setUserState(user) {
   if (memberRuns === 0 || memberRuns <= guestRuns) {
     localStorage.removeItem(MEMBER_USE_KEY);
   }
-  // Show tool and enter full screen — enterToolMode handles all nav visibility
+  // Check Pro status, load saved sequence, then enter tool
   showTool();
   enterToolMode();
+  checkProStatus().then(() => {
+    if (userIsPro) loadSequence().then(() => initAutoSave());
+  });
 }
 
 // ── Update UI for guest ──
@@ -3480,6 +3628,242 @@ function initFeedbackIcons() {
 
 // ── Init on load ──
 
+
+// ══ Pro / Saved Sequences System ══
+
+// Supabase table: user_sequences
+// schema: id, user_id, sequence_data (jsonb), updated_at
+// Row-level security: users can only read/write their own row
+
+const STRIPE_MONTHLY_LINK = 'STRIPE_MONTHLY_LINK_HERE';
+const STRIPE_ANNUAL_LINK  = 'STRIPE_ANNUAL_LINK_HERE';
+
+let selectedPlan    = 'annual';
+let userIsPro       = false;
+let autoSaveTimeout = null;
+
+// ── Check if user is Pro ──
+async function checkProStatus() {
+  if (!currentUser) { userIsPro = false; return; }
+  try {
+    const { data } = await sb
+      .from('user_pro')
+      .select('is_pro')
+      .eq('user_id', currentUser.id)
+      .single();
+    userIsPro = data?.is_pro === true;
+  } catch {
+    userIsPro = false;
+  }
+  updateProUI();
+}
+
+// ── Update UI based on pro status ──
+function updateProUI() {
+  const banner = document.getElementById('upgradeBanner');
+  const saveInd = document.getElementById('saveIndicator');
+  if (userIsPro) {
+    if (banner)  banner.style.display = 'none';
+    if (saveInd) saveInd.style.display = 'flex';
+  } else {
+    // Show upgrade banner after first simulation
+    if (saveInd) saveInd.style.display = 'none';
+  }
+}
+
+// ── Save sequence to Supabase ──
+async function saveSequence() {
+  if (!currentUser || !userIsPro) return;
+
+  const data = collectFormState();
+  if (!data) return;
+
+  showSaveIndicator('saving');
+
+  try {
+    await sb.from('user_sequences').upsert({
+      user_id:       currentUser.id,
+      sequence_data: data,
+      updated_at:    new Date().toISOString(),
+    }, { onConflict: 'user_id' });
+    showSaveIndicator('saved');
+  } catch (err) {
+    console.error('Save failed:', err);
+    showSaveIndicator('');
+  }
+}
+
+// ── Load sequence from Supabase ──
+async function loadSequence() {
+  if (!currentUser || !userIsPro) return;
+
+  try {
+    const { data } = await sb
+      .from('user_sequences')
+      .select('sequence_data')
+      .eq('user_id', currentUser.id)
+      .single();
+
+    if (data?.sequence_data) {
+      restoreFormState(data.sequence_data);
+    }
+  } catch {
+    // No saved sequence yet — that's fine
+  }
+}
+
+// ── Collect form state ──
+function collectFormState() {
+  try {
+    const state = {
+
+      freq:       document.getElementById('freq')?.value       || 'Monthly',
+      income:     document.getElementById('income')?.value     || '',
+      startMonth: document.getElementById('startMonth')?.value || 'January',
+      startYear:  document.getElementById('startYear')?.value  || new Date().getFullYear(),
+      savings:    document.getElementById('savings')?.value    || '',
+      savingsLbl: document.getElementById('savingsLbl')?.value || '',
+      strategy:   typeof strategy !== 'undefined' ? strategy : 'snowball',
+      bills: billIds.map(id => ({
+        name:   document.getElementById('bname-' + id)?.value || '',
+        amount: document.getElementById('bamt-'  + id)?.value || '',
+      })).filter(b => b.name || b.amount),
+      debts: debtIds.map(id => {
+        const nameEl  = document.getElementById('dname-' + id);
+        const balEl   = document.getElementById('dbal-'  + id);
+        const minEl   = document.getElementById('dmin-'  + id);
+        const rateEl  = document.getElementById('drate-' + id);
+        const badge   = document.querySelector('#debt-' + id + ' .type-badge');
+        const isFixed = badge ? badge.classList.contains('type-fixed') : false;
+        return {
+          name:       nameEl?.value  || '',
+          balance:    balEl?.value   || '',
+          minPayment: minEl?.value   || '',
+          rate:       rateEl?.value  || '',
+          isFixed,
+        };
+      }).filter(d => d.name || d.balance),
+    };
+    return state;
+  } catch (err) {
+    console.error('collectFormState error:', err);
+    return null;
+  }
+}
+
+// ── Restore form state ──
+function restoreFormState(state) {
+  try {
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+
+    set('freq',       state.freq       || 'Monthly');
+    set('income',     state.income     || '');
+    set('startMonth', state.startMonth || 'January');
+    set('startYear',  state.startYear  || new Date().getFullYear());
+    set('savings',    state.savings    || '');
+    set('savingsLbl', state.savingsLbl || '');
+
+    // Restore strategy
+    if (state.strategy && typeof setStrat === 'function') {
+      setStrat(state.strategy);
+    }
+
+    // Restore bills
+    if (Array.isArray(state.bills)) {
+      state.bills.forEach(b => {
+        if (typeof addBill === 'function') addBill(b.name, b.amount);
+      });
+    }
+
+    // Restore debts
+    if (Array.isArray(state.debts)) {
+      state.debts.forEach(d => {
+        if (typeof addDebt === 'function') {
+          addDebt(d.name, d.balance, d.isFixed, d.minPayment);
+          // Set rate if present
+          if (d.rate) {
+            const lastId = debtIds[debtIds.length - 1];
+            const rateEl = document.getElementById('drate-' + lastId);
+            if (rateEl) rateEl.value = d.rate;
+          }
+        }
+      });
+    }
+  } catch (err) {
+    console.error('restoreFormState error:', err);
+  }
+}
+
+// ── Auto-save on form changes (debounced 2s) ──
+function scheduleAutoSave() {
+  if (!userIsPro) return;
+  clearTimeout(autoSaveTimeout);
+  autoSaveTimeout = setTimeout(saveSequence, 2000);
+}
+
+// ── Save indicator UI ──
+function showSaveIndicator(state) {
+  const el   = document.getElementById('saveIndicator');
+  const dot  = el?.querySelector('.save-dot');
+  const text = document.getElementById('saveIndicatorText');
+  if (!el) return;
+  el.className = 'save-indicator' + (state ? ' ' + state : '');
+  if (text) text.textContent = state === 'saving' ? 'Saving plan...' : state === 'saved' ? 'Plan saved' : '';
+  if (state === 'saved') setTimeout(() => { el.className = 'save-indicator'; }, 3000);
+}
+
+// ── Upgrade modal ──
+function openUpgrade(context) {
+  const backdrop = document.getElementById('upgradeBackdrop');
+  if (backdrop) backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (typeof window.track === 'function') window.track('upgrade_modal_opened', { context: context || 'manual' });
+}
+
+function closeUpgrade() {
+  const backdrop = document.getElementById('upgradeBackdrop');
+  if (backdrop) backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function selectPlan(plan) {
+  selectedPlan = plan;
+  document.getElementById('planMonthly')?.classList.toggle('selected', plan === 'monthly');
+  document.getElementById('planAnnual')?.classList.toggle('selected',  plan === 'annual');
+  const btn = document.getElementById('upgradeCta');
+  if (btn) btn.textContent = plan === 'annual' ? 'Get Pro — $45/year' : 'Get Pro — $5/month';
+}
+
+function handleUpgrade() {
+  if (!currentUser) { openAuth('signin'); return; }
+  const link = selectedPlan === 'annual' ? STRIPE_ANNUAL_LINK : STRIPE_MONTHLY_LINK;
+  if (link.includes('STRIPE')) {
+    alert('Payment coming soon — Stripe is being configured.');
+    return;
+  }
+  // Append email so Stripe pre-fills the checkout
+  const url = link + '?prefilled_email=' + encodeURIComponent(currentUser.email);
+  window.open(url, '_blank');
+  if (typeof window.track === 'function') window.track('upgrade_initiated', { plan: selectedPlan });
+}
+
+// ── Hook auto-save to form inputs ──
+function initAutoSave() {
+  if (!userIsPro) return;
+  const formPanel = document.getElementById('formPanel');
+  if (formPanel) {
+    formPanel.addEventListener('input', scheduleAutoSave);
+    formPanel.addEventListener('change', scheduleAutoSave);
+  }
+}
+
+// ── Show upgrade banner after first simulation (free Pro users) ──
+function maybeShowUpgradeBanner() {
+  if (!currentUser || userIsPro) return;
+  const banner = document.getElementById('upgradeBanner');
+  if (banner) banner.style.display = 'flex';
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   exposeGlobals();
   initAuth();
@@ -3581,6 +3965,42 @@ document.addEventListener('DOMContentLoaded', () => {
   style="display:none">
   💬
 </button>
+
+
+<!-- ── Upgrade Modal ── -->
+<div class="upgrade-backdrop" id="upgradeBackdrop" role="dialog" aria-modal="true">
+  <div class="upgrade-box">
+    <div class="upgrade-icon">⚡</div>
+    <div class="upgrade-title">Save your payoff plan</div>
+    <p class="upgrade-sub">Upgrade to FreeByDate Pro and your plan persists between sessions — no re-entering every time.</p>
+
+    <div class="upgrade-features">
+      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Saved sequence — your debts and plan always ready when you log in</span></div>
+      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Balance update mode — change one number, see all dates shift instantly</span></div>
+      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>PDF export — download your full payoff timeline</span></div>
+      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Monthly milestone email — we remind you when your next debt closes</span></div>
+    </div>
+
+    <div class="upgrade-plans">
+      <div class="plan-card" id="planMonthly" onclick="selectPlan('monthly')">
+        <div class="plan-name">Monthly</div>
+        <div class="plan-price">$5<span>/mo</span></div>
+        <div class="plan-saving">&nbsp;</div>
+      </div>
+      <div class="plan-card popular selected" id="planAnnual" onclick="selectPlan('annual')">
+        <div class="plan-name">Annual</div>
+        <div class="plan-price">$45<span>/yr</span></div>
+        <div class="plan-saving">Save $15 vs monthly</div>
+      </div>
+    </div>
+
+    <button class="upgrade-cta" id="upgradeCta" onclick="handleUpgrade()">
+      Get Pro — $45/year
+    </button>
+    <div><button class="upgrade-cancel" onclick="closeUpgrade()">Maybe later</button></div>
+    <div class="upgrade-trust">Cancel anytime · Secure payment via Stripe · No hidden fees</div>
+  </div>
+</div>
 
 </body>
 </html>
