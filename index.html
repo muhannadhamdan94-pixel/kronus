@@ -1397,9 +1397,12 @@ body.tool-mode {
     <a href="#features" class="nav-link">Features</a>
     <a href="#compare" class="nav-link">Why FreeByDate</a>
     <a href="#faq" class="nav-link">FAQ</a>
+    <a href="/blogs/" class="nav-link">Blog</a>
+    <a href="/guides/" class="nav-link">Guides</a>
   </div>
   <div class="nav-actions" id="navActions">
-    <a href="/guides/" class="nav-blog-pill">Guides</a>
+    <a href="/blogs/" class="nav-blog-pill">Blog</a>
+    <a href="/guides/" class="nav-blog-pill" style="background:rgba(26,58,92,0.08);border-color:rgba(26,58,92,0.25);color:#1A3A5C;">Guides</a>
     <button class="nav-signout" id="navSignIn" onclick="openAuth('signin')">Sign in</button>
     <button class="nav-cta" id="navTryFree" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Try it free</button>
     <div class="nav-user" id="navUser" style="display:none">
@@ -1821,7 +1824,7 @@ body.tool-mode {
           <div class="upgrade-banner-title">Your plan disappears when you close this tab</div>
           <div class="upgrade-banner-sub">Upgrade to Pro to save your sequence permanently</div>
         </div>
-        <button class="upgrade-banner-btn" onclick="window.openUpgrade('save')">Upgrade — $5/mo</button>
+        <button class="upgrade-banner-btn" onclick="window.openUpgrade('save')">Upgrade, $5/mo</button>
       </div>
       <div id="usageBanner" class="usage-banner" style="display:none"></div>
       <button class="run-btn" id="mainRunBtn" onclick="handleRunWithLimit()">Show me when I'm free</button>
@@ -1950,6 +1953,17 @@ body.tool-mode {
   </div>
 </section>
 <!-- ── end resources ── -->
+
+<!-- ── Product Hunt Badge ── -->
+<div style="text-align:center; padding: 2rem 1rem; background: var(--section); border-top: 1px solid var(--border);">
+  <p style="font-size:12px; color:var(--muted); margin-bottom:1rem; font-weight:500; letter-spacing:0.05em; text-transform:uppercase;">Featured on</p>
+  <a href="https://www.producthunt.com/products/freebydate?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-freebydate" target="_blank" rel="noopener noreferrer">
+    <img alt="FreeByDate - Debt shouldn't be a mystery. We show the path to freedom. | Product Hunt"
+         width="250" height="54"
+         style="height:54px; width:auto; border:none;"
+         src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1177465&theme=light&t=1785004960342" />
+  </a>
+</div>
 <!-- ── Footer ── -->
 <footer>
   <div class="footer-inner">
@@ -1969,12 +1983,12 @@ body.tool-mode {
 
       <div class="fp-block">
         <div class="fp-title">What we store</div>
-        <p class="fp-body">When you create a FreeByDate account, we store your email address and an encrypted password. That is all. We use Supabase as our database provider, hosted on secure infrastructure. Your password is never stored in plain text — it is hashed before it reaches our database.</p>
+        <p class="fp-body">When you create a FreeByDate account, we store your email address and an encrypted password. That is all. We use Supabase as our database provider, hosted on secure infrastructure. Your password is never stored in plain text, it is hashed before it reaches our database.</p>
       </div>
 
       <div class="fp-block">
         <div class="fp-title">What we never store</div>
-        <p class="fp-body">Every number you enter into the FreeByDate sequencer — your income, debts, bills, savings amounts, interest rates, or any simulation result — runs entirely inside your browser. None of it is transmitted to our servers. None of it is stored anywhere. When you close the tab, it is gone. We have no access to your financial information and we never will.</p>
+        <p class="fp-body">Every number you enter into the FreeByDate sequencer, your income, debts, bills, savings amounts, interest rates, or any simulation result, runs entirely inside your browser. None of it is transmitted to our servers. None of it is stored anywhere. When you close the tab, it is gone. We have no access to your financial information and we never will.</p>
       </div>
 
       <div class="fp-block">
@@ -2539,7 +2553,7 @@ function runSim(phase2Order) {
     const fixedHTML = r.fixedOngoing.length
       ? r.fixedOngoing.map(f => `<span style="font-size:11px;color:var(--muted)">${f.name}: ${fmt(f.minPayment,cur)} min</span>`).join('<br>')
       : '';
-    const activityHTML = [evHTML, fixedHTML].filter(Boolean).join('<br>') || '<span class="td-muted">—</span>';
+    const activityHTML = [evHTML, fixedHTML].filter(Boolean).join('<br>') || '<span class="td-muted">, </span>';
     const bonusHTML    = r.isBonus ? `<span class="badge-bonus">3rd cheque</span>` : '';
 
     html += `<tr>
@@ -2616,7 +2630,7 @@ document.addEventListener('wheel', function(e) {
   }
 }, { passive: false });
 
-// ── Init — empty form ──
+// ── Init, empty form ──
 // Set start month/year to today
 (function() {
   const now = new Date();
@@ -2739,7 +2753,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Expose functions used by inline HTML onclick handlers to window
-// (type="module" scopes functions — we need them globally accessible)
+// (type="module" scopes functions, we need them globally accessible)
 function exposeGlobals() {
   window.openAuth        = openAuth;
   window.closeAuth       = closeAuth;
@@ -2812,7 +2826,7 @@ async function setUserState(user) {
   // Set email in nav
   const emailEl = document.getElementById('navUserEmail');
   if (emailEl) emailEl.textContent = user.email;
-  // Reset guest usage counter — signed-in users get unlimited access
+  // Reset guest usage counter, signed-in users get unlimited access
   resetUsage();
   const banner = document.getElementById('usageBanner');
   if (banner) banner.style.display = 'none';
@@ -2839,7 +2853,7 @@ function setGuestState() {
   exitToolMode();
   const navUser = document.getElementById('navUser');
   if (navUser) navUser.style.display = 'none';
-  // Restore form panel — guests can use the tool for 3 runs freely
+  // Restore form panel, guests can use the tool for 3 runs freely
   const form = document.querySelector('.form-panel');
   if (form) { form.style.pointerEvents = ''; form.style.opacity = ''; }
   // Show empty state (not the gate)
@@ -2847,7 +2861,7 @@ function setGuestState() {
   const results = document.getElementById('resultsContent');
   if (empty)   empty.style.display   = 'flex';
   if (results) { results.style.display = 'none'; results.innerHTML = ''; }
-  // Update usage banner — shows remaining runs if they've used any
+  // Update usage banner, shows remaining runs if they've used any
   updateUsageBanner();
 }
 
@@ -3150,7 +3164,7 @@ async function handleForgotPassword() {
     btn.disabled    = false;
     btn.textContent = 'Send reset link';
   } else {
-    succEl.textContent = 'Reset link sent. Check your inbox — the link expires in 1 hour.';
+    succEl.textContent = 'Reset link sent. Check your inbox, the link expires in 1 hour.';
     succEl.classList.add('show');
     btn.disabled    = true;
     btn.textContent = 'Link sent';
@@ -3167,7 +3181,7 @@ async function checkPasswordReset() {
   const type   = params.get('type');
 
   if (type === 'recovery') {
-    // Supabase has already exchanged the token — show new password form
+    // Supabase has already exchanged the token, show new password form
     showNewPasswordModal();
   }
 }
@@ -3304,7 +3318,7 @@ function validatePassword(pw) {
 // ── Handle run with usage limit ──
 async function handleRunWithLimit() {
   if (currentUser) {
-    // Signed-in users — unlimited access always
+    // Signed-in users, unlimited access always
     const banner = document.getElementById('usageBanner');
     if (banner) banner.style.display = 'none';
     // Track member simulation run
@@ -3322,7 +3336,7 @@ async function handleRunWithLimit() {
   await updateUsageBanner();
 
   if (used > USAGE_LIMIT) {
-    // Use 4+ — hard gate, simulation blocked
+    // Use 4+, hard gate, simulation blocked
     track('usage_gate_hit', { uses_attempted: used });
     const empty   = document.getElementById('emptyState');
     const results = document.getElementById('resultsContent');
@@ -3333,7 +3347,7 @@ async function handleRunWithLimit() {
         <div class="tool-gate">
           <div class="tool-gate-icon">◎</div>
           <div class="tool-gate-title">Sign in to keep going</div>
-          <p class="tool-gate-sub">You have used your 3 free previews. Create a free account for unlimited access — no payment, ever.</p>
+          <p class="tool-gate-sub">You have used your 3 free previews. Create a free account for unlimited access, no payment, ever.</p>
           <button class="tool-gate-btn" onclick="window.openAuth('signin')">Sign in</button>
           <div style="font-size:12px;color:var(--muted);margin-top:0.75rem">
             No account yet? <a onclick="window.openAuth('signup')" style="color:var(--gold);cursor:pointer;font-weight:500">Create one free</a>
@@ -3346,21 +3360,21 @@ async function handleRunWithLimit() {
     return;
   }
 
-  // Use 1, 2, 3 — simulation runs normally
+  // Use 1, 2, 3, simulation runs normally
   track('simulation_run', { user_type: 'guest', run_number: used });
   runSim();
 
-  // Use 3 — last free run: show feedback prompt after simulation completes
+  // Use 3, last free run: show feedback prompt after simulation completes
   if (used === USAGE_LIMIT && shouldShowGuestFeedback(used)) {
     setTimeout(() => openFeedback('guest'), 2000);
   }
 }
 
-// ── Usage limit — IP-based, survives refresh ──
+// ── Usage limit, IP-based, survives refresh ──
 const USAGE_LIMIT = 3;
 let visitorIP = null;
 
-// Get visitor IP from free API — used as the storage key
+// Get visitor IP from free API, used as the storage key
 // This means the counter is tied to IP, not just the browser session
 async function getVisitorIP() {
   if (visitorIP) return visitorIP;
@@ -3437,7 +3451,7 @@ function enterToolMode() {
   document.body.classList.add('tool-mode');
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'instant' });
-  // No back to home button — sign out handles returning to landing page
+  // No back to home button, sign out handles returning to landing page
   // Check if nav feedback icon should be visible
   if (localStorage.getItem(FEEDBACK_KEY_MEMBER) === 'dismissed' && !localStorage.getItem(FEEDBACK_DONE_KEY)) {
     showNavFeedbackIcon();
@@ -3498,7 +3512,7 @@ function openFeedback(context) {
   if (success) success.style.display = 'none';
   const msgs = {
     'guest':         ['Quick question before you go',   'Takes 30 seconds. Helps us improve.'],
-    'member':        ['How is FreeByDate working for you?', 'You have been using FreeByDate — we would love to know.'],
+    'member':        ['How is FreeByDate working for you?', 'You have been using FreeByDate, we would love to know.'],
     'manual-guest':  ['Share your feedback',            'We read every submission.'],
     'manual-member': ['Share your feedback',            'We read every submission.'],
   };
@@ -3549,7 +3563,7 @@ async function submitFeedback() {
   const labels = { 'guest': 'Guest auto (3 uses)', 'member': 'Member auto (5 uses)', 'manual-guest': 'Guest manual', 'manual-member': 'Member manual' };
   const payload = {
     access_key: W3F_ACCESS_KEY,
-    subject:    'FreeByDate Feedback — ' + (feedbackRating ? feedbackRating + '\u2605' : 'No rating') + ' — ' + userType,
+    subject:    'FreeByDate Feedback, ' + (feedbackRating ? feedbackRating + '\u2605' : 'No rating') + ', ' + userType,
     from_name:  'FreeByDate Feedback',
     replyto:    email || 'noreply@freebydate.com',
     message:    'Rating: '    + (feedbackRating ? feedbackRating + '/5' : 'None') +
@@ -3600,7 +3614,7 @@ function hideFeedbackIcons() {
 }
 
 function handleGuestDecline() {
-  // User chose not to sign up — close the gate
+  // User chose not to sign up, close the gate
   track('gate_declined', { action: 'continue_without_signup' });
   const results = document.getElementById('resultsContent');
   const empty   = document.getElementById('emptyState');
@@ -3613,10 +3627,10 @@ function handleGuestDecline() {
     localStorage.setItem(FEEDBACK_KEY_GUEST, 'triggered');
     setTimeout(() => openFeedback('guest'), 400);
   } else if (localStorage.getItem(FEEDBACK_KEY_GUEST) === 'dismissed') {
-    // Already dismissed feedback — just show the landing icon
+    // Already dismissed feedback, just show the landing icon
     showLandingFeedbackIcon();
   }
-  // If FEEDBACK_DONE_KEY is set — already submitted, nothing to show
+  // If FEEDBACK_DONE_KEY is set, already submitted, nothing to show
 }
 
 function initFeedbackIcons() {
@@ -3708,7 +3722,7 @@ async function loadSequence() {
       restoreFormState(data.sequence_data);
     }
   } catch {
-    // No saved sequence yet — that's fine
+    // No saved sequence yet, that's fine
   }
 }
 
@@ -3831,14 +3845,14 @@ function selectPlan(plan) {
   document.getElementById('planMonthly')?.classList.toggle('selected', plan === 'monthly');
   document.getElementById('planAnnual')?.classList.toggle('selected',  plan === 'annual');
   const btn = document.getElementById('upgradeCta');
-  if (btn) btn.textContent = plan === 'annual' ? 'Get Pro — $45/year' : 'Get Pro — $5/month';
+  if (btn) btn.textContent = plan === 'annual' ? 'Get Pro, $45/year' : 'Get Pro, $5/month';
 }
 
 function handleUpgrade() {
   if (!currentUser) { openAuth('signin'); return; }
   const link = selectedPlan === 'annual' ? STRIPE_ANNUAL_LINK : STRIPE_MONTHLY_LINK;
   if (link.includes('STRIPE')) {
-    alert('Payment coming soon — Stripe is being configured.');
+    alert('Payment coming soon, Stripe is being configured.');
     return;
   }
   // Append email so Stripe pre-fills the checkout
@@ -3932,13 +3946,13 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       <div class="feedback-field">
         <label for="feedbackText">What would make FreeByDate better? <span style="font-weight:400">(optional)</span></label>
-        <textarea id="feedbackText" placeholder="Tell us what you think — what works, what doesn't, what you wish it could do..."></textarea>
+        <textarea id="feedbackText" placeholder="Tell us what you think, what works, what doesn't, what you wish it could do..."></textarea>
       </div>
       <div class="feedback-privacy">
-        Your feedback is shared with the FreeByDate team only. No personal information is collected — we do not know who you are unless you choose to tell us below.
+        Your feedback is shared with the FreeByDate team only. No personal information is collected, we do not know who you are unless you choose to tell us below.
       </div>
       <div class="feedback-field">
-        <label for="feedbackEmail">Your email <span style="font-weight:400">(optional — only if you want a reply)</span></label>
+        <label for="feedbackEmail">Your email <span style="font-weight:400">(optional, only if you want a reply)</span></label>
         <input type="email" id="feedbackEmail" placeholder="you@example.com">
       </div>
       <div class="feedback-actions">
@@ -3972,13 +3986,13 @@ document.addEventListener('DOMContentLoaded', () => {
   <div class="upgrade-box">
     <div class="upgrade-icon">⚡</div>
     <div class="upgrade-title">Save your payoff plan</div>
-    <p class="upgrade-sub">Upgrade to FreeByDate Pro and your plan persists between sessions — no re-entering every time.</p>
+    <p class="upgrade-sub">Upgrade to FreeByDate Pro and your plan persists between sessions, no re-entering every time.</p>
 
     <div class="upgrade-features">
-      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Saved sequence — your debts and plan always ready when you log in</span></div>
-      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Balance update mode — change one number, see all dates shift instantly</span></div>
-      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>PDF export — download your full payoff timeline</span></div>
-      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Monthly milestone email — we remind you when your next debt closes</span></div>
+      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Saved sequence, your debts and plan always ready when you log in</span></div>
+      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Balance update mode, change one number, see all dates shift instantly</span></div>
+      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>PDF export, download your full payoff timeline</span></div>
+      <div class="upgrade-feature"><span class="upgrade-feature-icon">✓</span><span>Monthly milestone email, we remind you when your next debt closes</span></div>
     </div>
 
     <div class="upgrade-plans">
@@ -3995,7 +4009,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <button class="upgrade-cta" id="upgradeCta" onclick="handleUpgrade()">
-      Get Pro — $45/year
+      Get Pro, $45/year
     </button>
     <div><button class="upgrade-cancel" onclick="closeUpgrade()">Maybe later</button></div>
     <div class="upgrade-trust">Cancel anytime · Secure payment via Stripe · No hidden fees</div>
