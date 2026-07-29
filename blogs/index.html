@@ -1,1 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<title>Blog | FreeByDate , Debt Payoff Thinking</title>
+<meta name="description" content="Regular posts on debt psychology, strategy, and real numbers. Timely, opinionated, and grounded in data from the FreeByDate team.">
+<link rel="canonical" href="https://freebydate.com/blogs/">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3JM36MZ0L4"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3JM36MZ0L4');</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; color-scheme: light; }
+  body { font-family: "Inter", Arial, sans-serif; background: #FFFFFF; color: #1E2124; overflow-x: hidden; }
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.98); border-bottom: 1px solid #D8DDE6; padding: 0 clamp(1rem,4vw,2.5rem); min-height: 64px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(8px); }
+  .nav-logo { text-decoration: none; display: flex; align-items: center; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-link { font-size: 14px; color: #4A4D54; text-decoration: none; transition: color 0.15s; }
+  .nav-link:hover, .nav-link.active { color: #1A3A5C; font-weight: 600; }
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+  .nav-pill { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #D4891A; text-decoration: none; background: rgba(212,137,26,0.08); border: 1px solid rgba(212,137,26,0.25); padding: 5px 12px; border-radius: 20px; }
+  .nav-cta { background: #D4891A; color: #fff; font-size: 14px; font-weight: 600; padding: 9px 22px; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+  .nav-cta:hover { background: #F0A830; }
+  @media (max-width: 768px) { .nav-links { display: none; } }
 
+  .page-hero { margin-top: 64px; padding: clamp(3rem,8vw,5rem) clamp(1.25rem,5vw,2.5rem); background: #1A3A5C; }
+  .hero-label { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #F0A830; margin-bottom: 1rem; }
+  .hero-title { font-size: clamp(2rem,5vw,3rem); font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1rem; max-width: 600px; }
+  .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.6); max-width: 540px; line-height: 1.7; }
+
+  .blog-section { max-width: 1100px; margin: 0 auto; padding: 4rem clamp(1.25rem,5vw,2.5rem); }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #4A4D54; margin-bottom: 2rem; padding-bottom: 0.75rem; border-bottom: 2px solid #D4891A; display: inline-block; }
+
+  .featured-post { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; background: #F4F7FB; border-radius: 16px; padding: 2.5rem; margin-bottom: 3rem; border: 1.5px solid #D8DDE6; text-decoration: none; transition: border-color 0.15s; }
+  .featured-post:hover { border-color: #D4891A; }
+  .featured-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #D4891A; margin-bottom: 0.75rem; }
+  .featured-title { font-size: 1.6rem; font-weight: 800; color: #1A3A5C; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 0.85rem; }
+  .featured-sub { font-size: 14px; color: #4A4D54; line-height: 1.7; margin-bottom: 1rem; }
+  .featured-meta { font-size: 12px; color: #6B6C72; }
+  .featured-visual { background: linear-gradient(135deg, #1A3A5C, #2E5C8A); border-radius: 12px; height: 220px; display: flex; align-items: center; justify-content: center; }
+  .featured-stat { text-align: center; }
+  .featured-stat-num { font-size: 3.5rem; font-weight: 800; color: #D4891A; line-height: 1; }
+  .featured-stat-lbl { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 8px; max-width: 160px; line-height: 1.4; }
+
+  .post-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px,100%),1fr)); gap: 1.5rem; }
+  .post-card { border: 1.5px solid #D8DDE6; border-radius: 14px; padding: 1.75rem; text-decoration: none; transition: all 0.15s; display: block; background: #fff; }
+  .post-card:hover { border-color: #D4891A; box-shadow: 0 6px 24px rgba(26,58,92,0.08); transform: translateY(-2px); }
+  .post-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #D4891A; margin-bottom: 0.75rem; }
+  .post-title { font-size: 1.1rem; font-weight: 700; color: #1A3A5C; line-height: 1.3; margin-bottom: 0.6rem; }
+  .post-sub { font-size: 13px; color: #4A4D54; line-height: 1.65; margin-bottom: 1rem; }
+  .post-footer { display: flex; align-items: center; justify-content: space-between; }
+  .post-meta { font-size: 11px; color: #6B6C72; }
+  .read-more { font-size: 12px; font-weight: 600; color: #D4891A; }
+
+  .guides-strip { background: #F4F7FB; border-top: 1px solid #D8DDE6; padding: 3rem clamp(1.25rem,5vw,2.5rem); }
+  .guides-inner { max-width: 1100px; margin: 0 auto; }
+  .guides-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+  .guides-title { font-size: 1.2rem; font-weight: 700; color: #1A3A5C; }
+  .guides-link { font-size: 13px; font-weight: 600; color: #D4891A; text-decoration: none; }
+  .guides-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px,100%),1fr)); gap: 1rem; }
+  .guide-chip { background: #fff; border: 1.5px solid #D8DDE6; border-radius: 10px; padding: 1rem 1.25rem; text-decoration: none; transition: border-color 0.15s; }
+  .guide-chip:hover { border-color: #1A3A5C; }
+  .guide-chip-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #4A4D54; margin-bottom: 4px; }
+  .guide-chip-name { font-size: 13px; font-weight: 600; color: #1A3A5C; line-height: 1.3; }
+
+  footer { background: #1A3A5C; color: rgba(255,255,255,0.4); padding: 2rem clamp(1rem,4vw,2.5rem); text-align: center; font-size: 12px; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: #fff; }
+
+  @media (max-width: 640px) { .featured-post { grid-template-columns: 1fr; } .featured-visual { display: none; } }
+  @media (prefers-color-scheme: dark) {
+    html, body { background: #FFFFFF !important; color: #1E2124 !important; color-scheme: light; }
+    .nav { background: rgba(255,255,255,0.98) !important; }
+    .post-card, .guide-chip { background: #fff !important; }
+    .featured-post { background: #F4F7FB !important; }
+    .guides-strip { background: #F4F7FB !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 220 32" width="190" height="28" role="img" aria-label="FreeByDate logo">
+      <line x1="6" y1="18" x2="36" y2="18" stroke="#DDE3EC" stroke-width="0.75" stroke-dasharray="2 2"/>
+      <rect x="8"  y="18" width="4.5" height="11" rx="2.25" fill="#B4B2A9"/>
+      <rect x="15" y="18" width="4.5" height="7"  rx="2.25" fill="#B4B2A9" opacity="0.7"/>
+      <rect x="22" y="5"  width="4.5" height="13" rx="2.25" fill="#D4891A"/>
+      <rect x="29" y="2"  width="4.5" height="16" rx="2.25" fill="#F0A830"/>
+      <text x="46" y="22" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" fill="#1A3A5C" letter-spacing="0.2">FreeBy<tspan fill="#D4891A">Date</tspan></text>
+    </svg>
+  </a>
+  <div class="nav-links">
+    <a href="/blogs/" class="nav-link active">Blog</a>
+    <a href="/guides/" class="nav-link">Guides</a>
+    <a href="/#how-it-works" class="nav-link">How it works</a>
+    <a href="/#faq" class="nav-link">FAQ</a>
+  </div>
+  <div class="nav-actions">
+    <a href="/blogs/" class="nav-pill">Blog</a>
+    <a href="/#calculator" class="nav-cta">Try it free</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-label">FreeByDate Blog</div>
+  <h1 class="hero-title">Debt thinking, real numbers, no fluff</h1>
+  <p class="hero-sub">Regular posts on debt psychology, strategy, and the data behind getting out of debt faster. Opinionated and grounded in evidence.</p>
+</div>
+
+<div class="blog-section">
+  <div class="section-label">Latest post</div>
+
+  <a href="/blogs/the-real-cost-of-minimum-payments-2026" class="featured-post">
+    <div>
+      <div class="featured-tag">Debt Education</div>
+      <div class="featured-title">The Real Cost of Minimum Payments in 2026</div>
+      <div class="featured-sub">Credit card companies disclose the minimum payment due. They do not disclose what following it costs you. We ran the numbers. The results are worse than most people expect.</div>
+      <div class="featured-meta">July 2026 &nbsp;·&nbsp; 9 min read</div>
+    </div>
+    <div class="featured-visual">
+      <div class="featured-stat">
+        <div class="featured-stat-num">$15K</div>
+        <div class="featured-stat-lbl">Interest paid on a $10,000 balance over 20 years</div>
+      </div>
+    </div>
+  </a>
+
+  <div class="section-label">All posts</div>
+  <div class="post-grid">
+
+    <a href="/blogs/why-people-stay-in-debt-the-psychology" class="post-card">
+      <div class="post-tag">Debt Psychology</div>
+      <div class="post-title">Why People Stay in Debt: The Psychology Behind It</div>
+      <div class="post-sub">Most people in debt are not irresponsible. They are rational actors responding to systems designed to extend their debt as long as possible.</div>
+      <div class="post-footer">
+        <div class="post-meta">July 2026 &nbsp;·&nbsp; 10 min</div>
+        <div class="read-more">Read more</div>
+      </div>
+    </a>
+
+    <a href="/blogs/debt-payoff-on-variable-income" class="post-card">
+      <div class="post-tag">Debt Strategy</div>
+      <div class="post-title">How to Pay Off Debt on a Variable Income</div>
+      <div class="post-sub">Freelancers and contractors can pay off debt faster than salaried workers if they use income volatility as a tool rather than an obstacle.</div>
+      <div class="post-footer">
+        <div class="post-meta">July 2026 &nbsp;·&nbsp; 8 min</div>
+        <div class="read-more">Read more</div>
+      </div>
+    </a>
+
+    <a href="/blogs/the-real-cost-of-minimum-payments-2026" class="post-card">
+      <div class="post-tag">Debt Education</div>
+      <div class="post-title">The Real Cost of Minimum Payments in 2026</div>
+      <div class="post-sub">At 22% APR, a $10,000 balance on minimum payments takes 20 years and costs $15,000 in interest. We break down the exact numbers.</div>
+      <div class="post-footer">
+        <div class="post-meta">July 2026 &nbsp;·&nbsp; 9 min</div>
+        <div class="read-more">Read more</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="guides-strip">
+  <div class="guides-inner">
+    <div class="guides-header">
+      <div class="guides-title">Looking for a comprehensive guide?</div>
+      <a href="/guides/" class="guides-link">See all guides</a>
+    </div>
+    <div class="guides-grid">
+      <a href="/guides/snowball-vs-avalanche" class="guide-chip">
+        <div class="guide-chip-tag">Debt Strategy</div>
+        <div class="guide-chip-name">Snowball vs Avalanche: Which Method Actually Works?</div>
+      </a>
+      <a href="/guides/why-minimum-payments-cost-you-a-decade" class="guide-chip">
+        <div class="guide-chip-tag">Debt Education</div>
+        <div class="guide-chip-name">Why Minimum Payments Cost You a Decade</div>
+      </a>
+      <a href="/guides/how-to-pay-off-20000-in-debt" class="guide-chip">
+        <div class="guide-chip-tag">Debt Strategy</div>
+        <div class="guide-chip-name">How to Pay Off $20,000 Without Earning More</div>
+      </a>
+      <a href="/debt-payoff-surplus-method" class="guide-chip">
+        <div class="guide-chip-tag">Strategy</div>
+        <div class="guide-chip-name">The Debt Payoff Surplus Method</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><a href="/">freebydate.com</a> &nbsp;·&nbsp; <a href="/blogs/">Blog</a> &nbsp;·&nbsp; <a href="/guides/">Guides</a> &nbsp;·&nbsp; 2026 FreeByDate</p>
+</footer>
+</body>
+</html>
