@@ -1,1 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<title>The Real Cost of Minimum Payments in 2026 | FreeByDate Blog</title>
+<meta name="description" content="At 22% APR, minimum payments on a $10,000 balance cost $15,000 in interest and take 20 years. We break down the exact numbers and what to do instead.">
+<link rel="canonical" href="https://freebydate.com/blogs/the-real-cost-of-minimum-payments-2026">
+<meta property="og:title" content="The Real Cost of Minimum Payments in 2026 | FreeByDate Blog">
+<meta property="og:description" content="At 22% APR, minimum payments on a $10,000 balance cost $15,000 in interest and take 20 years. We break down the exact numbers and what to do instead.">
+<meta property="og:type" content="article">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3JM36MZ0L4"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3JM36MZ0L4');</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; color-scheme: light; }
+  body { font-family: "Inter", Arial, sans-serif; background: #FFFFFF; color: #1E2124; max-width: 100vw; overflow-x: hidden; }
 
+  /* Nav */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.98); border-bottom: 1px solid #D8DDE6;
+    padding: 0 clamp(1rem,4vw,2.5rem); min-height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo { text-decoration: none; display: flex; align-items: center; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-link { font-size: 14px; color: #4A4D54; text-decoration: none; transition: color 0.15s; }
+  .nav-link:hover { color: #1A3A5C; }
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+  .nav-pill { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #D4891A; text-decoration: none; background: rgba(212,137,26,0.08); border: 1px solid rgba(212,137,26,0.25); padding: 5px 12px; border-radius: 20px; }
+  .nav-home { font-size: 12px; color: #4A4D54; background: none; border: 1px solid #D8DDE6; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: inherit; text-decoration: none; transition: all 0.15s; }
+  .nav-home:hover { border-color: #1A3A5C; color: #1A3A5C; }
+  .nav-cta { background: #D4891A; color: #fff; font-size: 14px; font-weight: 600; padding: 9px 22px; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+  .nav-cta:hover { background: #F0A830; }
+  @media (max-width: 768px) { .nav-links { display: none; } }
+
+  /* Hero */
+  .post-hero { margin-top: 64px; padding: clamp(3rem,8vw,5rem) clamp(1.25rem,5vw,2.5rem) clamp(2rem,5vw,3rem); background: linear-gradient(160deg, #F4F7FB 0%, #EAF0F8 100%); border-bottom: 1px solid #D8DDE6; }
+  .post-category { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #D4891A; margin-bottom: 1rem; }
+  .post-title { font-size: clamp(2rem,5vw,3.2rem); font-weight: 800; color: #1A3A5C; line-height: 1.1; letter-spacing: -0.025em; margin-bottom: 1.25rem; max-width: 800px; }
+  .post-subtitle { font-size: 1.1rem; color: #4A4D54; line-height: 1.75; max-width: 660px; margin-bottom: 1.5rem; }
+  .post-meta { display: flex; align-items: center; gap: 1rem; font-size: 12px; color: #6B6C72; flex-wrap: wrap; }
+  .meta-sep { width: 3px; height: 3px; border-radius: 50%; background: #C4C8D0; }
+  .reading-time { background: #1A3A5C; color: #fff; font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.06em; }
+
+  /* Key takeaway box */
+  .key-box { background: #1A3A5C; border-radius: 14px; padding: 1.75rem 2rem; margin: 2.5rem 0; }
+  .key-box-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 1rem; }
+  .key-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0.75rem; }
+  .key-item:last-child { margin-bottom: 0; }
+  .key-dot { width: 20px; height: 20px; border-radius: 50%; background: #D4891A; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .key-text { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.6; }
+
+  /* Article */
+  .article-wrap { max-width: 740px; margin: 0 auto; padding: 3rem clamp(1.25rem,5vw,2rem) 5rem; }
+  .article-body h2 { font-size: 1.5rem; font-weight: 700; color: #1A3A5C; margin: 3rem 0 0.85rem; line-height: 1.25; }
+  .article-body h3 { font-size: 1.1rem; font-weight: 600; color: #1A3A5C; margin: 2rem 0 0.6rem; }
+  .article-body p { font-size: 1.0rem; line-height: 1.9; color: #1E2124; margin-bottom: 1.35rem; }
+  .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.35rem; }
+  .article-body li { line-height: 1.85; margin-bottom: 0.5rem; color: #1E2124; }
+  .article-body strong { color: #1A3A5C; font-weight: 600; }
+  .article-body a { color: #D4891A; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Callout */
+  .callout { border-left: 4px solid #D4891A; padding: 1.25rem 1.5rem; background: #FEF8EE; border-radius: 0 10px 10px 0; margin: 2rem 0; }
+  .callout p { margin: 0; font-size: 1.02rem; color: #2D2F33; line-height: 1.75; font-style: italic; }
+
+  /* Stat highlight */
+  .stat-highlight { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(140px,100%),1fr)); gap: 12px; margin: 2rem 0; }
+  .stat-card { background: #F4F7FB; border: 1.5px solid #D8DDE6; border-radius: 12px; padding: 1.25rem; text-align: center; }
+  .stat-card-num { font-size: 2rem; font-weight: 800; color: #D4891A; line-height: 1; margin-bottom: 6px; }
+  .stat-card-lbl { font-size: 11px; color: #4A4D54; line-height: 1.5; }
+
+  /* Table */
+  .data-table-wrap { overflow-x: auto; margin: 1.5rem 0; border-radius: 12px; border: 1.5px solid #D8DDE6; }
+  .data-table { width: 100%; border-collapse: collapse; min-width: 480px; font-size: 14px; }
+  .data-table thead { background: #1A3A5C; }
+  .data-table th { padding: 12px 16px; text-align: left; color: #fff; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; }
+  .data-table td { padding: 11px 16px; border-bottom: 1px solid #EEF0F4; color: #1E2124; line-height: 1.5; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:nth-child(even) td { background: #F7F9FC; }
+  .data-table td.gold { color: #D4891A; font-weight: 600; }
+
+  /* CTA */
+  .post-cta { background: #FEF8EE; border: 2px solid #D4891A; border-radius: 16px; padding: 2.5rem 2rem; text-align: center; margin: 3rem 0; }
+  .post-cta h3 { font-size: 1.4rem; font-weight: 700; color: #1A3A5C; margin-bottom: 0.75rem; }
+  .post-cta p { font-size: 14px; color: #4A4D54; margin-bottom: 1.5rem; line-height: 1.65; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .cta-btn { display: inline-block; background: #D4891A; color: #fff; padding: 13px 32px; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; transition: background 0.15s; }
+  .cta-btn:hover { background: #F0A830; }
+
+  /* Related posts */
+  .related { background: #F4F7FB; border-top: 1px solid #D8DDE6; padding: 3rem clamp(1.25rem,5vw,2.5rem); }
+  .related-title { font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4A4D54; margin-bottom: 1.5rem; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px,100%),1fr)); gap: 1rem; max-width: 740px; }
+  .related-card { background: #fff; border: 1.5px solid #D8DDE6; border-radius: 12px; padding: 1.25rem; text-decoration: none; transition: border-color 0.15s; display: block; }
+  .related-card:hover { border-color: #D4891A; }
+  .related-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #D4891A; margin-bottom: 6px; }
+  .related-name { font-size: 14px; font-weight: 600; color: #1A3A5C; line-height: 1.35; }
+
+  /* Footer */
+  footer { background: #1A3A5C; color: rgba(255,255,255,0.4); padding: 2rem clamp(1rem,4vw,2.5rem); text-align: center; font-size: 12px; }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: #fff; }
+
+  @media (max-width: 640px) { .stat-highlight { grid-template-columns: 1fr 1fr; } }
+  @media (prefers-color-scheme: dark) {
+    html, body { background: #FFFFFF !important; color: #1E2124 !important; color-scheme: light; }
+    .article-body p, .article-body li { color: #1E2124 !important; }
+    .article-body h2, .article-body h3 { color: #1A3A5C !important; }
+    .callout { background: #FEF8EE !important; }
+    .callout p { color: #2D2F33 !important; }
+    .stat-card { background: #F4F7FB !important; }
+    .data-table td { background: #fff !important; color: #1E2124 !important; }
+    .data-table tr:nth-child(even) td { background: #F7F9FC !important; }
+    .post-cta { background: #FEF8EE !important; }
+    .post-cta h3 { color: #1A3A5C !important; }
+    .post-cta p { color: #4A4D54 !important; }
+    .nav { background: rgba(255,255,255,0.98) !important; }
+    .post-hero { background: linear-gradient(160deg, #F4F7FB 0%, #EAF0F8 100%) !important; }
+    .related { background: #F4F7FB !important; }
+    .related-card { background: #fff !important; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="/" class="nav-logo"><svg viewBox="0 0 220 32" width="190" height="28" role="img" aria-label="FreeByDate logo">
+      <line x1="6" y1="18" x2="36" y2="18" stroke="#DDE3EC" stroke-width="0.75" stroke-dasharray="2 2"/>
+      <rect x="8"  y="18" width="4.5" height="11" rx="2.25" fill="#B4B2A9"/>
+      <rect x="15" y="18" width="4.5" height="7"  rx="2.25" fill="#B4B2A9" opacity="0.7"/>
+      <rect x="22" y="5"  width="4.5" height="13" rx="2.25" fill="#D4891A"/>
+      <rect x="29" y="2"  width="4.5" height="16" rx="2.25" fill="#F0A830"/>
+      <text x="46" y="22" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="700" fill="#1A3A5C" letter-spacing="0.2">FreeBy<tspan fill="#D4891A">Date</tspan></text>
+    </svg></a>
+  <div class="nav-links">
+    <a href="/blogs/" class="nav-link">Blog</a>
+    <a href="/guides/" class="nav-link">Guides</a>
+    <a href="/#how-it-works" class="nav-link">How it works</a>
+    <a href="/#faq" class="nav-link">FAQ</a>
+  </div>
+  <div class="nav-actions">
+    <a href="/blogs/" class="nav-pill">Blog</a>
+    <a href="/" class="nav-home">Home</a>
+    <a href="/#calculator" class="nav-cta">Try it free</a>
+  </div>
+</nav>
+
+<div class="post-hero">
+  <div class="post-category">Debt Education</div>
+  <h1 class="post-title">The Real Cost of Minimum Payments in 2026</h1>
+  <p class="post-subtitle">Credit card companies disclose the minimum payment due. They do not disclose what following it costs you. We ran the numbers. The results are worse than most people expect.</p>
+  <div class="post-meta">
+    <span>FreeByDate</span>
+    <span class="meta-sep"></span>
+    <span>July 2026</span>
+    <span class="meta-sep"></span>
+    <span class="reading-time">9 min read</span>
+  </div>
+</div>
+
+<div class="article-wrap">
+  <div class="key-box">
+    <div class="key-box-title">Key takeaways</div>
+    <div class="key-item"><div class="key-dot">1</div><div class="key-text">At 22% APR, a $10,000 balance on minimum payments takes 20 years and costs $15,000 in interest.</div></div><div class="key-item"><div class="key-dot">2</div><div class="key-text">Minimum payments are calculated to keep you in debt as long as possible while maximising interest collected.</div></div><div class="key-item"><div class="key-dot">3</div><div class="key-text">Increasing your payment by even $100 per month on a $5,000 balance saves over $3,000 in interest.</div></div><div class="key-item"><div class="key-dot">4</div><div class="key-text">The surplus sequencing method concentrates your available cash on one debt at a time, cutting years off the timeline.</div></div>
+  </div>
+  <div class="article-body">
+    
+<p>Every credit card statement shows two numbers: the full balance and the minimum payment due. Most people focus on the minimum. It is the smaller number, the manageable one, the amount that keeps the account current and avoids late fees. It is also, by design, one of the most expensive financial choices a person can make.</p>
+
+<p>In the first quarter of 2026 the Federal Reserve reported the average APR on credit card balances carrying interest at 22%. At that rate, a $10,000 balance with a standard 2% minimum payment schedule takes approximately 20 years to clear and costs over $15,000 in interest. The total amount paid on a $10,000 debt exceeds $25,000.</p>
+
+<div class="stat-highlight">
+  <div class="stat-card"><div class="stat-card-num">22%</div><div class="stat-card-lbl">Average credit card APR on balances, Q1 2026 (Federal Reserve)</div></div>
+  <div class="stat-card"><div class="stat-card-num">20 yrs</div><div class="stat-card-lbl">Time to clear $10,000 at 22% APR on minimum payments</div></div>
+  <div class="stat-card"><div class="stat-card-num">$15,000</div><div class="stat-card-lbl">Interest paid on that $10,000 balance over 20 years</div></div>
+  <div class="stat-card"><div class="stat-card-num">$25,000+</div><div class="stat-card-lbl">Total paid on a $10,000 original balance</div></div>
+</div>
+
+<h2>How minimum payments are calculated</h2>
+
+<p>Most credit card issuers calculate your minimum payment as the greater of a flat dollar amount, typically $25 to $35, or a percentage of your outstanding balance, usually between 1% and 3%, plus all accrued interest and fees. On a $10,000 balance at 22% APR the first minimum payment is approximately $200. Of that, around $183 goes to interest. Approximately $17 reduces principal.</p>
+
+<p>As the balance decreases, the minimum payment also decreases. A $9,983 balance next month produces a minimum of roughly $199.66. The month after, slightly less. This shrinking minimum is presented as a benefit. In practice it means you spend less money toward principal each month as a proportion of what you owe. The debt extends itself.</p>
+
+<div class="callout"><p>Minimum payments are not designed to help you escape debt. They are designed to keep you in it. The structure of a minimum payment schedule maximises the duration of the debt and, therefore, the interest collected.</p></div>
+
+<h2>The exact cost at every common balance level</h2>
+
+<p>The following figures use a 22% APR and a 2% minimum payment calculation. All figures are approximate and assume no new charges are made during the payoff period.</p>
+
+<div class="data-table-wrap">
+  <table class="data-table">
+    <thead><tr><th>Balance</th><th>First min payment</th><th>Years on minimums</th><th class="gold">Total interest paid</th><th>Total paid</th></tr></thead>
+    <tbody>
+      <tr><td>$3,000</td><td>$60</td><td>~12 years</td><td class="gold">$3,900</td><td>$6,900</td></tr>
+      <tr><td>$5,000</td><td>$100</td><td>~15 years</td><td class="gold">$7,200</td><td>$12,200</td></tr>
+      <tr><td>$10,000</td><td>$200</td><td>~20 years</td><td class="gold">$15,000</td><td>$25,000</td></tr>
+      <tr><td>$15,000</td><td>$300</td><td>~23 years</td><td class="gold">$24,500</td><td>$39,500</td></tr>
+      <tr><td>$20,000</td><td>$400</td><td>~26 years</td><td class="gold">$35,000</td><td>$55,000</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>The pattern is consistent. In every case the total interest paid approaches or exceeds the original balance. At $20,000 the total cost on minimum payments is nearly three times the original debt. These are not worst-case scenarios. They are the mathematical outcome of following the standard minimum payment schedule at current interest rates.</p>
+
+<h2>Why the minimum payment trap is so effective</h2>
+
+<p>Three mechanisms combine to make minimum payment schedules particularly difficult to escape.</p>
+
+<p>First, the payment feels affordable. A $200 monthly payment on a $10,000 debt does not feel ruinous. It is manageable. The problem is invisible at the transaction level and only becomes apparent over years of statements.</p>
+
+<p>Second, the balance decreases. Every month the number on the statement is smaller than the month before. Progress is being made, technically. But at 22% APR on $10,000 the first month of minimum payments reduces principal by $17. Watching a debt that started at $10,000 drop to $9,983 does not produce urgency.</p>
+
+<p>Third, spending continues. Most people carrying credit card balances continue using the card for ordinary purchases. New charges replace the small principal reductions, keeping the balance flat or growing even while minimum payments are made faithfully.</p>
+
+<h2>What actually changes the math</h2>
+
+<p>The lever is the payment amount. Interest rate and balance are largely fixed in the short term. What you control is how much you pay and, critically, how you concentrate that payment across multiple balances if you carry more than one.</p>
+
+<div class="data-table-wrap">
+  <table class="data-table">
+    <thead><tr><th>Monthly payment on $10,000 at 22%</th><th>Time to payoff</th><th class="gold">Interest paid</th><th>Saved vs minimums</th></tr></thead>
+    <tbody>
+      <tr><td>Minimum only (~$200)</td><td>20 years</td><td class="gold">$15,000</td><td>Baseline</td></tr>
+      <tr><td>$250 fixed</td><td>6.5 years</td><td class="gold">$9,500</td><td>$5,500 saved</td></tr>
+      <tr><td>$350 fixed</td><td>3.5 years</td><td class="gold">$4,800</td><td>$10,200 saved</td></tr>
+      <tr><td>$500 fixed</td><td>2.3 years</td><td class="gold">$3,100</td><td>$11,900 saved</td></tr>
+      <tr><td>$800 fixed</td><td>1.4 years</td><td class="gold">$1,800</td><td>$13,200 saved</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<p>Paying $350 per month instead of $200 on a $10,000 balance saves $10,200 in interest and 16.5 years of payments. The total additional payment required is modest. The outcome is dramatically different.</p>
+
+<h2>The multiple debt problem</h2>
+
+<p>Most people carrying credit card debt carry it across multiple cards. The instinct is to pay a little extra on each one. At 22% APR this instinct is expensive.</p>
+
+<p>Suppose you have three cards with a combined balance of $15,000 and $400 per month above minimums. Distributing $133 extra across each card reduces all three balances simultaneously. Interest accrues on all three. No card closes for years. The timeline on every individual balance extends because the available force spreads thin.</p>
+
+<p>Concentrating the $400 entirely on one card closes it in a fraction of the time. When it closes, its minimum payment, previously consumed by interest, rolls to the next card. The attacking payment grows with every closure. This is the surplus sequencing method and it is what FreeByDate calculates from your real income and expenses.</p>
+
+<div class="callout"><p>The single most effective change most people can make to their debt trajectory is not earning more money. It is concentrating the money they already pay toward debt on one balance at a time instead of spreading it across several.</p></div>
+
+<h2>A practical starting point</h2>
+
+<p>Three steps that change the math without requiring additional income:</p>
+
+<p>First, calculate your real monthly surplus. Take-home income minus every fixed bill minus a protected savings contribution minus all minimum payments. This number, not a guess at what you can spare, is your payoff engine.</p>
+
+<p>Second, pick one target. Smallest balance first if you need an early win. Highest APR first if you want to minimise total interest. Put your entire surplus on that one balance. Pay only the minimum on every other card.</p>
+
+<p>Third, roll freed payments forward. When a card closes, add its minimum payment to your surplus immediately. Do not let the freed amount dissolve back into spending.</p>
+
+<p>FreeByDate runs this calculation from your actual numbers and shows you the closing date for every debt in the sequence. Not the final date. Every date.</p>
+
+<div class="post-cta">
+  <h3>See what minimum payments are actually costing you</h3>
+  <p>Enter your real balances, income, and bills. FreeByDate shows the exact timeline on minimum payments versus a sequenced plan, and gives you the closing date for every debt.</p>
+  <a href="/#calculator" class="cta-btn">Try FreeByDate free</a>
+</div>
+
+  </div>
+</div>
+
+<div class="related">
+  <div class="related-title">Continue reading</div>
+  <div class="related-grid"><a href="/guides/snowball-vs-avalanche" class="related-card"><div class="related-tag">Guide</div><div class="related-name">Snowball vs Avalanche: Which Method Actually Works?</div></a><a href="/debt-payoff-surplus-method" class="related-card"><div class="related-tag">Strategy</div><div class="related-name">The Debt Payoff Surplus Method Explained</div></a><a href="/how-long-to-pay-off-credit-card-debt" class="related-card"><div class="related-tag">Calculator</div><div class="related-name">How Long to Pay Off Credit Card Debt?</div></a></div>
+</div>
+
+<footer>
+  <p><a href="/">freebydate.com</a> &nbsp;·&nbsp; <a href="/blogs/">Blog</a> &nbsp;·&nbsp; <a href="/guides/">Guides</a> &nbsp;·&nbsp; 2026 FreeByDate</p>
+</footer>
+</body>
+</html>
