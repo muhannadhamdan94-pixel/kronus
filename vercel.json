@@ -1,17 +1,5 @@
 {
   "cleanUrls": true,
-  "redirects": [
-    {
-      "source": "/blog",
-      "destination": "/guides",
-      "permanent": true
-    },
-    {
-      "source": "/blog/:path*",
-      "destination": "/guides/:path*",
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/:path*",
