@@ -1,6 +1,5 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false,
   "redirects": [
     {
       "source": "/blog",
@@ -11,16 +10,6 @@
       "source": "/blog/:path*",
       "destination": "/guides/:path*",
       "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/guides",
-      "destination": "/guides/index.html"
-    },
-    {
-      "source": "/guides/:path*",
-      "destination": "/guides/:path*.html"
     }
   ],
   "headers": [
@@ -38,10 +27,6 @@
         {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
         }
       ]
     }
